@@ -75,7 +75,11 @@
     justify-content: space-between;
 }
 
-.home-feature-icon { font-size: 1.7rem; }
+.home-feature-icon {
+    font-size: 1.7rem;
+    display: flex;      
+    align-items: center; 
+}
 
 .home-feature-tag {
     font-size: 0.7rem;

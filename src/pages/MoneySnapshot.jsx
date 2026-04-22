@@ -7,6 +7,7 @@ import {
 } from '../components/financialCalcs'
 import "../styles/MoneySnapshot.css";
 import "../styles/TracksStudioShared.css";
+import Icon from "../components/Icons";
 
 import HealthGauge   from '../components/money_snapshot/HealthGauge'
 import DonutChart    from '../components/money_snapshot/DonutChart'
@@ -77,7 +78,10 @@ export default function MoneySnapshot() {
 
                 <aside className="split-left">
                     <section className="input-section">
-                        <h2 className="input-section-title">💰 Income</h2>
+                        <h2 className="input-section-title">
+                            <Icon name="income" size={17} glow /> Income
+                        </h2>
+
                         <InputField
                             label="Gross monthly salary"
                             value={profile.grossIncome}
@@ -97,20 +101,20 @@ export default function MoneySnapshot() {
                     </section>
 
                     <section className="input-section">
-                        <h2 className="input-section-title">🏠 Fixed Costs</h2>
+                        <h2 className="input-section-title"><Icon name="fixed-costs" size={17} glow /> Fixed Costs</h2>
                         <InputField label="Rent / bond payment"   value={profile.rent}       onChange={val => handleChange('rent', val)}       tooltip="Sandton 1-bed averages R15 000–R25 000/month" />
                         <InputField label="Utilities"              value={profile.utilities}   onChange={val => handleChange('utilities', val)}   tooltip="Water, electricity, internet" />
                         <InputField label="Medical aid premium"    value={profile.medicalAid}  onChange={val => handleChange('medicalAid', val)}  tooltip="Unlocks your SARS R364/month tax credit" />
                     </section>
 
                     <section className="input-section">
-                        <h2 className="input-section-title">💳 Debt Payments</h2>
+                        <h2 className="input-section-title"> <Icon name="debt" size={17} glow /> Debt Payments</h2>
                         <InputField label="Car payment"   value={profile.carPayment}  onChange={val => handleChange('carPayment', val)}  tooltip="Vehicle finance typically 10–12% p.a. in SA" />
                         <InputField label="Other loans"   value={profile.loanPayment} onChange={val => handleChange('loanPayment', val)} tooltip="Student loans, personal loans, etc." />
                     </section>
 
                     <section className="input-section">
-                        <h2 className="input-section-title">🎯 Savings & Lifestyle</h2>
+                        <h2 className="input-section-title"> <Icon name="savings" size={17} glow /> Savings & Lifestyle</h2>
                         <InputField label="Monthly TFSA contribution" value={profile.tfsaContribution} onChange={val => handleChange('tfsaContribution', val)} tooltip="Annual cap is R46 000. No tax on growth." />
                         <InputField label="Bank balance (emergency)"  value={profile.bankBalance}       onChange={val => handleChange('bankBalance', val)}       tooltip="Goal: 3–6 months of total expenses." />
                         <InputField label="Entertainment & dining"    value={profile.entertainment}     onChange={val => handleChange('entertainment', val)}     tooltip="Where lifestyle creep hides." />
@@ -121,9 +125,9 @@ export default function MoneySnapshot() {
 
                     <div className={`surplus-alert surplus-alert--${surplusStatus}`}>
                         <strong>
-                            {surplusStatus === 'surplus'   && '✅ On track'}
-                            {surplusStatus === 'breakeven' && '⚡ Breaking even'}
-                            {surplusStatus === 'deficit'   && '🚨 Spending more than you earn'}
+                            {surplusStatus === 'surplus'   && <><Icon name="ok"     size={16} glow /> On track</>}
+                            {surplusStatus === 'breakeven' && <><Icon name="warn"   size={16} glow /> Breaking even</>}
+                            {surplusStatus === 'deficit'   && <><Icon name="danger" size={16} glow /> Spending more than you earn</>}
                         </strong>
                         <p>{surplusMsg}</p>
                     </div>
@@ -174,7 +178,7 @@ export default function MoneySnapshot() {
                         <div className="result-card">
                             <h3>SA-Specific Insights</h3>
                             <div className="sa-insight">
-                                <span className="sa-insight-label">🏥 SARS Medical Credit</span>
+                                <span className="sa-insight-label">  <Icon name="medical" size={17} glow/>  SARS Medical Credit</span>
                                 {profile.medicalAid > 0 ? (
                                     <span className="sa-insight-value">
                                         {fmtZAR(medCredit)}/month · {fmtZAR(medCredit * 12)}/year back
@@ -185,17 +189,17 @@ export default function MoneySnapshot() {
                             </div>
 
                             <div className={`sa-insight ${dti > 36 ? 'sa-insight--warn' : ''}`}>
-                                <span className="sa-insight-label">💳 Debt-to-Income</span>
+                                <span className="sa-insight-label"><Icon name="dti" size={19} glow/> Debt-to-Income</span>
                                 <span className="sa-insight-value">{dti}%
-                                    {dti === 0 && ' - no debt ✅'}
-                                    {dti > 0 && dti <= 36 && ' - bond-ready ✅'}
-                                    {dti > 36 && dti <= 50 && ' - above 36% ⚠️'}
-                                    {dti > 50 && ' - critical 🚨'}
+                                    {dti === 0 && <> — <Icon name="ok"     size={17} glow /> no debt</>}
+                                    {dti > 0 && dti <= 36 && <> — <Icon name="ok"     size={17} glow /> bond-ready</>}
+                                    {dti > 36 && dti <= 50 && <> — <Icon name="warn"   size={17} glow /> above 36%</>}
+                                    {dti > 50 && <> — <Icon name="danger" size={17} glow /> critical</>}
                                 </span>
                             </div>
 
                             <div className="sa-insight">
-                                <span className="sa-insight-label">📈 TFSA ({tfsaPct}% of cap)</span>
+                                <span className="sa-insight-label"> <Icon name="tfsa" size={17} glow/> TFSA ({tfsaPct}% of cap)</span>
                                 <ProgressBar value={tfsaPct} colour="#22c55e" />
                                 <span className="sa-insight-sub">
                                     {fmtZAR(tfsaAnnual)}/year of R46 000 cap ·{' '}
@@ -205,7 +209,7 @@ export default function MoneySnapshot() {
 
                             <div className="sa-insight">
                                 <span className="sa-insight-label">
-                                    🛡️ Emergency Fund - {emergMonths} months covered
+                                    <Icon name="emergency" size={17} glow/> Emergency Fund - {emergMonths} months covered
                                 </span>
                                 <ProgressBar
                                     value={emergencyPct}
@@ -213,10 +217,10 @@ export default function MoneySnapshot() {
                                     markers={emergencyMarkers}
                                 />
                                 <span className="sa-insight-sub">
-                                    {emergMonths < 1  && '🚨 Less than 1 month - build this before investing'}
-                                    {emergMonths >= 1 && emergMonths < 3 && '⚠️ Below 3-month target'}
-                                    {emergMonths >= 3 && emergMonths < 6 && '✅ In range - keep building'}
-                                    {emergMonths >= 6 && '✅ Fully funded - redirect surplus to investments'}
+                                    {emergMonths < 1  && <><Icon name="danger" size={17} glow /> Less than 1 month — build this before investing</>}
+                                    {emergMonths >= 1 && emergMonths < 3 && <><Icon name="warn" size={12} glow /> Below 3-month target</>}
+                                    {emergMonths >= 3 && emergMonths < 6 && <><Icon name="ok"   size={12} glow /> In range — keep building</>}
+                                    {emergMonths >= 6 && <><Icon name="ok"   size={17} glow /> Fully funded — redirect surplus to investments</>}
                                 </span>
                             </div>
                         </div>
@@ -224,7 +228,8 @@ export default function MoneySnapshot() {
 
                     <div className="learn-section">
                         <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
-                            📚 {learnOpen ? 'Hide' : 'Show'} financial concepts explained
+                            <Icon name="learn" size={19} glow />
+                            {learnOpen ? 'Hide' : 'Show'} financial concepts explained
                         </button>
                         {learnOpen && (
                             <div className="learn-grid">

@@ -9,6 +9,7 @@ import {
     SA,
 } from '../components/financialCalcs'
 import "../styles/TracksStudioShared.css";
+import Icon from "../components/Icons";
 
 //Bond repaying formula
 function calcBondRepayment(principal, annualRate, termYears) {
@@ -155,7 +156,6 @@ export default function FirstPropertyPath() {
         <>
         <div className="page-header">
             <div>
-                <span className="track-tag">🏠 Strategy Track</span>
                 <h1 className="page-title">First Property Path</h1>
                 <p className="page-subtitle">
                     A 5-year roadmap from renter to homeowner - built around SA bond
@@ -272,33 +272,33 @@ export default function FirstPropertyPath() {
 
                     <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
                         {canAfford
-                            ? `✅ Bond payment is ${bondPct}% of take-home - within the 30% rule.`
-                            : `⚠️ Bond payment is ${bondPct}% of take-home - above 30%. Consider a lower price or longer term.`
+                            ? <><Icon name="ok" size={17} glow /> Bond payment is {bondPct}% of take-home — within the 30% rule.</>
+                            : <><Icon name="warn" size={17} glow /> Bond payment is {bondPct}% of take-home — above 30%.</>
                         }
                     </div>
                     {dti > 36 && (
                         <div className="recommendation recommendation--warn">
-                            ⚠️ Your DTI is {dti}% - above 36%. Pay down debt before applying.
+                            <Icon name="warn"   size={17} glow /> Your DTI is {dti}% - above 36%. Pay down debt before applying.
                         </div>
                     )}
                     {emergMonths < 1 && (
                         <div className="recommendation recommendation--danger">
-                            🚨 Less than 1 month emergency savings. Complete Year 1 first.
+                            <Icon name="danger" size={17} glow /> Less than 1 month emergency savings. Complete Year 1 first.
                         </div>
                     )}
                     {surplus <= 0 && (
                         <div className="recommendation recommendation--danger">
-                            🚨 Expenses exceed income by {fmtZAR(Math.abs(surplus))}. Fix surplus first.
+                            <Icon name="danger" size={17} glow /> Expenses exceed income by {fmtZAR(Math.abs(surplus))}. Fix surplus first.
                         </div>
                     )}
                     {surplus > 0 && surplus < 3000 && (
                         <div className="recommendation recommendation--warn">
-                            ⚠️ Surplus of {fmtZAR(surplus)} is thin. This track will take longer than 5 years.
+                            <Icon name="warn"   size={17} glow /> Surplus of {fmtZAR(surplus)} is thin. This track will take longer than 5 years.
                         </div>
                     )}
                     {surplus > 5000 && dti <= 36 && emergMonths >= 1 && canAfford && (
                         <div className="recommendation recommendation--ok">
-                            ✅ Your profile looks solid. {fmtZAR(surplus)}/month surplus gives real momentum.
+                            <Icon name="ok" size={17} glow /> Your profile looks solid. {fmtZAR(surplus)}/month surplus gives real momentum.
                         </div>
                     )}
                 </div>
@@ -325,11 +325,11 @@ export default function FirstPropertyPath() {
                 </div>
                 <div>
                     <div className="tradeoff-box tradeoff-box--avoid">
-                        <strong>❌ Avoid during this track</strong>
+                        <strong> <Icon name="danger" size={17} glow colour="#fca5a5" /> Avoid during this track</strong>
                         <p>Luxury car finance · aggressive offshore speculation · lifestyle creep · new credit applications</p>
                     </div>
                     <div className="tradeoff-box tradeoff-box--prioritise">
-                        <strong>✅ Prioritise</strong>
+                        <strong> <Icon name="ok"     size={17} glow colour="#86efac" /> Prioritise</strong>
                         <p>Emergency fund first · then deposit savings · then bond pre-approval · keep RA active</p>
                     </div>
                 </div>
@@ -367,19 +367,20 @@ export default function FirstPropertyPath() {
                                     {STATUS_LABELS[status]}
                                 </button>
                             </div>
-                            <div className="milestone-target">🎯 {m.target}</div>
+                            <div className="milestone-target"> <Icon name="target" size={17} glow /> {m.target} {m.target}</div>
                             <p className="milestone-description">{m.description}</p>
                             <ul className="milestone-actions">
                                 {m.actions.map((action, i) => <li key={i}>{action}</li>)}
                             </ul>
-                            <div className="milestone-nudge">💡 {m.nudge}</div>
+                            <div className="milestone-nudge"><Icon name="nudge" size={17} glow /> {m.nudge}</div>
                         </div>
                     )
                 })}
 
                 <div className="learn-section">
                     <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
-                        📚 {learnOpen ? 'Hide' : 'Show'} key property concepts
+                        <Icon name="learn" size={19} glow />
+                        {learnOpen ? 'Hide' : 'Show'} key property concepts
                     </button>
                     {learnOpen && (
                         <div className="learn-grid">

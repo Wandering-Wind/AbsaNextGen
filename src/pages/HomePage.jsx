@@ -3,6 +3,7 @@ import "../styles/HomePage.css";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../context/UserProfileContext";
 import { calcHealthScore, calcNetSurplus, fmtZAR } from "../components/financialCalcs";
+import Icon from "../components/Icons";
 
 export default function HomePage() {
     const { profile } = useUserProfile()
@@ -62,7 +63,9 @@ export default function HomePage() {
 
                     <Link to="/dashboard" className="home-feature-card">
                         <div className="home-feature-card-header">
-                            <span className="home-feature-icon">📊</span>
+                            <span className="home-feature-icon">
+                                <Icon name="snapshot" size={28}/>
+                            </span>
                             <span className="home-feature-tag">Start here</span>
                         </div>
                         <h2>Money Snapshot</h2>
@@ -83,7 +86,9 @@ export default function HomePage() {
 
                     <Link to="/tracks/property" className="home-feature-card">
                         <div className="home-feature-card-header">
-                            <span className="home-feature-icon">🏠</span>
+                            <span className="home-feature-icon">
+                                <Icon name="tracks" size={28} />
+                            </span>
                             <span className="home-feature-tag home-feature-tag--purple">5-year plan</span>
                         </div>
                         <h2>Strategy Tracks</h2>
@@ -104,8 +109,10 @@ export default function HomePage() {
 
                     <Link to="/studio/rent-vs-buy" className="home-feature-card">
                         <div className="home-feature-card-header">
-                            <span className="home-feature-icon">🧪</span>
-                            <span className="home-feature-tag home-feature-tag--teal">Simulate</span>
+                            <span className="home-feature-icon">
+                                <Icon name="studio" size={28} colour="#af8ac3" />
+                            </span>
+                            <span className="home-feature-tag home-feature-tag--purple">Simulate</span>
                         </div>
                         <h2>Money Studio</h2>
                         <p>

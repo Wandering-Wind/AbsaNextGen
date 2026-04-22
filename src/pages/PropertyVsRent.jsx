@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import { fmtZAR, SA } from '../components/financialCalcs'
 import "../styles/TracksStudioShared.css";
+import Icon from "../components/Icons";
  
 function calcBondRepayment(principal, annualRate, termYears) {
     const r = annualRate / 12
@@ -434,7 +435,7 @@ export default function PropertyVsRent() {
         <div className="studio-side-col">
             {/* Verdict badge */}
             <div className={`verdict-badge ${buyWins ? 'verdict-badge--buy' : 'verdict-badge--rent'}`}>
-                <span className="verdict-icon">{buyWins ? '🏠' : '📈'}</span>
+                <span className="verdict-icon">{buyWins ? <Icon name="buy-wins"  size={32} glow /> : <Icon name="rent-wins" size={32} glow />}</span>
                 <div>
                     <strong>{buyWins ? 'Buying wins' : 'Rent & Invest wins'} by {fmtZAR(difference)}</strong>
                     <p>over {years} years based on your inputs</p>
@@ -498,7 +499,7 @@ export default function PropertyVsRent() {
                                 <td>{fmtZAR(s.bondBalance)}</td>
                                 <td className={yearBuyWins ? 'cell--win' : ''}>{fmtZAR(s.buyNetWorth)}</td>
                                 <td className={!yearBuyWins ? 'cell--win' : ''}>{fmtZAR(s.rentNetWorth)}</td>
-                                <td>{yearBuyWins ? '🏠 Buy' : '📈 Rent'}</td>
+                                <td>{yearBuyWins ? <><Icon name="buy-wins"  size={17} glow /> Buy</> : <><Icon name="rent-wins" size={17} glow /> Rent</>}</td>
                             </tr>
                         )
                     })}
@@ -510,7 +511,8 @@ export default function PropertyVsRent() {
     {/* Learn section */}
     <div className="learn-section">
         <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
-            📚 {learnOpen ? 'Hide' : 'Show'} concepts behind this simulation
+            <Icon name="learn" size={19} glow />
+            {learnOpen ? 'Hide' : 'Show'} concepts behind this simulation
         </button>
         {learnOpen && (
             <div className="learn-grid">
@@ -526,7 +528,6 @@ export default function PropertyVsRent() {
 
             </div>
             
-
             </div>
         </>
     )
