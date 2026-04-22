@@ -1,0 +1,88 @@
+/*HOME PAGE*/
+.home-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-md);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.home-status-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.home-status-label { font-size: var(--text-xs); color: rgba(255,255,255,0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; }
+.home-status-value { font-size: var(--text-md); font-weight: 700; color: var(--white); }
+.home-status-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.10); }
+
+.home-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.home-feature-card {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.11);
+  border-radius: var(--r-md);
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.home-feature-card:hover {
+  background: rgba(255,255,255,0.11);
+  border-color: rgba(205,180,255,0.35);
+  transform: translateY(-2px);
+}
+
+.home-feature-icon { font-size: 2rem; }
+
+.home-feature-content h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+
+.home-feature-content p {
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.home-feature-cta {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--p-100);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+/*SA reference strip*/
+.home-sa-strip {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: rgba(205,180,255,0.05);
+  border: 1px solid rgba(205,180,255,0.12);
+  border-radius: var(--r-md);
+  padding: 1rem 1.5rem;
+}
+
+.home-sa-item { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; min-width: 120px; }
+.home-sa-label { font-size: var(--text-xs); color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.07em; }
+.home-sa-value { font-size: var(--text-sm); font-weight: 700; color: var(--p-100); }
+
+@media (max-width: 768px) {
+  .home-feature-grid { grid-template-columns: 1fr; }
+  .home-status-bar { gap: 1rem; }
+  .home-status-divider { display: none; }
+}
