@@ -129,7 +129,7 @@ function LineChart({ snapshots }) {
                         <text
                             x={padL - 6} y={l.y}
                             textAnchor="end"
-                            fontSize="9"
+                            fontSize="16"
                             fill="#9ca3af"
                             dominantBaseline="middle"
                         >
@@ -147,7 +147,7 @@ function LineChart({ snapshots }) {
                         key={s.year}
                         x={xPos(s.year)} y={height - 8}
                         textAnchor="middle"
-                        fontSize="10"
+                        fontSize="17"
                         fill="#9ca3af"
                     >
                         Yr {s.year}
@@ -227,7 +227,7 @@ export default function PropertyVsRent() {
     const [depositPct,       setDepositPct]       = useState(10)
     const [bondRate,         setBondRate]         = useState(SA.PRIME_RATE + SA.BOND_SPREAD)
     const [bondTerm,         setBondTerm]         = useState(20)
-    const [monthlyRent,      setMonthlyRent]      = useState(15000)
+    const [monthlyRent,      setMonthlyRent]      = useState(20000)
     const [rentIncreaseRate, setRentIncreaseRate] = useState(0.06)   // 6% p.a.
     const [investmentReturn, setInvestmentReturn] = useState(0.08)   // 8% p.a.
     const [years,            setYears]            = useState(5)
@@ -288,17 +288,7 @@ export default function PropertyVsRent() {
                     </div>
             </div>
     
-            {/*Context banner*/}
-            <div style={{ padding: '0 1.5rem', flexShrink: 0 }}>
-                <div className="studio-context">
-                    <p>
-                        <strong>SA context:</strong> Prime rate is currently 10.25%.
-                        Johannesburg property grows at approximately 3–6% p.a.
-                        The JSE has returned approximately 8–11% p.a. historically.
-                        This simulation uses your numbers — not generic assumptions.
-                    </p>
-                </div>
-            </div>
+            
 
             <div className="split-body">
 
@@ -314,7 +304,8 @@ export default function PropertyVsRent() {
                             <span className="input-prefix">R</span>
                             <input
                                 type="number"
-                                value={propertyPrice}
+                                value={propertyPrice === 0 ? '' : propertyPrice}
+                                placeholder="0"
                                 min={300000}
                                 step={50000}
                                 onChange={e => setPropertyPrice(Number(e.target.value))}
@@ -366,7 +357,8 @@ export default function PropertyVsRent() {
                             <span className="input-prefix">R</span>
                             <input
                                 type="number"
-                                value={monthlyRent}
+                                value={monthlyRent === 0 ? '' : monthlyRent}
+                                placeholder="0"
                                 min={1000}
                                 step={500}
                                 onChange={e => setMonthlyRent(Number(e.target.value))}
@@ -432,109 +424,107 @@ export default function PropertyVsRent() {
 
                 <div className="split-right">
 
-                    {/*Verdict badge*/}
-                    <div className={`verdict-badge ${buyWins ? 'verdict-badge--buy' : 'verdict-badge--rent'}`}>
-                        <span className="verdict-icon">{buyWins ? '🏠' : '📈'}</span>
-                        <div>
-                            <strong>
-                                {buyWins ? 'Buying wins' : 'Rent & Invest wins'} by {fmtZAR(difference)}
-                            </strong>
-                            <p>over {years} years based on your inputs</p>
-                        </div>
-                    </div>
+                    {/* Row 1: Chart (left half) + Verdict & SA context (right half) */}
+    <div className="studio-top-row">
+        <div className="result-card studio-chart-card">
+            <h3>Net Worth Over Time</h3>
+            <LineChart snapshots={snapshots} />
+        </div>
 
-                    {/*Line chart*/}
-                    <div className="result-card">
-                        <h3>Net Worth Over Time</h3>
-                        <LineChart snapshots={snapshots} />
-                    </div>
+        <div className="studio-side-col">
+            {/* Verdict badge */}
+            <div className={`verdict-badge ${buyWins ? 'verdict-badge--buy' : 'verdict-badge--rent'}`}>
+                <span className="verdict-icon">{buyWins ? '🏠' : '📈'}</span>
+                <div>
+                    <strong>{buyWins ? 'Buying wins' : 'Rent & Invest wins'} by {fmtZAR(difference)}</strong>
+                    <p>over {years} years based on your inputs</p>
+                </div>
+            </div>
 
-                    {/*Narrative*/}
-                    <div className="result-card narrative-card">
-                        <h3>Studio Verdict</h3>
-                        <p className="narrative-text">{buildNarrative()}</p>
-                    </div>
+            {/* SA context sits here — fills remaining space beside chart */}
+            <div className="studio-context">
+                <p>
+                    <strong>SA context:</strong> Prime rate is 10.25%.
+                    Johannesburg property grows at approximately 3–6% p.a.
+                    The JSE has returned approximately 8–11% p.a. historically.
+                    This simulation uses your inputs — not generic assumptions.
+                </p>
+            </div>
 
-                    {/*Year-by-year table - play with bento bpx structure*/}
-                    <div className="result-card">
-                        <h3>Year-by-Year Breakdown</h3>
-                        <div className="table-wrap">
-                            <table className="breakdown-table">
-                                <thead>
-                                    <tr>
-                                        <th>Year</th>
-                                        <th>Property value</th>
-                                        <th>Bond balance</th>
-                                        <th>Buy net worth</th>
-                                        <th>Rent portfolio</th>
-                                        <th>Winner</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {snapshots.map(s => {
-                                        const yearBuyWins = s.buyNetWorth > s.rentNetWorth
-                                        return (
-                                            <tr key={s.year}>
-                                                <td>Year {s.year}</td>
-                                                <td>{fmtZAR(s.propertyValue)}</td>
-                                                <td>{fmtZAR(s.bondBalance)}</td>
-                                                <td className={yearBuyWins ? 'cell--win' : ''}>
-                                                    {fmtZAR(s.buyNetWorth)}
-                                                </td>
-                                                <td className={!yearBuyWins ? 'cell--win' : ''}>
-                                                    {fmtZAR(s.rentNetWorth)}
-                                                </td>
-                                                <td>
-                                                    {yearBuyWins ? '🏠 Buy' : '📈 Rent'}
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>                 
-
-
-            {/*Learn section*/}
-            <div className="learn-section">
-                <button
-                    className="learn-toggle"
-                    onClick={() => setLearnOpen(prev => !prev)}
-                >
-                    📚 {learnOpen ? 'Hide' : 'Show'} concepts behind this simulation
-                </button>
-
-                {learnOpen && (
-                    <div className="learn-grid">
-                        <LearnCard
-                            term="Equity"
-                            explanation="The portion of the property you actually own — property value minus what you still owe the bank. When you first buy, equity equals only your deposit. Over time, as you pay down the bond and the property grows in value, your equity builds. Equity is illiquid — you cannot spend it without selling or refinancing."
-                        />
-                        <LearnCard
-                            term="Opportunity Cost"
-                            explanation="The return you give up by choosing one option over another. When you buy, you lock your deposit into an illiquid asset. That deposit could instead have been invested in the JSE, earning 8–11% p.a. This simulation makes that trade-off visible."
-                        />
-                        <LearnCard
-                            term="Compounding"
-                            explanation="Earning returns on your returns. If you invest R1 000 at 10% p.a., after year 1 you have R1 100. In year 2, you earn 10% on R1 100 — not R1 000. Over 5–10 years, this snowball effect becomes significant. The renter's investment portfolio in this simulation compounds monthly."
-                        />
-                        <LearnCard
-                            term="Property Growth Rate"
-                            explanation="Johannesburg property has grown at approximately 3–6% p.a. over the last decade, depending on suburb. This simulation uses 6% as a reasonable assumption for well-located properties. Poorly located or oversupplied areas may grow at 2–3% or even decline."
-                        />
-                        <LearnCard
-                            term="Bond Amortisation"
-                            explanation="In the early years of a bond, most of your monthly payment goes toward interest — not paying off the principal. This is why buying and selling quickly is expensive. It takes roughly 7–10 years before the balance shifts and you are meaningfully paying down the loan."
-                        />
-                        <LearnCard
-                            term="Rent Inflation"
-                            explanation="Rent typically increases 6–8% per year in SA, in line with or above general inflation. This erodes the renter's cost advantage over time — what starts as R15 000/month becomes R21 000/month after 6 years at 6% annual increases. Owners with a fixed bond payment are protected from this."
-                        />
-                    </div>
+            {/* Monthly diff callout also works here */}
+            <div className={`monthly-diff-box ${monthlyDiff > 0 ? 'monthly-diff-box--buy-higher' : 'monthly-diff-box--rent-higher'}`}>
+                {monthlyDiff > 0 ? (
+                    <>
+                        <strong>Bond costs {fmtZAR(monthlyDiff)}/month more than rent.</strong>
+                        <p>The renter invests this difference each month.</p>
+                    </>
+                ) : (
+                    <>
+                        <strong>Rent costs {fmtZAR(Math.abs(monthlyDiff))}/month more than the bond.</strong>
+                        <p>The buyer has the monthly cost advantage.</p>
+                    </>
                 )}
+            </div>
+        </div>
+    </div>
+
+    {/* Narrative */}
+    <div className="result-card">
+        <h3>Studio Verdict</h3>
+        <p className="narrative-text">{buildNarrative()}</p>
+    </div>
+
+    {/* Year-by-year table */}
+    <div className="result-card">
+        <h3>Year-by-Year Breakdown</h3>
+        <div className="table-wrap">
+            <table className="breakdown-table">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Property value</th>
+                        <th>Bond balance</th>
+                        <th>Buy net worth</th>
+                        <th>Rent portfolio</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {snapshots.map(s => {
+                        const yearBuyWins = s.buyNetWorth > s.rentNetWorth
+                        return (
+                            <tr key={s.year}>
+                                <td>Year {s.year}</td>
+                                <td>{fmtZAR(s.propertyValue)}</td>
+                                <td>{fmtZAR(s.bondBalance)}</td>
+                                <td className={yearBuyWins ? 'cell--win' : ''}>{fmtZAR(s.buyNetWorth)}</td>
+                                <td className={!yearBuyWins ? 'cell--win' : ''}>{fmtZAR(s.rentNetWorth)}</td>
+                                <td>{yearBuyWins ? '🏠 Buy' : '📈 Rent'}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {/* Learn section */}
+    <div className="learn-section">
+        <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
+            📚 {learnOpen ? 'Hide' : 'Show'} concepts behind this simulation
+        </button>
+        {learnOpen && (
+            <div className="learn-grid">
+                <LearnCard term="Equity" explanation="The portion of the property you own — property value minus what you owe. Equity is illiquid — you cannot spend it without selling or refinancing." />
+                <LearnCard term="Opportunity Cost" explanation="The return you give up by choosing one option. Your deposit locked in property could instead earn 8–11% p.a. in the JSE." />
+                <LearnCard term="Compounding" explanation="Earning returns on your returns. R1 000 at 10% p.a. becomes R1 100 after year 1. Year 2 earns 10% on R1 100. The renter's portfolio compounds monthly." />
+                <LearnCard term="Property Growth Rate" explanation="Johannesburg property has grown approximately 3–6% p.a. over the last decade. This simulation uses 6% for well-located properties." />
+                <LearnCard term="Bond Amortisation" explanation="In early years, most of your payment goes toward interest — not principal. It takes 7–10 years before you meaningfully pay down the loan." />
+                <LearnCard term="Rent Inflation" explanation="Rent increases 6–8%/year in SA. R15 000/month becomes R21 000/month after 6 years. Bond payments are fixed — owners are protected from this." />
+            </div>
+        )}
+    </div>
+
             </div>
             
 

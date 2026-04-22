@@ -5,16 +5,16 @@ const UserProfileContext = createContext();
 
 //Default values to test
 const defaultProfile = {
-    grossIncome: 45000,
-    raPercent: 18,
-    rent: 15000,
-    utilities: 2000,
-    medicalAid: 3000,
+    grossIncome: 0,
+    raPercent: 8,
+    rent: 0,
+    utilities: 0,
+    medicalAid: 0,
     carPayment: 0,
     loanPayment: 0,
-    tfsaContribution: 3833,
-    bankBalance: 50000,
-    entertainment: 3000,
+    tfsaContribution: 0,
+    bankBalance: 0,
+    entertainment: 0,
 }
 
 export function UserProfileProvider({ children }) {

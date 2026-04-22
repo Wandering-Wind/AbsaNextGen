@@ -8,8 +8,6 @@ export default function Navbar(){
         <div className="navbar">
             <button className="profile-btn">👤</button>
              
-
-            
                 <div className="nav-links">
                     <Link 
                         to="/home" 

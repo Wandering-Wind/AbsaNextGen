@@ -108,7 +108,7 @@ export default function FirstPropertyPath() {
     const { profile } = useUserProfile()
 
     //Tracking the property onluy inputs
-    const [targetPrice, setTargetPrice] = useState(1500000)
+    const [targetPrice, setTargetPrice] = useState()
     const [depositPct,  setDepositPct]  = useState(10)
     const [bondTerm,    setBondTerm]    = useState(20)
     const [bondRate,    setBondRate]    = useState(SA.PRIME_RATE + SA.BOND_SPREAD)
@@ -153,54 +153,180 @@ export default function FirstPropertyPath() {
 
     return (
         <>
+        {/* ── Page header — uniform with Money Snapshot ── */}
         <div className="page-header">
-                <div>
-                    <h1 className='page-title'>First Property Path</h1>
-                    <p className='page-subtitle'>
-                        A 5-year roadmap from renter to homeowner — built around SA bond
-                        rates, SARS deductions, and Johannesburg property realities.
-                    </p>
-                </div>
-
-                <div className="track-progress">
-                    <svg viewBox="0 0 100 100" width="90" height="90">
-                        <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e7eb" strokeWidth="10"/>
-                        <circle
-                            cx="50" cy="50" r="42"
-                            fill="none" stroke="#e8002d" strokeWidth="10"
-                            strokeLinecap="round"
-                            strokeDasharray={`${(progressPct / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
-                            transform="rotate(-90 50 50)"
-                            style={{ transition: 'stroke-dasharray 0.5s ease' }}
-                        />
-                        <text x="50" y="46" textAnchor="middle" fontSize="16" fontWeight="700" fill="#1a1a2e" dominantBaseline="middle">
-                            {progressPct}%
-                        </text>
-                        <text x="50" y="63" textAnchor="middle" fontSize="8" fill="#6b7280">
-                            complete
-                        </text>
-                    </svg>
-                    <p>{completedCount} of 5 milestones done</p>
-                </div>
+            <div>
+                <span className="track-tag">🏠 Strategy Track</span>
+                <h1 className="page-title">First Property Path</h1>
+                <p className="page-subtitle">
+                    A 5-year roadmap from renter to homeowner — built around SA bond
+                    rates, SARS deductions, and Johannesburg property realities.
+                </p>
+            </div>
+            {/* Progress ring — right side of header */}
+            <div className="track-progress">
+                <svg viewBox="0 0 100 100" width="80" height="80">
+                    <circle cx="50" cy="50" r="42" fill="none"
+                        stroke="rgba(255,255,255,0.1)" strokeWidth="10"/>
+                    <circle
+                        cx="50" cy="50" r="42"
+                        fill="none"
+                        stroke={progressPct === 100 ? '#4ade80' : '#A084E8'}
+                        strokeWidth="10"
+                        strokeLinecap="round"
+                        strokeDasharray={`${(progressPct / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
+                        transform="rotate(-90 50 50)"
+                        style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                    />
+                    {/* White text — visible on dark background */}
+                    <text x="50" y="46" textAnchor="middle" fontSize="18"
+                        fontWeight="700" fill="white" dominantBaseline="middle">
+                        {progressPct}%
+                    </text>
+                    <text x="50" y="63" textAnchor="middle" fontSize="9"
+                        fill="rgba(255,255,255,0.5)">
+                        complete
+                    </text>
+                </svg>
+                <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginTop: '0.25rem' }}>
+                    {completedCount} of 5 done
+                </p>
+            </div>
         </div>
 
-        {/* Body Content */}
+        
+
+        {/* ── Split body — LEFT inputs, RIGHT milestones ── */}
         <div className="split-body">
 
+            {/* LEFT 1/4 — inputs, scrolls independently */}
             <aside className="split-left">
 
+                <h2 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--white)', borderBottom: '1px solid rgba(205,180,255,0.2)', paddingBottom: '0.5rem' }}>
+                    Your Property Goal
+                </h2>
+
+                <div className="input-field">
+                    <label>Target property price</label>
+                    <div className="input-prefix-wrap">
+                        <span className="input-prefix">R</span>
+                        <input
+                            type="number"
+                            value={targetPrice === 0 ? '' : targetPrice}
+                            placeholder="0"
+                            min={500000}
+                            step={50000}
+                            onChange={e => setTargetPrice(Number(e.target.value))}
+                        />
+                    </div>
+                    <span className="input-hint">Fourways 2-bed: ~R1.3M–R1.8M · Bryanston: ~R2M–R3M</span>
+                </div>
+
+                <div className="input-field">
+                    <label>Deposit: {depositPct}%</label>
+                    <input type="range" min={5} max={30} step={1} value={depositPct}
+                        onChange={e => setDepositPct(Number(e.target.value))} />
+                    <span className="input-hint">SA banks typically require 10% minimum</span>
+                </div>
+
+                <div className="input-field">
+                    <label>Bond term: {bondTerm} years</label>
+                    <input type="range" min={10} max={30} step={5} value={bondTerm}
+                        onChange={e => setBondTerm(Number(e.target.value))} />
+                </div>
+
+                <div className="input-field">
+                    <label>Interest rate: {(bondRate * 100).toFixed(2)}%</label>
+                    <input type="range" min={0.08} max={0.15} step={0.0025} value={bondRate}
+                        onChange={e => setBondRate(Number(e.target.value))} />
+                    <span className="input-hint">SA prime is 10.25%. First-time buyers: prime +0.5% to +1.5%</span>
+                </div>
+
+                <div className="calc-summary">
+                    <div className="calc-row">
+                        <span>Deposit needed</span>
+                        <strong>{fmtZAR(targetDeposit)}</strong>
+                    </div>
+                    <div className="calc-row">
+                        <span>Bond amount</span>
+                        <strong>{fmtZAR(bondPrincipal)}</strong>
+                    </div>
+                    <div className="calc-row">
+                        <span>Monthly bond payment</span>
+                        <strong>{fmtZAR(bondPayment)}</strong>
+                    </div>
+                    <div className="calc-row">
+                        <span>% of take-home</span>
+                        <strong className={bondPct > 30 ? 'text-warn' : 'text-ok'}>{bondPct}%</strong>
+                    </div>
+                    {monthsToDeposit && (
+                        <div className="calc-row">
+                            <span>Est. months to deposit</span>
+                            <strong>~{monthsToDeposit}</strong>
+                        </div>
+                    )}
+                </div>
+
+                <div className="recommendations">
+                    <h3 style={{ fontSize: 'var(--text-xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)' }}>
+                        Personalised Recommendations
+                    </h3>
+                    <p className="recommendations-sub">Based on your Money Snapshot inputs</p>
+
+                    <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
+                        {canAfford
+                            ? `✅ Bond payment is ${bondPct}% of take-home — within the 30% rule.`
+                            : `⚠️ Bond payment is ${bondPct}% of take-home — above 30%. Consider a lower price or longer term.`
+                        }
+                    </div>
+                    {dti > 36 && (
+                        <div className="recommendation recommendation--warn">
+                            ⚠️ Your DTI is {dti}% — above 36%. Pay down debt before applying.
+                        </div>
+                    )}
+                    {emergMonths < 1 && (
+                        <div className="recommendation recommendation--danger">
+                            🚨 Less than 1 month emergency savings. Complete Year 1 first.
+                        </div>
+                    )}
+                    {surplus <= 0 && (
+                        <div className="recommendation recommendation--danger">
+                            🚨 Expenses exceed income by {fmtZAR(Math.abs(surplus))}. Fix surplus first.
+                        </div>
+                    )}
+                    {surplus > 0 && surplus < 3000 && (
+                        <div className="recommendation recommendation--warn">
+                            ⚠️ Surplus of {fmtZAR(surplus)} is thin. This track will take longer than 5 years.
+                        </div>
+                    )}
+                    {surplus > 5000 && dti <= 36 && emergMonths >= 1 && canAfford && (
+                        <div className="recommendation recommendation--ok">
+                            ✅ Your profile looks solid. {fmtZAR(surplus)}/month surplus gives real momentum.
+                        </div>
+                    )}
+                </div>
+
+            </aside>
+
+            {/* RIGHT 3/4 — milestones, scrolls independently */}
+            <div className="split-right">
+
+                {/* ── Philosophy intro — full width, before the split ── */}
+        <div style={{ padding: '0 1.5rem', flexShrink: 0 }}>
             <div className="philosophy-banner">
-                {/* <div className="philosophy-col"> */}
-                    <h3>Who this track is for</h3>
-                    <p>
+                <div>
+                    <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--p-100)', marginBottom: '0.5rem' }}>
+                        Who this track is for
+                    </h3>
+                    <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.65 }}>
                         You are renting for R15 000–R25 000/month and feel the money
-                        disappearing. You want to own property but are not sure when
-                        you will be ready. This track prioritises aggressive savings,
-                        RA top-ups for tax breaks, and low-volatility JSE investing
-                        while you build your deposit.
+                        disappearing. You want to own property but are not sure when you
+                        will be ready. This track prioritises aggressive savings, RA
+                        top-ups for tax breaks, and low-volatility JSE investing while
+                        you build your deposit.
                     </p>
-                {/* </div> */}
-                {/* <div className="philosophy-col"> */}
+                </div>
+                <div>
                     <div className="tradeoff-box tradeoff-box--avoid">
                         <strong>❌ Avoid during this track</strong>
                         <p>Luxury car finance · aggressive offshore speculation · lifestyle creep · new credit applications</p>
@@ -209,256 +335,69 @@ export default function FirstPropertyPath() {
                         <strong>✅ Prioritise</strong>
                         <p>Emergency fund first · then deposit savings · then bond pre-approval · keep RA active</p>
                     </div>
-                {/* </div> */}
-            </div>
-
-            <div className="track-body"> </div>
-
-                <aside className="track-inputs">
-                    <h2>Your Property Goal</h2>
-
-                    <div className="input-field">
-                        <label>Target property price</label>
-                        <div className="input-prefix-wrap">
-                            <span className="input-prefix">R</span>
-                            <input
-                                type="number"
-                                value={targetPrice}
-                                min={500000}
-                                step={50000}
-                                onChange={e => setTargetPrice(Number(e.target.value))}
-                            />
-                        </div>
-                        <span className="input-hint">
-                            Fourways 2-bed: ~R1.3M–R1.8M · Bryanston: ~R2M–R3M
-                        </span>
-                    </div>
-
-                    <div className="input-field">
-                        <label>Deposit: {depositPct}%</label>
-                        <input
-                            type="range"
-                            min={5} max={30} step={1}
-                            value={depositPct}
-                            onChange={e => setDepositPct(Number(e.target.value))}
-                        />
-                        <span className="input-hint">
-                            SA banks typically require 10% minimum
-                        </span>
-                    </div>
-
-                    <div className="input-field">
-                        <label>Bond term: {bondTerm} years</label>
-                        <input
-                            type="range"
-                            min={10} max={30} step={5}
-                            value={bondTerm}
-                            onChange={e => setBondTerm(Number(e.target.value))}
-                        />
-                    </div>
-
-                    <div className="input-field">
-                        <label>
-                            Interest rate: {(bondRate * 100).toFixed(2)}%
-                        </label>
-                        <input
-                            type="range"
-                            min={0.08} max={0.15} step={0.0025}
-                            value={bondRate}
-                            onChange={e => setBondRate(Number(e.target.value))}
-                        />
-                        <span className="input-hint">
-                            SA prime is 10.25%. First-time buyers typically get prime + 0.5% to +1.5%
-                        </span>
-                    </div>
-
-                    {/* The summary part. Need to move for better placement*/}
-                    <div className="calc-summary">
-                        <div className="calc-row">
-                            <span>Deposit needed</span>
-                            <strong>{fmtZAR(targetDeposit)}</strong>
-                        </div>
-                        <div className="calc-row">
-                            <span>Bond amount</span>
-                            <strong>{fmtZAR(bondPrincipal)}</strong>
-                        </div>
-                        <div className="calc-row">
-                            <span>Monthly bond payment</span>
-                            <strong>{fmtZAR(bondPayment)}</strong>
-                        </div>
-                        <div className="calc-row">
-                            <span>% of take-home</span>
-                            <strong className={bondPct > 30 ? 'text-warn' : 'text-ok'}>
-                                {bondPct}%
-                            </strong>
-                        </div>
-                        {monthsToDeposit && (
-                            <div className="calc-row">
-                                <span>Estimated months to deposit</span>
-                                <strong>~{monthsToDeposit} months</strong>
-                            </div>
-                        )}
-                    </div>
-
-                    {/*Specific recommendations based on the user profile specifics*/}
-                    <div className="recommendations">
-                        <h3>Personalised Recommendations</h3>
-                        <p className="recommendations-sub">
-                            Based on your Money Snapshot inputs
-                        </p>
-
-                        <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
-                            {canAfford
-                                ? `✅ Bond payment is ${bondPct}% of take-home — within the 30% affordability rule.`
-                                : `⚠️ Bond payment is ${bondPct}% of take-home — above the 30% rule. Consider a lower price or longer term.`
-                            }
-                        </div>
-
-                        {/*DTI warning - Make this different colour*/}
-                        {dti > 36 && (
-                            <div className="recommendation recommendation--warn">
-                                ⚠️ Your debt-to-income is {dti}% — above the 36% threshold. Pay down existing debt before applying for a bond or banks will likely decline you.
-                            </div>
-                        )}
-
-                        {/*Emergency fund alert*/}
-                        {emergMonths < 1 && (
-                            <div className="recommendation recommendation--danger">
-                                🚨 You have less than 1 month emergency savings. Complete Year 1 (emergency fund) before touching the deposit savings phase.
-                            </div>
-                        )}
-
-                        {/*Deficit if the user has*/}
-                        {surplus <= 0 && (
-                            <div className="recommendation recommendation--danger">
-                                🚨 Your expenses exceed your income by {fmtZAR(Math.abs(surplus))}. You cannot save for a deposit until your surplus is positive. Return to Money Snapshot and reduce fixed costs.
-                            </div>
-                        )}
-
-                        {/*Low surplus but positive, still okay vibes*/}
-                        {surplus > 0 && surplus < 3000 && (
-                            <div className="recommendation recommendation--warn">
-                                ⚠️ Your monthly surplus of {fmtZAR(surplus)} is very thin. At 50% toward deposit, you are saving {fmtZAR(surplus * 0.5)}/month — this track will take much longer than 5 years.
-                            </div>
-                        )}
-
-                        {/*On track - NEED TO MAKE READABLE*/}
-                        {surplus > 5000 && dti <= 36 && emergMonths >= 1 && canAfford && (
-                            <div className="recommendation recommendation--ok">
-                                ✅ Your profile looks solid for this track. Surplus of {fmtZAR(surplus)}/month gives you real momentum. Stay disciplined.
-                            </div>
-                        )}
-                    </div>
-                </aside>
-                </aside>
-
-
-            <diV className="split-right"> 
-                <div className="milestones">
-                    <h2>5-Year Milestone Timeline</h2>
-                    <p className="milestones-hint">
-                        Click the status badge on each milestone to track your progress.
-                    </p>
-
-                    {milestones.map((m, idx) => {
-                        const status = statuses[idx]
-                        const statusColour = {
-                            'not-started': '#9ca3af',
-                            'in-progress': '#f59e0b',
-                            'done':        '#22c55e',
-                        }[status]
-
-                        return (
-                            <div
-                                key={idx}
-                                className={`milestone milestone--${status}`}
-                            >
-                                <div className="milestone-header">
-                                    <div className="milestone-year-wrap">
-                                        <div
-                                            className="milestone-dot"
-                                            style={{ background: statusColour }}
-                                        />
-                                        <span className="milestone-year">Year {m.year}</span>
-                                    </div>
-
-                                    <h3 className="milestone-title">{m.title}</h3>
-
-                                    {/*Clickable status badge - double check icons*/}
-                                    <button
-                                        className="milestone-status-btn"
-                                        style={{
-                                            borderColor: statusColour,
-                                            color: statusColour,
-                                        }}
-                                        onClick={() => cycleStatus(idx)}
-                                        title="Click to update status"
-                                    >
-                                        {STATUS_LABELS[status]}
-                                    </button>
-                                </div>
-
-                                {/*Target*/}
-                                <div className="milestone-target">
-                                    🎯 {m.target}
-                                </div>
-
-                                <p className="milestone-description">{m.description}</p>
-
-                                <ul className="milestone-actions">
-                                    {m.actions.map((action, i) => (
-                                        <li key={i}>{action}</li>
-                                    ))}
-                                </ul>
-
-                                <div className="milestone-nudge">
-                                    💡 {m.nudge}
-                                </div>
-                            </div>
-                        )
-                    })}
                 </div>
-            </diV>
-
-            {/*Learn SECTION*/}
-            <div className="learn-section">
-                <button
-                    className="learn-toggle"
-                    onClick={() => setLearnOpen(prev => !prev)}
-                >
-                    📚 {learnOpen ? 'Hide' : 'Show'} key concepts for this track
-                </button>
-
-                {learnOpen && (
-                    <div className="learn-grid">
-                        <LearnCard
-                            term="Bond (Home Loan)"
-                            explanation="A loan from a bank secured against your property. In SA, bonds are typically at prime rate + a margin (0.5%–2% depending on your credit risk). The bank effectively owns the property until the bond is fully paid. Missing payments can lead to repossession."
-                        />
-                        <LearnCard
-                            term="Transfer Duty"
-                            explanation="A government tax paid when buying property. No duty on properties under R1.1M. Then 3% on the R1.1M–R1.375M band, scaling up from there. On a R1.5M home, budget approximately R30 000 in transfer duty — on top of your deposit."
-                        />
-                        <LearnCard
-                            term="Bond Originator"
-                            explanation="A free service (like ooba or BetterBond) that submits your bond application to multiple banks simultaneously. They negotiate on your behalf and often secure better rates than applying directly to your own bank. Use one — it costs you nothing."
-                        />
-                        <LearnCard
-                            term="Access Bond"
-                            explanation="Most SA home loans are access bonds- you can pay in extra money and redraw it later. Paying extra reduces your outstanding balance and interest, while still giving you access to those funds in an emergency. Often better than keeping money in a savings account if the interest rates are similar."
-                        />
-                        <LearnCard
-                            term="Sectional Title vs Freehold"
-                            explanation="Sectional title (flat or townhouse) includes monthly levies for building insurance and common areas - budget R1 500–R5 000/month extra. Freehold (standalone house) means you own the land and are responsible for all your own maintenance costs."
-                        />
-                        <LearnCard
-                            term="Debt-to-Income for Bond Approval"
-                            explanation="South African banks typically require your total monthly debt payments to be below 36% of gross income before they will approve a bond. This includes your future bond payment in the calculation. Get your DTI down before applying."
-                        />
-                    </div>
-                )}
             </div>
+        </div>
+
+                <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--white)' }}>
+                    5-Year Milestone Timeline
+                </h2>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.55)', marginTop: '-0.5rem' }}>
+                    Click any status badge to track your progress. Each milestone is personalised to your income and goals.
+                </p>
+
+                {milestones.map((m, idx) => {
+                    const status = statuses[idx]
+                    const statusColour = {
+                        'not-started': '#9ca3af',
+                        'in-progress': '#f59e0b',
+                        'done':        '#22c55e',
+                    }[status]
+
+                    return (
+                        <div key={idx} className={`milestone milestone--${status}`}>
+                            <div className="milestone-header">
+                                <div className="milestone-year-wrap">
+                                    <div className="milestone-dot" style={{ background: statusColour }} />
+                                    <span className="milestone-year">Year {m.year}</span>
+                                </div>
+                                <h3 className="milestone-title">{m.title}</h3>
+                                <button
+                                    className="milestone-status-btn"
+                                    style={{ borderColor: statusColour, color: statusColour }}
+                                    onClick={() => cycleStatus(idx)}
+                                >
+                                    {STATUS_LABELS[status]}
+                                </button>
+                            </div>
+                            <div className="milestone-target">🎯 {m.target}</div>
+                            <p className="milestone-description">{m.description}</p>
+                            <ul className="milestone-actions">
+                                {m.actions.map((action, i) => <li key={i}>{action}</li>)}
+                            </ul>
+                            <div className="milestone-nudge">💡 {m.nudge}</div>
+                        </div>
+                    )
+                })}
+
+                <div className="learn-section">
+                    <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
+                        📚 {learnOpen ? 'Hide' : 'Show'} key property concepts
+                    </button>
+                    {learnOpen && (
+                        <div className="learn-grid">
+                            <LearnCard term="Bond (Home Loan)" explanation="A loan from a bank secured against your property. SA bonds are typically at prime rate + a margin. Missing payments can lead to repossession." />
+                            <LearnCard term="Transfer Duty" explanation="A government tax on property purchases. No duty under R1.1M. Then 3% on R1.1M–R1.375M. On a R1.5M home, budget ~R30 000 in transfer duty." />
+                            <LearnCard term="Bond Originator" explanation="A free service (ooba, BetterBond) that submits your application to multiple banks simultaneously. Costs you nothing." />
+                            <LearnCard term="Access Bond" explanation="Most SA bonds are access bonds — pay in extra and redraw later. Reduces balance and interest while keeping funds accessible." />
+                            <LearnCard term="DTI for Bond Approval" explanation="Banks require total debt payments below 36% of gross income. This includes your future bond payment. Get DTI down before applying." />
+                            <LearnCard term="Transfer Costs" explanation="Beyond transfer duty: attorney fees, bond registration, deeds office levies. Budget 8–10% of property price total." />
+                        </div>
+                    )}
+                </div>
+
             </div>
+        </div>
         
         </>
     )

@@ -35,21 +35,23 @@
   line-height: 1.6;
 }
 
-/*Philosophy banner 
-.philosophy-banner {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--r-md);
-  padding: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+/* Studio top row — chart left, verdict + context right */
+.studio-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
 }
-*/
-/* Override philosophy-banner to work as intro section */
+
+.studio-chart-card {
+    /* chart card naturally fills left half */
+}
+
+.studio-side-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
 .philosophy-banner {
   display: grid;
   grid-template-columns: 1fr 1fr;

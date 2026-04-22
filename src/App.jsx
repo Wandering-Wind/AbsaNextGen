@@ -27,10 +27,10 @@ function App() {
                 <Route path='/dashboard' element={<MoneySnapshot/>}/> 
                 <Route path='/tracks/property' element={<FirstPropertyPath/>}/>
                 <Route path='/studio/rent-vs-buy' element={<PropertyVsRent/>}/>
-                <Route path='/tracks/global-investing' element={<div>Global Investing - Coming Soon</div>}/>
-                <Route path='/tracks/travel' element={<div>Travel - Coming Soon</div>}/>
-                <Route path='/studio/car-vs-invest' element={<div>Car vs Invest - Coming Soon</div>}/>
-                <Route path='/studio/offshore' element={<div>Offshore Investing - Coming Soon</div>}/>
+                <Route path='/tracks/global-investing' element={<div> <h2 style={{textAlign: 'center'}}>Global Investing - Coming Soon</h2></div>}/>
+                <Route path='/tracks/travel' element={<div><h2 style={{textAlign: 'center'}}>Travel - Coming Soon</h2></div>}/>
+                <Route path='/studio/car-vs-invest' element={<div><h2 style={{textAlign: 'center'}}>Car vs Invest - Coming Soon</h2></div>}/>
+                <Route path='/studio/offshore' element={<div> <h2 style={{textAlign: 'center'}}>Offshore Investing - Coming Soon</h2></div>}/>
 
               </Route>
             </Routes>

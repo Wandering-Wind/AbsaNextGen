@@ -262,7 +262,9 @@ function InputField({ label, value, onChange, tooltip, min = 0, max }) {
                 <span className="input-prefix">R</span>
                 <input
                     type="number"
-                    value={value}
+                    // Show empty string when value is 0 so user doesn't get "01234"
+                    value={value === 0 ? '' : value}
+                    placeholder="0"
                     min={min}
                     max={max}
                     onChange={e => onChange(e.target.value)}
