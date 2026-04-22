@@ -52,34 +52,3 @@ export default function HomePage() {
         </>
     )
 }
-/*export default function HomePage(){
-    return(
-        <div>
-            <h1>Welcome to AbsaNextGen</h1>
-
-            <div className="bento-grid">
-
-                <div className="card">
-                    <h2>Money Snapshot</h2>
-                    <p>View your financial health and net surplus</p>
-                    <Link to="/dashboard">Go to Money Snapshot</Link>
-                </div>
-
-                <div className="card">
-                    <h2>Strategy Tracks</h2>
-                    <p>Follow a structured path</p>
-                    <Link to="/tracks/property">Start Track</Link>
-                </div>
-
-                <div className="card">
-                    <h2>Money Studio</h2>
-                    <p>Simulate financial decisions</p>
-                    <Link to="/studio/rent-vs-buy">Open Studio</Link>
-                </div>
-
-            </div>
-        </div>
-    )
-} 
-
-*/
