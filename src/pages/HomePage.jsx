@@ -58,7 +58,6 @@ export default function HomePage() {
                     </div>
                 )}
 
-                {/* ── Feature cards ── */}
                 <div className="home-feature-grid">
 
                     <Link to="/dashboard" className="home-feature-card">
@@ -132,7 +131,6 @@ export default function HomePage() {
 
                 </div>
 
-                {/* ── SA parameters strip ── */}
                 <div className="home-sa-strip">
                     <span className="home-sa-strip-label">
                         SA parameters used across all features

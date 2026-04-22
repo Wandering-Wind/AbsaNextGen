@@ -1,7 +1,3 @@
-// src/components/charts/WaterfallBar.jsx
-// Horizontal stacked bar showing gross → RA → PAYE → expenses → surplus
-// Props: gross, raAmount, payeAmount, expenses, surplus (all numbers)
-
 import { fmtZAR } from '../financialCalcs'
 
 export default function WaterfallBar({ gross, raAmount, payeAmount, expenses, surplus }) {
@@ -14,7 +10,6 @@ export default function WaterfallBar({ gross, raAmount, payeAmount, expenses, su
         { label: 'Surplus',  value: Math.max(0, surplus), colour: '#4ade80' },
     ]
 
-    // If in deficit, expenses segment extends beyond gross — cap it visually
     const total = segments.reduce((s, seg) => s + seg.value, 0)
     const scale = gross > 0 ? gross : total
 
@@ -24,7 +19,7 @@ export default function WaterfallBar({ gross, raAmount, payeAmount, expenses, su
                 Where does {fmtZAR(gross)}/month go?
             </p>
 
-            {/* Stacked bar */}
+            {/* Stacked bar thing */}
             <div className="waterfall-bar">
                 {segments.map((seg, i) => {
                     const widthPct = Math.min(100, (seg.value / scale) * 100)
@@ -43,7 +38,6 @@ export default function WaterfallBar({ gross, raAmount, payeAmount, expenses, su
                 })}
             </div>
 
-            {/* Legend beneath the bar */}
             <div className="waterfall-legend">
                 {segments.map((seg, i) => (
                     <div key={i} className="waterfall-legend-item">

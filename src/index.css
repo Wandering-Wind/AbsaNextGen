@@ -6,15 +6,13 @@
   --p-300: #7C5CBF;   /* deep purple   — pressed states */
 
   /* Background gradient stops */
-  --bg-from: #1a0533;   /* very deep purple-black */
+  --bg-from: #1a0533;   /* purple-black */
   --bg-mid:  #2d1065;   /* rich indigo */
   --bg-to:   #0d1b4b;   /* deep navy */
 
-  /* Secondary tints */
   --lavender: #E6DAFF;
   --frost:    #DFF4FF;
 
-  /* Neutrals */
   --off-white:  #F8F9FF;
   --dark-text:  #2E2E3A;
   --light-grey: #E0E3EB;
@@ -26,7 +24,6 @@
   --glass-border:    rgba(255, 255, 255, 0.18);
   --glass-blur:      blur(16px);
 
-  /* Add to :root in index.css */
 --glass-nav:          rgba(255, 255, 255, 0.10);
 --glass-page:         rgba(255, 255, 255, 0.07);
 --glass-card:         rgba(255, 255, 255, 0.08);
@@ -51,16 +48,13 @@
   0 4px 20px rgba(0,0,0,0.22),
   inset 0 1px 0 rgba(255,255,255,0.07);
 
-  /* Card surface (lighter glass for content cards) */
   --card-bg:     rgba(255, 255, 255, 0.10);
   --card-border: rgba(255, 255, 255, 0.15);
 
-  /* Semantic colours */
   --success: #4ade80;
   --warning: #fbbf24;
   --danger:  #f87171;
 
-  /* Shadows */
   --shadow-glass:
     0 8px 32px rgba(0, 0, 0, 0.25),
     0 2px 8px rgba(0, 0, 0, 0.15),
@@ -72,12 +66,11 @@
     0 0 20px rgba(160, 132, 232, 0.4),
     0 0 60px rgba(160, 132, 232, 0.15);
 
-  /* Neu inset (for inputs on light cards) */
+  /* for inputs on light cards */
   --neu-inset:
     inset 2px 2px 6px rgba(0, 0, 0, 0.12),
     inset -2px -2px 6px rgba(255, 255, 255, 0.6);
 
-  /* Radii */
   --r-xs:   6px;
   --r-sm:   10px;
   --r-md:   16px;
@@ -85,11 +78,9 @@
   --r-xl:   32px;
   --r-pill: 999px;
 
-  /* Typography */
   --font-ui:      'DM Sans', system-ui, sans-serif;
   --font-display: 'DM Serif Display', Georgia, serif;
 
-  /* Font sizes */
   --text-xs:  0.9rem;
   --text-sm:  1rem;
   --text-md:  1.3rem;
@@ -124,8 +115,6 @@ button { font-family: var(--font-ui); cursor: pointer; }
 input, select, textarea { font-family: var(--font-ui); }
 h1, h2, h3, h4 { line-height: 1.2; }
 
-/*Global gradient background - change colour for next submission*/
-
 #root {
   min-height: 100vh;
   background:
@@ -136,7 +125,6 @@ h1, h2, h3, h4 { line-height: 1.2; }
   position: relative;
 }
 
-/* Floating blob orbs*/
 #root::before,
 #root::after {
   content: '';
@@ -174,7 +162,6 @@ h1, h2, h3, h4 { line-height: 1.2; }
   to   { transform: translate(-50px, -30px) scale(1.08); }
 }
 
-/*glass card - if we change the colour, make sure to fix the glass card stuff*/
 .glass {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
@@ -184,7 +171,6 @@ h1, h2, h3, h4 { line-height: 1.2; }
   box-shadow: var(--shadow-glass);
 }
 
-/* Stronger glass for panels for when we need more contrast */
 .glass-strong {
   background: var(--glass-bg-strong);
   backdrop-filter: var(--glass-blur);

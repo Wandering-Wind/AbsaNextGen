@@ -11,7 +11,6 @@ import {
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
 
-//Bond repaying formula
 function calcBondRepayment(principal, annualRate, termYears) {
     const r = annualRate / 12
     const n = termYears * 12
@@ -119,7 +118,7 @@ export default function FirstPropertyPath() {
         Array(5).fill('not-started')
     )
 
-    //Learn section terms. Do I need to make it's own page or si this fine? Ask Lindo consultation
+    //Learn section terms. Do I need to make it's own page or si this fine?
     const [learnOpen, setLearnOpen] = useState(false)
 
     const takeHome      = calcTakeHome(profile.grossIncome, profile.raPercent)
@@ -401,7 +400,6 @@ export default function FirstPropertyPath() {
     )
 }
 
-//LearnCard sub-component
 function LearnCard({ term, explanation }) {
     const [open, setOpen] = useState(false)
     return (

@@ -12,7 +12,7 @@ function calcBondRepayment(principal, annualRate, termYears) {
 }
 
 //Main section of simulation
-//Returns array of yearly snapshots for both paths to compare
+//Returns the array things of yearly snapshots for both paths to compare
 function runSimulation({
     propertyPrice,
     depositPct,
@@ -28,7 +28,6 @@ function runSimulation({
     const monthlyBond   = calcBondRepayment(bondPrincipal, bondRate, bondTerm)
     const monthlyBondRate = bondRate / 12
 
-    //Starting positions
     let propertyValue   = propertyPrice
     let bondBalance     = bondPrincipal
     let rentPortfolio   = 0          
@@ -38,30 +37,25 @@ function runSimulation({
     const snapshots = []
 
     for (let year = 1; year <= years; year++) {
-        //BUY PATH (Show 12 months )
         for (let month = 0; month < 12; month++) {
             const interestThisMonth = bondBalance * monthlyBondRate
             const principalThisMonth = monthlyBond - interestThisMonth
             bondBalance = Math.max(0, bondBalance - principalThisMonth)
         }
-        //Property growing to see if it's worth it
+
         propertyValue = propertyValue * (1 + SA.PROPERTY_GROWTH)
         const buyNetWorth = propertyValue - bondBalance
 
-        //RENT PATH (simulate 12 months as well to compare)
-        //The renter can invest the difference between bond payment and rent
         const monthlyDifference = monthlyBond - currentRent
         const monthlyReturn     = investmentReturn / 12
 
         for (let month = 0; month < 12; month++) { 
             rentPortfolio = rentPortfolio * (1 + monthlyReturn)
-            //If bond > rent, renter invests the difference
             if (monthlyDifference > 0) {
                 rentPortfolio += monthlyDifference
             }
-            //If rent > bond, renter is paying more, no investment possible from difference
         }
-        //Rent increases annually so keep that in mind
+
         currentRent = currentRent * (1 + rentIncreaseRate)
 
         const rentNetWorth = rentPortfolio
@@ -81,7 +75,6 @@ function runSimulation({
     return { snapshots, monthlyBond: Math.round(monthlyBond), deposit }
 }
 
-//SVG line chart
 function LineChart({ snapshots }) {
     if (!snapshots.length) return null
 
@@ -109,7 +102,7 @@ function LineChart({ snapshots }) {
     const buyPoints  = snapshots.map(s => `${xPos(s.year)},${yPos(s.buyNetWorth)}`).join(' ')
     const rentPoints = snapshots.map(s => `${xPos(s.year)},${yPos(s.rentNetWorth)}`).join(' ')
 
-    //Y-axis labels, 5 evenly spaced
+    //Y-axis labels (5 evenly spaced)
     const yLabels = Array.from({ length: 5 }, (_, i) => {
         const val = minVal + (range * i) / 4
         return { val, y: yPos(val) }
@@ -142,7 +135,7 @@ function LineChart({ snapshots }) {
                     </g>
                 ))}
 
-                {/*X-axis labels*/}
+                {/*X-axis labels, does the spaces for these graphs work well?*/}
                 {snapshots.map(s => (
                     <text
                         key={s.year}
@@ -165,7 +158,6 @@ function LineChart({ snapshots }) {
                     />
                 )}
 
-                {/*Buy line*/}
                 <polyline
                     points={buyPoints}
                     fill="none"
@@ -174,7 +166,6 @@ function LineChart({ snapshots }) {
                     strokeLinejoin="round"
                 />
 
-                {/*Rent/invest line*/}
                 <polyline
                     points={rentPoints}
                     fill="none"
@@ -184,7 +175,6 @@ function LineChart({ snapshots }) {
                     strokeDasharray="6 3"
                 />
 
-                {/*Dots on buy line*/}
                 {snapshots.map(s => (
                     <circle
                         key={s.year}
@@ -193,7 +183,6 @@ function LineChart({ snapshots }) {
                     />
                 ))}
 
-                {/*Dots on rent line*/}
                 {snapshots.map(s => (
                     <circle
                         key={s.year}
@@ -203,7 +192,6 @@ function LineChart({ snapshots }) {
                 ))}
             </svg>
 
-            {/*Legend*/}
             <div className="chart-legend">
                 <div className="legend-item">
                     <span className="legend-dot" style={{ background: '#e8002d' }} />
@@ -218,12 +206,10 @@ function LineChart({ snapshots }) {
     )
 }
 
-//Main section 
 export default function PropertyVsRent() {
     const { profile } = useUserProfile()
     const [learnOpen, setLearnOpen] = useState(false)
 
-    //Inputs
     const [propertyPrice,    setPropertyPrice]    = useState(1500000)
     const [depositPct,       setDepositPct]       = useState(10)
     const [bondRate,         setBondRate]         = useState(SA.PRIME_RATE + SA.BOND_SPREAD)
@@ -233,7 +219,7 @@ export default function PropertyVsRent() {
     const [investmentReturn, setInvestmentReturn] = useState(0.08)   // 8% p.a.
     const [years,            setYears]            = useState(5)
 
-    //Run simulation
+    //Run section
     const { snapshots, monthlyBond, deposit } = useMemo(() => runSimulation({
         propertyPrice,
         depositPct,
@@ -246,7 +232,6 @@ export default function PropertyVsRent() {
     }), [propertyPrice, depositPct, bondRate, bondTerm,
          monthlyRent, rentIncreaseRate, investmentReturn, years])
 
-    //Verdict, what should the user do
     const finalYear     = snapshots[snapshots.length - 1]
     const buyWins       = finalYear?.buyNetWorth > finalYear?.rentNetWorth
     const difference    = Math.abs((finalYear?.buyNetWorth ?? 0) - (finalYear?.rentNetWorth ?? 0))
@@ -433,7 +418,7 @@ export default function PropertyVsRent() {
         </div>
 
         <div className="studio-side-col">
-            {/* Verdict badge */}
+            {/* Verdict badge*/}
             <div className={`verdict-badge ${buyWins ? 'verdict-badge--buy' : 'verdict-badge--rent'}`}>
                 <span className="verdict-icon">{buyWins ? <Icon name="buy-wins"  size={32} glow /> : <Icon name="rent-wins" size={32} glow />}</span>
                 <div>
@@ -474,7 +459,6 @@ export default function PropertyVsRent() {
         <p className="narrative-text">{buildNarrative()}</p>
     </div>
 
-    {/* Year-by-year table */}
     <div className="result-card">
         <h3>Year-by-Year Breakdown</h3>
         <div className="table-wrap">
@@ -508,7 +492,6 @@ export default function PropertyVsRent() {
         </div>
     </div>
 
-    {/* Learn section */}
     <div className="learn-section">
         <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
             <Icon name="learn" size={19} glow />

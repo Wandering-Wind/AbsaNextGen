@@ -1,5 +1,3 @@
-// src/components/Icon.jsx
-// Central icon registry — swap emojis for Lucide SVG icons
 import {
     Wallet, Home, FlaskConical, BarChart3, CreditCard,
     Target, ShieldCheck, TrendingUp, BookOpen, ChevronDown,
@@ -9,30 +7,26 @@ import {
 } from 'lucide-react'
 
 const ICON_MAP = {
-    // Section headers — MoneySnapshot left panel
     income:         Wallet,
     'fixed-costs':  Home,
     debt:           CreditCard,
     savings:        Target,
 
-    // SA Insight labels
+    //SA Insight labels
     medical:        Heart,
     dti:            Scale,
     tfsa:           TrendingUp,
     emergency:      ShieldCheck,
 
-    // Feature cards — HomePage
+    //Feature cards — HomePage
     snapshot:       BarChart3,
     tracks:         Map,
     studio:         FlaskConical,
 
-    // Learn section
     learn:          BookOpen,
 
-    // Milestone nudge
+    //Milestone
     nudge:          Lightbulb,
-
-    // Milestone target
     target:         Target,
 
     // Status / alerts
@@ -41,27 +35,21 @@ const ICON_MAP = {
     danger:         AlertCircle,
     alarm:          Siren,
 
-    // Verdict icons
+    //Verdict
     'buy-wins':     Home,
     'rent-wins':    TrendingUp,
 
-    // Strategy track tag
-    'track-tag':    Home,
-    'studio-tag':   FlaskConical,
-
-    // Year marker
     year:           Calendar,
 
-    // Property studio winner column
+    //Winner column
     'win-buy':      Home,
     'win-rent':     TrendingUp,
 
-    // Savings & bank
+    //Savings & bank
     bank:           Landmark,
     piggy:          PiggyBank,
 }
 
-// Glow colour per icon context
 const GLOW_MAP = {
     ok:       'var(--success)',
     warn:     'var(--warning)',
@@ -81,16 +69,6 @@ const GLOW_MAP = {
     'rent-wins':'var(--success)',
 }
 
-/**
- * <Icon name="income" size={16} glow />
- *
- * Props:
- *   name    — key from ICON_MAP above
- *   size    — px number, default 16
- *   glow    — boolean, applies purple drop-shadow
- *   colour  — override fill/stroke colour
- *   className — extra classes
- */
 export default function Icon({ name, size = 16, glow = false, colour, className = '' }) {
     const Component = ICON_MAP[name]
     if (!Component) return null

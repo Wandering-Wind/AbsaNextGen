@@ -250,8 +250,6 @@ export default function MoneySnapshot() {
     )
 }
 
-// Sub-components
-
 function InputField({ label, value, onChange, tooltip, min = 0, max }) {
     return (
         <div className="input-field">
@@ -263,7 +261,6 @@ function InputField({ label, value, onChange, tooltip, min = 0, max }) {
                 <span className="input-prefix">R</span>
                 <input
                     type="number"
-                    // Show empty string when value is 0 so user doesn't get "01234"
                     value={value === 0 ? '' : value}
                     placeholder="0"
                     min={min}
@@ -321,49 +318,3 @@ function LearnCard({ term, explanation }) {
         </div>
     )
 }
-
-/*
-const status  = calcSurplusStatus(profile)   // 'surplus' | 'breakeven' | 'deficit'
-const message = calcSurplusMessage(profile)
-
-// Conditional rendering based on status
-{status === 'deficit' && (
-    <div className="alert alert--danger">
-         {message}
-    </div>
-)}
-
-{status === 'breakeven' && (
-    <div className="alert alert--warning">
-         {message}
-    </div>
-)}
-
-{status === 'surplus' && (
-    <div className="alert alert--success">
-         {message}
-    </div>
-)}
-*/
-
-/*
-"The page has two sides. The left side is a form - when the user types 
-into any field, handleChange converts the string to a number and calls 
-updateProfile from UserProfileContext. 
-That updates the shared profile state."
-"The right side never waits for a button press. Because it reads 
-directly from the context, every time profile changes React re-renders 
-he component and all the calc functions run again with the new values - 
-so the health score, surplus, and all tiles update instantly."
-"The deficit logic works through calcSurplusStatus. That function looks 
-at the result of calcNetSurplus - if it's below negative R500, it 
-returns 'deficit'. The component uses that string to conditionally 
-apply a CSS class and show a warning message. So if you enter a salary 
-of R20 000 but rent of R25 000, the page immediately shows a red deficit 
-alert."
-"The health score adds three sub-scores - savings rate, debt ratio, 
-and emergency fund coverage - each scored 0 to 10, then maps the total
- to a percentage. The marker can test edge cases: zero income shows 
- everything at zero, very high debt pushes DTI above 50% and triggers 
- the warning, low bank balance drops the emergency score."
-*/

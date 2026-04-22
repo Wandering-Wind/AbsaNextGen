@@ -47,7 +47,3 @@ export default function Navbar(){
         </div>
     )
 }
-
-/*
-Core idea is to use current URL to decide what is active
-*/

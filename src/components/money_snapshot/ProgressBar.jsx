@@ -1,14 +1,10 @@
-// src/components/charts/ProgressBar.jsx
-// Reusable progress bar — used for TFSA and emergency fund
-// Props: value (number 0–100), colour, markers (optional array of { pct, label })
-
 export default function ProgressBar({ value, colour = '#22c55e', markers = [] }) {
     const clamped = Math.min(100, Math.max(0, value))
 
     return (
         <div className="progress-bar-wrap">
             <div className="progress-bar-track">
-                {/* Filled portion */}
+                {/* Filled section ting */}
                 <div
                     className="progress-bar-fill"
                     style={{
@@ -17,7 +13,7 @@ export default function ProgressBar({ value, colour = '#22c55e', markers = [] })
                         transition: 'width 0.5s ease',
                     }}
                 />
-                {/* Marker lines (e.g. at 1 month, 3 months, 6 months) */}
+                {/* Marker lines ( like 1, 3, 6 months) */}
                 {markers.map((m, i) => (
                     <div
                         key={i}
@@ -27,7 +23,7 @@ export default function ProgressBar({ value, colour = '#22c55e', markers = [] })
                     />
                 ))}
             </div>
-            {/* Marker labels below the bar */}
+            {/* Marker labels below the bar legend ting*/}
             {markers.length > 0 && (
                 <div className="progress-bar-marker-labels">
                     {markers.map((m, i) => (

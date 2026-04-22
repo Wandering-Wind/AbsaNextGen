@@ -1,30 +1,26 @@
-// src/components/charts/HealthGauge.jsx
-// Circular SVG gauge — shows health score as a ring that fills from 0–100%
-// Props: pct (number), label (string), status ('doing-well'|'coping'|'struggling')
-
 export default function HealthGauge({ pct, label, status }) {
     const radius = 54
-    const circumference = 2 * Math.PI * radius   // full circle length in px
-    const filled = (pct / 100) * circumference    // how much of the ring to fill
-    const gap    = circumference - filled         // the empty part
+    const circumference = 2 * Math.PI * radius   
+    const filled = (pct / 100) * circumference   
+    const gap    = circumference - filled       
 
     const colour = {
-        'doing-well':  '#22c55e',   // green
-        'coping':      '#f59e0b',   // amber
-        'struggling':  '#ef4444',   // red
+        'doing-well':  '#22c55e',  
+        'coping':      '#f59e0b',   
+        'struggling':  '#ef4444',   
     }[status] ?? '#aaa'
 
     return (
         <div className="health-gauge">
             <svg viewBox="0 0 120 120" width="120" height="120">
-                {/* Background ring */}
+                {/* Background ring, yoh should've paid attention to geometry*/}
                 <circle
                     cx="60" cy="60" r={radius}
                     fill="none"
                     stroke="#e5e7eb"
                     strokeWidth="12"
                 />
-                {/* Filled ring — starts at the top (rotate -90deg) */}
+                {/* Filled ring, thing starts at the top (rotate -90deg) */}
                 <circle
                     cx="60" cy="60" r={radius}
                     fill="none"

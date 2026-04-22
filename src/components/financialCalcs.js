@@ -30,23 +30,19 @@ export function calcTotalExpenses(profile){
     )
 }
 
-//Net Surplus: what's left after your take-home minus all your expenses
 export function calcNetSurplus(profile) {
     const takeHome = calcTakeHome(profile.grossIncome, profile.raPercent)
     const expenses = calcTotalExpenses(profile)
     return Math.round(takeHome - expenses)
 }
 
-// Returns 'surplus', 'breakeven', or 'deficit'
-// MoneySnapshot uses this to decide what colour/message to show
 export function calcSurplusStatus(profile) {
     const surplus = calcNetSurplus(profile)
     if (surplus > 500)  return 'surplus'
-    if (surplus >= -500) return 'breakeven'  // within R500 either way
+    if (surplus >= -500) return 'breakeven' 
     return 'deficit'
 }
 
-// Human-readable message for the UI
 export function calcSurplusMessage(profile) {
     const surplus = calcNetSurplus(profile)
     const status  = calcSurplusStatus(profile)
@@ -57,11 +53,10 @@ export function calcSurplusMessage(profile) {
     if (status === 'breakeven') {
         return `You are roughly breaking even. You have almost no buffer for unexpected costs.`
     }
-    // deficit
     return `Your expenses exceed your income by ${fmtZAR(Math.abs(surplus))}. Reduce costs before investing.`
 }
 
-//Savings rate (we're targeting 10-20% of take-home) 
+//Savings rate (targeting 10-20% of take-home (double-check if this is realistic thoughhh)) 
 export function calcSavingsScore(profile) {
     const takeHome = calcTakeHome(profile.grossIncome, profile.raPercent)
     if (takeHome === 0 ) return 0
@@ -71,7 +66,6 @@ export function calcSavingsScore(profile) {
     return Math.round((rate/ 0.10)* 5)
 }
 
-//The target of the debt score is to be below 36%
 export function calcDebtScore(profile) {
     const totalDebt = (profile.carPayment || 0) + (profile.loanPayment || 0)
     if (profile.grossIncome === 0) return 0
@@ -82,7 +76,6 @@ export function calcDebtScore(profile) {
     return Math.round(10-((ratio - 0.30)/0.20)*10)
 }
 
-//Emergency fund: bank balance / monthly expenses (the target is 3-6 months)
 export function calcEmergencyScore(profile) {
     const monthlyExpenses = calcTotalExpenses(profile)
     if (monthlyExpenses === 0) return 10
@@ -109,19 +102,15 @@ export function calcHealthScore(profile) {
     return {pct, label, status, savings, debt, emergency}
 }
 
-// ── SARS medical tax credit ───────────────────────────────────
 export function calcMedicalCredit(medicalAid) {
-  // You only get the credit if you're actually paying for medical aid
   return medicalAid > 0 ? SA.MEDICAL_CREDIT_PRIMARY : 0
 }
 
-// ── TFSA headroom ─────────────────────────────────────────────
 export function calcTfsaHeadroom(monthlyContribution) {
   const annual = (monthlyContribution || 0) * 12
   return Math.max(0, SA.TFSA_ANNUAL_CAP - annual)
 }
 
-// ── ZAR formatter ─────────────────────────────────────────────
 export function fmtZAR(amount) {
   return new Intl.NumberFormat('en-ZA', {
     style: 'currency',
@@ -131,14 +120,12 @@ export function fmtZAR(amount) {
   }).format(amount)
 }
 
-// ── Debt-to-income ratio as percentage (for display) ──────────
 export function calcDTI(profile) {
   const totalDebt = (profile.carPayment || 0) + (profile.loanPayment || 0)
   if (profile.grossIncome === 0) return 0
   return Math.round((totalDebt / profile.grossIncome) * 100)
 }
 
-// ── Emergency fund months covered ────────────────────────────
 export function calcEmergencyMonths(profile) {
   const expenses = calcTotalExpenses(profile)
   if (expenses === 0) return 0

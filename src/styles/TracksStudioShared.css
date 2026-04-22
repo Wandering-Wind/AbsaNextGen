@@ -105,7 +105,6 @@
 .tradeoff-box--prioritise strong { color: #86efac; }
 .tradeoff-box--prioritise p      { color: rgba(255,255,255,0.55); }
 
-/*Two column body thing*/
 .track-body {
   display: grid;
   grid-template-columns: 280px 1fr;

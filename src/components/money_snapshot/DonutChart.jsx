@@ -1,7 +1,3 @@
-// src/components/charts/DonutChart.jsx
-// SVG donut chart for expense breakdown
-// Props: segments — array of { label, value, colour }
-
 export default function DonutChart({ segments }) {
     const total = segments.reduce((sum, s) => sum + s.value, 0)
 
@@ -14,7 +10,7 @@ export default function DonutChart({ segments }) {
     const cx = 70
     const cy = 70
 
-    // Build each arc segment
+    // Build each arc segment - change values here for future references
     let cumulativePct = 0
     const arcs = segments
         .filter(s => s.value > 0)
@@ -42,7 +38,7 @@ export default function DonutChart({ segments }) {
                         style={{ transition: 'stroke-dasharray 0.5s ease' }}
                     />
                 ))}
-                {/* Centre label */}
+                {/* Centre lable stuff */}
                 <text x={cx} y={cy - 6} textAnchor="middle" fontSize="9" fill="#6b7280">
                     total expenses
                 </text>
@@ -54,7 +50,6 @@ export default function DonutChart({ segments }) {
                 </text>
             </svg>
 
-            {/* Legend */}
             <ul className="donut-legend">
                 {arcs.map((arc, i) => (
                     <li key={i} className="donut-legend-item">
