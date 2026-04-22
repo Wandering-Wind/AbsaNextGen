@@ -155,7 +155,6 @@ export default function FirstPropertyPath() {
         <>
         <div className="page-header">
                 <div>
-                    <span className="track-tag">🏠 Strategy Track</span>
                     <h1 className='page-title'>First Property Path</h1>
                     <p className='page-subtitle'>
                         A 5-year roadmap from renter to homeowner — built around SA bond

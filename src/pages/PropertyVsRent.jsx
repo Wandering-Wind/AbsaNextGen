@@ -280,7 +280,6 @@ export default function PropertyVsRent() {
             <div className="page-header">
 
                     <div>
-                        <span className="studio-tag">🧪 Money Studio</span>
                         <h1 className='page-title'>Property vs Renting in Johannesburg</h1>
                         <p className='page-subtitle'>
                             Should you buy a property or rent and invest the difference?
