@@ -60,13 +60,12 @@ export default function MoneySnapshot() {
 
     return (
         <>
-            {/* Page header — inside the container, never scrolls */}
             <div className="page-header">
                 <div>
                     <h1 className="page-title">Money Snapshot</h1>
                     <p className="page-subtitle">
                         Your customizable financial dashboard. Fill in your details
-                        on the left — every tile and chart updates instantly as you type.
+                        on the left - every tile and chart updates instantly as you type.
                     </p>
                 </div>
                 <button onClick={resetProfile} className="reset-btn">
@@ -74,10 +73,8 @@ export default function MoneySnapshot() {
                 </button>
             </div>
 
-            {/* Split body — this IS the container's inner layout */}
             <div className="split-body">
 
-                {/* LEFT 1/4 — inputs, scrolls independently */}
                 <aside className="split-left">
                     <section className="input-section">
                         <h2 className="input-section-title">💰 Income</h2>
@@ -120,7 +117,6 @@ export default function MoneySnapshot() {
                     </section>
                 </aside>
 
-                {/* RIGHT 3/4 — results, scrolls independently */}
                 <div className="split-right">
 
                     <div className={`surplus-alert surplus-alert--${surplusStatus}`}>
@@ -191,10 +187,10 @@ export default function MoneySnapshot() {
                             <div className={`sa-insight ${dti > 36 ? 'sa-insight--warn' : ''}`}>
                                 <span className="sa-insight-label">💳 Debt-to-Income</span>
                                 <span className="sa-insight-value">{dti}%
-                                    {dti === 0 && ' — no debt ✅'}
-                                    {dti > 0 && dti <= 36 && ' — bond-ready ✅'}
-                                    {dti > 36 && dti <= 50 && ' — above 36% ⚠️'}
-                                    {dti > 50 && ' — critical 🚨'}
+                                    {dti === 0 && ' - no debt ✅'}
+                                    {dti > 0 && dti <= 36 && ' - bond-ready ✅'}
+                                    {dti > 36 && dti <= 50 && ' - above 36% ⚠️'}
+                                    {dti > 50 && ' - critical 🚨'}
                                 </span>
                             </div>
 
@@ -209,7 +205,7 @@ export default function MoneySnapshot() {
 
                             <div className="sa-insight">
                                 <span className="sa-insight-label">
-                                    🛡️ Emergency Fund — {emergMonths} months covered
+                                    🛡️ Emergency Fund - {emergMonths} months covered
                                 </span>
                                 <ProgressBar
                                     value={emergencyPct}
@@ -217,10 +213,10 @@ export default function MoneySnapshot() {
                                     markers={emergencyMarkers}
                                 />
                                 <span className="sa-insight-sub">
-                                    {emergMonths < 1  && '🚨 Less than 1 month — build this before investing'}
+                                    {emergMonths < 1  && '🚨 Less than 1 month - build this before investing'}
                                     {emergMonths >= 1 && emergMonths < 3 && '⚠️ Below 3-month target'}
-                                    {emergMonths >= 3 && emergMonths < 6 && '✅ In range — keep building'}
-                                    {emergMonths >= 6 && '✅ Fully funded — redirect surplus to investments'}
+                                    {emergMonths >= 3 && emergMonths < 6 && '✅ In range - keep building'}
+                                    {emergMonths >= 6 && '✅ Fully funded - redirect surplus to investments'}
                                 </span>
                             </div>
                         </div>
@@ -232,11 +228,11 @@ export default function MoneySnapshot() {
                         </button>
                         {learnOpen && (
                             <div className="learn-grid">
-                                <LearnCard term="Net Surplus"             explanation="Money left after all expenses are paid from your take-home. Aim for 20%+. A negative number means you are spending more than you earn — reduce costs before investing." />
-                                <LearnCard term="PAYE"                    explanation="Pay As You Earn — SA's income tax system. Your employer deducts it monthly. RA contributions reduce your taxable income, lowering your PAYE bill." />
+                                <LearnCard term="Net Surplus"             explanation="Money left after all expenses are paid from your take-home. Aim for 20%+. A negative number means you are spending more than you earn - reduce costs before investing." />
+                                <LearnCard term="PAYE"                    explanation="Pay As You Earn - SA's income tax system. Your employer deducts it monthly. RA contributions reduce your taxable income, lowering your PAYE bill." />
                                 <LearnCard term="Retirement Annuity (RA)" explanation="Contributions up to 27.5% of income are tax-deductible. Grows tax-free. Accessible from age 55. One of the most powerful tax tools for SA earners." />
                                 <LearnCard term="TFSA"                    explanation="Tax Free Savings Account. R46 000/year cap (R500 000 lifetime). Zero tax on growth, interest, or withdrawals. Ideal for medium-term goals." />
-                                <LearnCard term="SARS Medical Credit"     explanation="R364/month off your tax bill for being a primary medical aid member (2026/27). A direct rand-for-rand credit — more powerful than a deduction." />
+                                <LearnCard term="SARS Medical Credit"     explanation="R364/month off your tax bill for being a primary medical aid member (2026/27). A direct rand-for-rand credit - more powerful than a deduction." />
                                 <LearnCard term="Debt-to-Income (DTI)"    explanation="Total monthly debt payments ÷ gross income. Banks require below 36% for bond approval. Above 50% means you are over-leveraged." />
                                 <LearnCard term="Emergency Fund"          explanation="3–6 months of expenses in a liquid account. Your financial airbag. Without it, one unexpected bill forces you into expensive debt." />
                             </div>

@@ -28,14 +28,14 @@ function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
             year: 1,
             title: 'Build Your Emergency Fund',
             target: 'R90 000 – R180 000',
-            description: 'Before saving for a deposit, you need 3–6 months of expenses as a cash buffer. This protects you from being forced into debt by unexpected costs.',
+            description: 'Before saving for a deposit, you need 3-6 months of expenses as a cash buffer. This protects you from being forced into debt by unexpected costs.',
             actions: [
-                'Open a separate high-interest savings account — not your cheque account.',
+                'Open a separate high-interest savings account - not your cheque account.',
                 'Set up an automatic debit order on payday. Treat it like a fixed expense.',
                 'Target R90 000 minimum (3 months). R180 000 is ideal (6 months).',
                 'Do not invest in volatile assets until this buffer exists.',
             ],
-            nudge: 'Without an emergency fund, one job loss or car repair forces you into expensive debt — wiping months of progress.',
+            nudge: 'Without an emergency fund, one job loss or car repair forces you into expensive debt - wiping months of progress.',
         },
         {
             year: 2,
@@ -46,9 +46,9 @@ function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
                 'Pay off car finance or personal loans above 15% p.a. first (avalanche method).',
                 'Once cleared, redirect the full payment amount into a notice deposit or money market account.',
                 surplus > 0
-                    ? `Save aggressively — 25% of take-home (${fmtZAR(takeHome * 0.25)}/month) toward deposit.`
+                    ? `Save aggressively - 25% of take-home (${fmtZAR(takeHome * 0.25)}/month) toward deposit.`
                     : 'Your current surplus is too low to save aggressively. Reduce expenses first.',
-                'Keep RA contributions active — the tax saving subsidises your savings rate.',
+                'Keep RA contributions active - the tax saving subsidises your savings rate.',
             ],
             nudge: 'A R500 000 car at 12% p.a. over 5 years costs R666 000 total and will disqualify you from a bond. Delay luxury purchases.',
         },
@@ -58,10 +58,10 @@ function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
             target: 'Pre-approval letter from at least 2 banks',
             description: 'Get your financial profile bond-ready. Banks assess your credit score, DTI, and employment history before approving a home loan.',
             actions: [
-                'Check your credit score on Experian or TransUnion — target 650 or higher.',
+                'Check your credit score on Experian or TransUnion - target 650 or higher.',
                 'Ensure your debt-to-income ratio is below 36% (SA banks require this).',
                 'Keep 6 months of payslips and 3 months of bank statements ready.',
-                'Use a bond originator (like ooba or BetterBond) — it is free and shops multiple banks at once.',
+                'Use a bond originator (like ooba or BetterBond) - it is free and shops multiple banks at once.',
                 'Do NOT apply for any new credit in the 6 months before your bond application.',
             ],
             nudge: 'Bond originators are free and often secure better rates than going to your bank directly. Use one.',
@@ -70,10 +70,10 @@ function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
             year: 4,
             title: 'Make Your Offer & Transfer Ownership',
             target: `Budget for ${fmtZAR(bondPayment)}/month bond repayment + transfer costs`,
-            description: 'Making an offer is just the start. Budget carefully for transfer costs on top of your deposit — these are often forgotten.',
+            description: 'Making an offer is just the start. Budget carefully for transfer costs on top of your deposit - these are often forgotten.',
             actions: [
                 'Budget for transfer costs: roughly 8–10% of property price (attorney fees, transfer duty, bond registration).',
-                'Negotiate the purchase price — sellers often accept 5–8% below asking in the current market.',
+                'Negotiate the purchase price - sellers often accept 5–8% below asking in the current market.',
                 'A shorter bond term (15 years vs 20 years) saves hundreds of thousands in interest if your surplus allows.',
                 'Set up bond repayments by debit order immediately on registration.',
             ],
@@ -85,10 +85,10 @@ function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
             target: 'Extra bond payments + restart investment contributions',
             description: 'Now that the deposit phase is over, redirect surplus back into wealth-building. Every extra rand into the bond saves you years of interest.',
             actions: [
-                'Pay extra into your bond whenever possible — even R500/month extra saves years.',
+                'Pay extra into your bond whenever possible - even R500/month extra saves years.',
                 'Do not access your access bond to fund lifestyle expenses.',
                 'Restart TFSA and JSE ETF contributions now that the deposit phase is over.',
-                'Reassess your RA — aim to max the 27.5% deduction as your income grows.',
+                'Reassess your RA - aim to max the 27.5% deduction as your income grows.',
                 'Your property should have grown approximately 34% after 5 years at 6% p.a.',
             ],
             nudge: 'At 6% p.a. growth, a R1.5M property is worth approximately R2M after 5 years. But equity only benefits you when you sell or leverage it carefully.',
@@ -153,17 +153,16 @@ export default function FirstPropertyPath() {
 
     return (
         <>
-        {/* ── Page header — uniform with Money Snapshot ── */}
         <div className="page-header">
             <div>
                 <span className="track-tag">🏠 Strategy Track</span>
                 <h1 className="page-title">First Property Path</h1>
                 <p className="page-subtitle">
-                    A 5-year roadmap from renter to homeowner — built around SA bond
+                    A 5-year roadmap from renter to homeowner - built around SA bond
                     rates, SARS deductions, and Johannesburg property realities.
                 </p>
             </div>
-            {/* Progress ring — right side of header */}
+
             <div className="track-progress">
                 <svg viewBox="0 0 100 100" width="80" height="80">
                     <circle cx="50" cy="50" r="42" fill="none"
@@ -178,7 +177,7 @@ export default function FirstPropertyPath() {
                         transform="rotate(-90 50 50)"
                         style={{ transition: 'stroke-dasharray 0.5s ease' }}
                     />
-                    {/* White text — visible on dark background */}
+
                     <text x="50" y="46" textAnchor="middle" fontSize="18"
                         fontWeight="700" fill="white" dominantBaseline="middle">
                         {progressPct}%
@@ -196,10 +195,8 @@ export default function FirstPropertyPath() {
 
         
 
-        {/* ── Split body — LEFT inputs, RIGHT milestones ── */}
         <div className="split-body">
 
-            {/* LEFT 1/4 — inputs, scrolls independently */}
             <aside className="split-left">
 
                 <h2 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--white)', borderBottom: '1px solid rgba(205,180,255,0.2)', paddingBottom: '0.5rem' }}>
@@ -275,13 +272,13 @@ export default function FirstPropertyPath() {
 
                     <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
                         {canAfford
-                            ? `✅ Bond payment is ${bondPct}% of take-home — within the 30% rule.`
-                            : `⚠️ Bond payment is ${bondPct}% of take-home — above 30%. Consider a lower price or longer term.`
+                            ? `✅ Bond payment is ${bondPct}% of take-home - within the 30% rule.`
+                            : `⚠️ Bond payment is ${bondPct}% of take-home - above 30%. Consider a lower price or longer term.`
                         }
                     </div>
                     {dti > 36 && (
                         <div className="recommendation recommendation--warn">
-                            ⚠️ Your DTI is {dti}% — above 36%. Pay down debt before applying.
+                            ⚠️ Your DTI is {dti}% - above 36%. Pay down debt before applying.
                         </div>
                     )}
                     {emergMonths < 1 && (
@@ -308,10 +305,10 @@ export default function FirstPropertyPath() {
 
             </aside>
 
-            {/* RIGHT 3/4 — milestones, scrolls independently */}
+
             <div className="split-right">
 
-                {/* ── Philosophy intro — full width, before the split ── */}
+
         <div style={{ padding: '0 1.5rem', flexShrink: 0 }}>
             <div className="philosophy-banner">
                 <div>
@@ -389,7 +386,7 @@ export default function FirstPropertyPath() {
                             <LearnCard term="Bond (Home Loan)" explanation="A loan from a bank secured against your property. SA bonds are typically at prime rate + a margin. Missing payments can lead to repossession." />
                             <LearnCard term="Transfer Duty" explanation="A government tax on property purchases. No duty under R1.1M. Then 3% on R1.1M–R1.375M. On a R1.5M home, budget ~R30 000 in transfer duty." />
                             <LearnCard term="Bond Originator" explanation="A free service (ooba, BetterBond) that submits your application to multiple banks simultaneously. Costs you nothing." />
-                            <LearnCard term="Access Bond" explanation="Most SA bonds are access bonds — pay in extra and redraw later. Reduces balance and interest while keeping funds accessible." />
+                            <LearnCard term="Access Bond" explanation="Most SA bonds are access bonds - pay in extra and redraw later. Reduces balance and interest while keeping funds accessible." />
                             <LearnCard term="DTI for Bond Approval" explanation="Banks require total debt payments below 36% of gross income. This includes your future bond payment. Get DTI down before applying." />
                             <LearnCard term="Transfer Costs" explanation="Beyond transfer duty: attorney fees, bond registration, deeds office levies. Budget 8–10% of property price total." />
                         </div>

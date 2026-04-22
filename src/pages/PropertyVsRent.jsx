@@ -267,7 +267,7 @@ export default function PropertyVsRent() {
                 : `even though rent exceeds the bond, because the property equity compounds faster here.`
         } else {
             narrative += `The renter invests ${fmtZAR(Math.abs(monthlyDiff > 0 ? monthlyDiff : 0))}/month `
-            narrative += `— the difference between the bond payment and rent — into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a. `
+            narrative += `- the difference between the bond payment and rent - into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a. `
             narrative += `This compounds to ${fmtZAR(finalYear.rentNetWorth)}, outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}. `
             narrative += `This is the power of compounding: small consistent investments snowball significantly over time.`
         }
@@ -441,13 +441,12 @@ export default function PropertyVsRent() {
                 </div>
             </div>
 
-            {/* SA context sits here — fills remaining space beside chart */}
             <div className="studio-context">
                 <p>
                     <strong>SA context:</strong> Prime rate is 10.25%.
                     Johannesburg property grows at approximately 3–6% p.a.
                     The JSE has returned approximately 8–11% p.a. historically.
-                    This simulation uses your inputs — not generic assumptions.
+                    This simulation uses your inputs - not generic assumptions.
                 </p>
             </div>
 
@@ -515,12 +514,12 @@ export default function PropertyVsRent() {
         </button>
         {learnOpen && (
             <div className="learn-grid">
-                <LearnCard term="Equity" explanation="The portion of the property you own — property value minus what you owe. Equity is illiquid — you cannot spend it without selling or refinancing." />
+                <LearnCard term="Equity" explanation="The portion of the property you own - property value minus what you owe. Equity is illiquid - you cannot spend it without selling or refinancing." />
                 <LearnCard term="Opportunity Cost" explanation="The return you give up by choosing one option. Your deposit locked in property could instead earn 8–11% p.a. in the JSE." />
                 <LearnCard term="Compounding" explanation="Earning returns on your returns. R1 000 at 10% p.a. becomes R1 100 after year 1. Year 2 earns 10% on R1 100. The renter's portfolio compounds monthly." />
                 <LearnCard term="Property Growth Rate" explanation="Johannesburg property has grown approximately 3–6% p.a. over the last decade. This simulation uses 6% for well-located properties." />
-                <LearnCard term="Bond Amortisation" explanation="In early years, most of your payment goes toward interest — not principal. It takes 7–10 years before you meaningfully pay down the loan." />
-                <LearnCard term="Rent Inflation" explanation="Rent increases 6–8%/year in SA. R15 000/month becomes R21 000/month after 6 years. Bond payments are fixed — owners are protected from this." />
+                <LearnCard term="Bond Amortisation" explanation="In early years, most of your payment goes toward interest - not principal. It takes 7–10 years before you meaningfully pay down the loan." />
+                <LearnCard term="Rent Inflation" explanation="Rent increases 6–8%/year in SA. R15 000/month becomes R21 000/month after 6 years. Bond payments are fixed - owners are protected from this." />
             </div>
         )}
     </div>

@@ -1,10 +1,5 @@
-/* ═══════════════════════════════════════════════════════════
-   Strategy Track — First Property Path
-   ═══════════════════════════════════════════════════════════ */
-
 .property-path { display: flex; flex-direction: column; gap: 1.25rem; }
 
-/* ── Track header ──────────────────────────────────────────── */
 .track-header {
   display: flex;
   justify-content: space-between;
@@ -35,7 +30,6 @@
   line-height: 1.6;
 }
 
-/* Studio top row — chart left, verdict + context right */
 .studio-top-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -63,7 +57,6 @@
   border-radius: var(--r-md);
   padding: 1.25rem 1.5rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  /* Does NOT scroll — it's outside split-body */
 }
 
 .philosophy-col h3 {
@@ -112,7 +105,7 @@
 .tradeoff-box--prioritise strong { color: #86efac; }
 .tradeoff-box--prioritise p      { color: rgba(255,255,255,0.55); }
 
-/* ── Two column body ───────────────────────────────────────── */
+/*Two column body thing*/
 .track-body {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -120,7 +113,6 @@
   align-items: start;
 }
 
-/* ── Track inputs panel ────────────────────────────────────── */
 .track-inputs {
   background: rgba(255,255,255,0.07);
   backdrop-filter: blur(16px);
@@ -144,7 +136,6 @@
   border-bottom: 1px solid rgba(205,180,255,0.2);
 }
 
-/* Calculated summary box */
 .calc-summary {
   background: rgba(0,0,0,0.2);
   border: 1px solid rgba(255,255,255,0.08);
@@ -168,14 +159,12 @@
 .text-ok   { color: var(--success) !important; }
 .text-warn { color: var(--warning) !important; }
 
-/* Calc result display (non-editable) */
 .calc-result {
   font-size: var(--text-lg);
   font-weight: 800;
   color: var(--p-100);
 }
 
-/* Recommendations */
 .recommendations { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .recommendations h3 {
@@ -204,7 +193,6 @@
 .recommendation--warn   { background: rgba(251,191,36,0.08); border-color: var(--warning); color: #fef08a; }
 .recommendation--danger { background: rgba(248,113,113,0.08);border-color: var(--danger);  color: #fecaca; }
 
-/* ── Milestones timeline ───────────────────────────────────── */
 .milestones { display: flex; flex-direction: column; gap: 0.9rem; }
 
 .milestones h2 {
@@ -300,10 +288,6 @@
   line-height: 1.5;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   Property vs Rent Studio
-   ═══════════════════════════════════════════════════════════ */
-
 .studio-page { display: flex; flex-direction: column; gap: 1.25rem; }
 
 .studio-header { display: flex; align-items: flex-start; gap: 1rem; }
@@ -323,7 +307,6 @@
   display: block;
 }
 
-/* Context banner */
 .studio-context {
   background: rgba(205,180,255,0.06);
   border: 1px solid rgba(205,180,255,0.15);
@@ -334,7 +317,6 @@
 .studio-context p { font-size: var(--text-xs); color: rgba(255,255,255,0.6); line-height: 1.6; }
 .studio-context strong { color: var(--p-100); }
 
-/* ── Studio two-column ─────────────────────────────────────── */
 .studio-body {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -365,7 +347,6 @@
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Monthly diff callout */
 .monthly-diff-box {
   padding: 0.75rem 1rem;
   border-radius: var(--r-sm);
@@ -390,10 +371,8 @@
   color: #bbf7d0;
 }
 
-/* Studio results */
 .studio-results { display: flex; flex-direction: column; gap: 1rem; }
 
-/* Verdict badge */
 .verdict-badge {
   display: flex;
   align-items: center;
@@ -421,11 +400,8 @@
 .verdict-badge strong { font-size: var(--text-lg); font-weight: 800; color: var(--white); display: block; }
 .verdict-badge p      { font-size: var(--text-xs); color: rgba(255,255,255,0.5); margin: 0; }
 
-/* Narrative */
-/* .narrative-card { } */
 .narrative-text { font-size: var(--text-sm); color: rgba(255,255,255,0.75); line-height: 1.75; }
 
-/* Table */
 .table-wrap { overflow-x: auto; }
 
 .breakdown-table {
@@ -453,13 +429,11 @@
 .breakdown-table tr:last-child td { border-bottom: none; }
 .breakdown-table .cell--win { color: var(--success); font-weight: 700; }
 
-/* Chart legend */
 .chart-legend { display: flex; gap: 1.5rem; justify-content: center; }
 .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); color: rgba(255,255,255,0.6); }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .legend-dot--dashed { border-radius: 2px; }
 
-/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .track-body, .studio-body { grid-template-columns: 1fr; }
   .track-inputs, .studio-inputs { position: static; }

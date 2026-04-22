@@ -15,9 +15,7 @@
   background: rgba(255, 255, 255, 0.12);
   color: var(--white);
 }
-/* ══════════════════════════════════
-   COLUMN 1 — Input sidebar buttons
-══════════════════════════════════ */
+
 .input-sidebar {
   display: flex;
   flex-direction: column;
@@ -62,9 +60,6 @@
   box-shadow: 0 0 12px rgba(160, 132, 232, 0.15);
 }
 
-/* ══════════════════════════════════
-   COLUMN 2 — Active input panel
-══════════════════════════════════ */
 .input-panel {
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(16px);
@@ -108,7 +103,6 @@
   line-height: 1.4;
 }
 
-/* Calculate button */
 .calculate-btn {
   width: 100%;
   padding: 0.75rem;
@@ -129,9 +123,6 @@
   box-shadow: 0 8px 24px rgba(160, 132, 232, 0.55);
 }
 
-/* ══════════════════════════════════
-   COLUMN 3 — Results / charts
-══════════════════════════════════ */
 .results-panel {
   display: flex;
   flex-direction: column;
@@ -157,7 +148,6 @@
   margin-bottom: 1rem;
 }
 
-/* Two-column row within results */
 .result-row {
   display: grid;
   gap: 1rem;
@@ -166,7 +156,6 @@
 .result-row--two  { grid-template-columns: 1fr 1fr; }
 .result-row--three { grid-template-columns: repeat(3, 1fr); }
 
-/* Surplus alert */
 .surplus-alert {
   padding: 0.8rem 1.1rem;
   border-radius: var(--r-sm);
@@ -179,7 +168,6 @@
 .surplus-alert--breakeven{ background: rgba(251,191,36,0.09);  border-color: var(--warning); color: #fef08a; }
 .surplus-alert--deficit  { background: rgba(248,113,113,0.09); border-color: var(--danger);  color: #fecaca; }
 
-/* Chart wrap */
 .chart-wrap {
   display: flex;
   flex-direction: column;
@@ -193,7 +181,6 @@
   overflow: visible;
 }
 
-/* ── Donut chart ── */
 .donut-chart {
   display: flex;
   align-items: center;
@@ -209,7 +196,6 @@
 
 .chart-empty { font-size: var(--text-sm); color: rgba(255,255,255,0.35); text-align: center; padding: 1.5rem 0; }
 
-/* ── Waterfall bar ── */
 .waterfall { display: flex; flex-direction: column; gap: 0.5rem; }
 .waterfall-title { font-size: var(--text-xs); color: rgba(255,255,255,0.5); }
 .waterfall-bar   { display: flex; height: 22px; border-radius: var(--r-sm); overflow: hidden; }
@@ -227,9 +213,6 @@
 .summary-row--breakeven strong{ color: var(--warning); }
 .summary-row--deficit strong  { color: var(--danger);  }
 
-/* ══════════════════════════════════
-   COLUMN 4 — Health orb + SA tiles
-══════════════════════════════════ */
 .health-panel { display: flex; flex-direction: column; gap: 1rem; }
 
 .health-orb-card {
@@ -253,7 +236,6 @@
   line-height: 1.5;
 }
 
-/* SA tiles */
 .sa-tile {
   background: rgba(255,255,255,0.07);
   backdrop-filter: blur(16px);
@@ -266,7 +248,6 @@
   transition: box-shadow 0.3s;
 }
 
-/* Glow when tax credit active */
 .sa-tile--glowing {
   box-shadow:
     0 4px 16px rgba(0,0,0,0.15),
@@ -297,7 +278,6 @@
   margin-top: 0.25rem;
 }
 
-/* SA insights in right column */
 .sa-insight { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
 .sa-insight:last-child { border-bottom: none; }
 .sa-insight-label { font-size: var(--text-xs); font-weight: 700; color: rgba(255,255,255,0.6); }
@@ -306,7 +286,6 @@
 .sa-insight-sub   { font-size: var(--text-xs); color: rgba(255,255,255,0.45); line-height: 1.5; }
 .sa-insight--warn .sa-insight-value { color: var(--warning); }
 
-/* ── Result value + sub ─────────────────────────────────────── */
 .result-value {
   font-size: var(--text-xl);
   font-weight: 800;
@@ -321,22 +300,18 @@
   line-height: 1.5;
 }
 
-/* Surplus card tint */
 .surplus-card--surplus  { border-top: 2px solid var(--success); }
 .surplus-card--breakeven{ border-top: 2px solid var(--warning); }
 .surplus-card--deficit  { border-top: 2px solid var(--danger);  }
 
-/* ── Health gauge text ─────────────────────────────────────── */
 .health-gauge { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
 .health-gauge-label { font-size: var(--text-sm); font-weight: 700; }
 .health-gauge-label--doing-well { color: var(--success); }
 .health-gauge-label--coping     { color: var(--warning); }
 .health-gauge-label--struggling { color: var(--danger);  }
 
-/* ── Score breakdown ─────────────────────────────────────────── */
 .score-breakdown { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; width: 100%; }
 
-/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .snapshot-layout { grid-template-columns: 160px 210px 1fr; }
   .health-panel {
