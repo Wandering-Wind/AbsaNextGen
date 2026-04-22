@@ -132,6 +132,7 @@
   border-right: 1px solid var(--glass-border-subtle);
   overflow-y: auto; overflow-x: hidden;
   padding: 1.25rem;
+  padding-bottom: 3rem;        /* ← add this too */
   display: flex; flex-direction: column; gap: 0.9rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(205,180,255,0.18) transparent;
@@ -140,6 +141,7 @@
 .split-right {
   overflow-y: auto; overflow-x: hidden;
   padding: 1.25rem 1.5rem;
+  padding-bottom: 3rem;        /* ← add this — gives the last element breathing room */
   display: flex; flex-direction: column; gap: 1rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(205,180,255,0.18) transparent;
@@ -264,7 +266,7 @@
 .health-gauge-label--coping     { color: var(--warning); }
 .health-gauge-label--struggling { color: var(--danger);  }
 
-.learn-section { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-subtle); border-radius: var(--r-md); overflow: hidden; }
+.learn-section { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border-subtle); border-radius: var(--r-md); }
 .learn-toggle { width: 100%; text-align: left; padding: 0.85rem 1.1rem; background: none; border: none; font-size: var(--text-sm); font-weight: 600; color: var(--p-100); display: flex; align-items: center; gap: 0.4rem; transition: background 0.15s; }
 .learn-toggle:hover { background: rgba(255,255,255,0.04); }
 .learn-grid { padding: 0 1.1rem 1.1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.45rem; }

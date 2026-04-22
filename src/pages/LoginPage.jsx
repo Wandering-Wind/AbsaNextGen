@@ -37,7 +37,7 @@ export default function LoginPage(){
     </div>
 
             <h1>Welcome back</h1>
-            <p className="login-subtitle">Sign in to access your financial snapshot</p>
+            <p className="login-subtitle">Sign in to access your financial snapshot. (Username can be anything and password should be MORE than 4 letters)</p>
             <form className="login-form" onSubmit={handleLogin}>
                 <div>
                     <label>Username</label>
