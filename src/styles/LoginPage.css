@@ -24,7 +24,7 @@
 
 .login-brand { display: flex; align-items: baseline; gap: 0.4rem; margin-bottom: 2rem; }
 .login-brand-logo { font-size: 1.1rem; font-weight: 800; color: var(--absa-red); letter-spacing: 0.1em; }
-.login-brand-name { font-size: 0.78rem; color: rgba(255,255,255,0.38); font-weight: 400; }
+.login-brand-name { font-size: 0.78rem; color: rgb(255, 255, 255); font-weight: 400; }
 
 .login-card h1 { font-family: var(--font-display); font-size: 1.8rem; color: var(--white); margin-bottom: 0.35rem; font-weight: 400; }
 .login-subtitle { font-size: var(--text-sm); color: rgba(255,255,255,0.42); margin-bottom: 2rem; line-height: 1.5; display: block; }
