@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
-import { 
-    calcTakeHome, calcNetSurplus, calcHealthScore, calcSurplusStatus,
-    calcSurplusMessage, calcMedicalCredit, calcTfsaHeadroom, calcDTI,
-    calcEmergencyMonths, calcTotalExpenses, fmtZAR, SA,
-} from '../components/financialCalcs'
 import "../styles/MoneySnapshot.css";
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
+import { 
+            calcTakeHome, calcNetSurplus, calcHealthScore, calcSurplusStatus,
+            calcSurplusMessage, calcMedicalCredit, calcTfsaHeadroom, calcDTI,
+            calcEmergencyMonths, calcTotalExpenses, fmtZAR, SA,
+        } from '../components/financialCalcs'
 
 import HealthGauge   from '../components/money_snapshot/HealthGauge'
 import DonutChart    from '../components/money_snapshot/DonutChart'
@@ -52,6 +52,21 @@ export default function MoneySnapshot() {
         { pct: 100,           label: '6 months' },
     ]
     const emergencyPct = Math.min(100, (emergMonths / 6) * 100)
+// ---------------------------------------------------------
+    const alertStatus = (() => {
+        if (surplusStatus === 'deficit') return 'deficit'
+        if (surplusStatus === 'breakeven') return 'breakeven'
+        if (health.status === 'struggling') return 'needs-attention'
+        return 'surplus'
+    })()
+
+    const alertMessage = (() => {
+        if (alertStatus === 'deficit') return surplusMsg
+        if (alertStatus === 'breakeven') return surplusMsg
+        if (alertStatus === 'needs-attention')
+            return `You have leftover income, but your savings rate, debt load, or emergency fund needs attention. Check the health scores below.`
+        return surplusMsg
+    })()
 
     //Input handling ro update the values instantly
     function handleChange(field, rawValue) {
@@ -125,11 +140,12 @@ export default function MoneySnapshot() {
 
                     <div className={`surplus-alert surplus-alert--${surplusStatus}`}>
                         <strong>
-                            {surplusStatus === 'surplus'   && <><Icon name="ok"     size={16} glow /> On track</>}
-                            {surplusStatus === 'breakeven' && <><Icon name="warn"   size={16} glow /> Breaking even</>}
-                            {surplusStatus === 'deficit'   && <><Icon name="danger" size={16} glow /> Spending more than you earn</>}
+                            {alertStatus === 'surplus'          && <><Icon name="ok"     size={16} glow /> On track</>}
+                            {alertStatus === 'needs-attention'  && <><Icon name="warn"   size={16} glow /> Surplus but gaps to fix</>}
+                            {alertStatus === 'breakeven'        && <><Icon name="warn"   size={16} glow /> Breaking even</>}
+                            {alertStatus === 'deficit'          && <><Icon name="danger" size={16} glow /> Spending more than you earn</>}
                         </strong>
-                        <p>{surplusMsg}</p>
+                        <p>{alertMessage}</p>
                     </div>
 
                     <div className="result-row result-row--two">
