@@ -52,7 +52,7 @@ export default function MoneySnapshot() {
         { pct: 100,           label: '6 months' },
     ]
     const emergencyPct = Math.min(100, (emergMonths / 6) * 100)
-// ---------------------------------------------------------
+
     const alertStatus = (() => {
         if (surplusStatus === 'deficit') return 'deficit'
         if (surplusStatus === 'breakeven') return 'breakeven'
@@ -138,7 +138,7 @@ export default function MoneySnapshot() {
 
                 <div className="split-right">
 
-                    <div className={`surplus-alert surplus-alert--${surplusStatus}`}>
+                    <div className={`surplus-alert surplus-alert--${alertStatus === 'needs-attention' ? 'breakeven' : alertStatus}`}>
                         <strong>
                             {alertStatus === 'surplus'          && <><Icon name="ok"     size={16} glow /> On track</>}
                             {alertStatus === 'needs-attention'  && <><Icon name="warn"   size={16} glow /> Surplus but gaps to fix</>}
