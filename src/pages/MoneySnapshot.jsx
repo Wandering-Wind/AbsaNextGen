@@ -229,7 +229,7 @@ export default function MoneySnapshot() {
                                 </span>
                                 <ProgressBar
                                     value={emergencyPct}
-                                    colour={emergMonths >= 3 ? '#22c55e' : emergMonths >= 1 ? '#f59e0b' : '#ef4444'}
+                                    colour={emergMonths >= 3 ? 'var(--success)' : emergMonths >= 1 ? 'var(--warming)' : 'var(--danger)'}
                                     markers={emergencyMarkers}
                                 />
                                 <span className="sa-insight-sub">

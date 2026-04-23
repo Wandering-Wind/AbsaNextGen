@@ -275,6 +275,19 @@ export default function PropertyVsRent() {
                             Adjust the inputs and watch the 5-year net worth comparison update instantly.
                         </p>
                     </div>
+                    
+                    <button className="reset-btn" onClick={() => {
+                        setPropertyPrice(1500000)
+                        setDepositPct(10)
+                        setBondRate(SA.PRIME_RATE + SA.BOND_SPREAD)
+                        setBondTerm(20)
+                        setMonthlyRent(20000)
+                        setRentIncreaseRate(0.06)
+                        setInvestmentReturn(0.08)
+                        setYears(5)
+                    }}>
+                        Reset inputs
+                    </button>
             </div>
     
             

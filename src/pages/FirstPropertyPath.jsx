@@ -108,7 +108,7 @@ export default function FirstPropertyPath() {
     const { profile } = useUserProfile()
 
     //Tracking the property onluy inputs
-    const [targetPrice, setTargetPrice] = useState()
+    const [targetPrice, setTargetPrice] = useState(1500000)
     const [depositPct,  setDepositPct]  = useState(10)
     const [bondTerm,    setBondTerm]    = useState(20)
     const [bondRate,    setBondRate]    = useState(SA.PRIME_RATE + SA.BOND_SPREAD)
@@ -162,33 +162,46 @@ export default function FirstPropertyPath() {
                 </p>
             </div>
 
-            <div className="track-progress">
-                <svg viewBox="0 0 100 100" width="80" height="80">
-                    <circle cx="50" cy="50" r="42" fill="none"
-                        stroke="rgba(255,255,255,0.1)" strokeWidth="10"/>
-                    <circle
-                        cx="50" cy="50" r="42"
-                        fill="none"
-                        stroke={progressPct === 100 ? '#4ade80' : '#A084E8'}
-                        strokeWidth="10"
-                        strokeLinecap="round"
-                        strokeDasharray={`${(progressPct / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
-                        transform="rotate(-90 50 50)"
-                        style={{ transition: 'stroke-dasharray 0.5s ease' }}
-                    />
+            
 
-                    <text x="50" y="46" textAnchor="middle" fontSize="18"
-                        fontWeight="700" fill="white" dominantBaseline="middle">
-                        {progressPct}%
-                    </text>
-                    <text x="50" y="63" textAnchor="middle" fontSize="9"
-                        fill="rgba(255,255,255,0.5)">
-                        complete
-                    </text>
-                </svg>
-                <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginTop: '0.25rem' }}>
-                    {completedCount} of 5 done
-                </p>
+             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
+                <div className="track-progress">
+                    <svg viewBox="0 0 100 100" width="80" height="80">
+                        <circle cx="50" cy="50" r="42" fill="none"
+                            stroke="rgba(255,255,255,0.1)" strokeWidth="10"/>
+                        <circle
+                            cx="50" cy="50" r="42"
+                            fill="none"
+                            stroke={progressPct === 100 ? '#4ade80' : '#A084E8'}
+                            strokeWidth="10"
+                            strokeLinecap="round"
+                            strokeDasharray={`${(progressPct / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
+                            transform="rotate(-90 50 50)"
+                            style={{ transition: 'stroke-dasharray 0.5s ease' }}
+                        />
+                        <text x="50" y="46" textAnchor="middle" fontSize="18"
+                            fontWeight="700" fill="white" dominantBaseline="middle">
+                            {progressPct}%
+                        </text>
+                        <text x="50" y="63" textAnchor="middle" fontSize="9"
+                            fill="rgba(255,255,255,0.5)">
+                            complete
+                        </text>
+                    </svg>
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginTop: '0.25rem' }}>
+                        {completedCount} of 5 done
+                    </p>
+                </div>
+
+                <button className="reset-btn" onClick={() => {
+                    setTargetPrice(1500000)
+                    setDepositPct(10)
+                    setBondTerm(20)
+                    setBondRate(SA.PRIME_RATE + SA.BOND_SPREAD)
+                    setStatuses(Array(5).fill('not-started'))
+                }}>
+                    Reset inputs
+                </button>
             </div>
         </div>
 
@@ -366,7 +379,7 @@ export default function FirstPropertyPath() {
                                     {STATUS_LABELS[status]}
                                 </button>
                             </div>
-                            <div className="milestone-target"> <Icon name="target" size={17} glow /> {m.target} {m.target}</div>
+                            <div className="milestone-target"> <Icon name="target" size={17} glow /> {m.target}</div>
                             <p className="milestone-description">{m.description}</p>
                             <ul className="milestone-actions">
                                 {m.actions.map((action, i) => <li key={i}>{action}</li>)}
