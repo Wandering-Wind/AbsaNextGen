@@ -47,7 +47,7 @@ function runSimulation({
         const buyNetWorth = propertyValue - bondBalance
 
         const monthlyDifference = monthlyBond - currentRent
-        const monthlyReturn     = investmentReturn / 12
+        const monthlyReturn = investmentReturn / 12
 
         for (let month = 0; month < 12; month++) { 
             rentPortfolio = rentPortfolio * (1 + monthlyReturn)
@@ -245,18 +245,22 @@ export default function PropertyVsRent() {
         let narrative = `Over ${years} years, ${winner} comes out ahead by ${fmtZAR(difference)}. `
 
         if (buyWins) {
-            narrative += `The property grows from ${fmtZAR(propertyPrice)} to ${fmtZAR(finalYear.propertyValue)} at 6% p.a. `
-            narrative += `After paying down the bond, your equity reaches ${fmtZAR(finalYear.buyNetWorth)}. `
-            narrative += `The renter's investment portfolio only reaches ${fmtZAR(finalYear.rentNetWorth)} `
-            narrative += monthlyDiff > 0
-                ? `because the bond payment of ${fmtZAR(monthlyBond)} is higher than rent of ${fmtZAR(monthlyRent)}, leaving only ${fmtZAR(monthlyDiff)} to invest each month.`
-                : `even though rent exceeds the bond, because the property equity compounds faster here.`
+        narrative += `The property grows from ${fmtZAR(propertyPrice)} to ${fmtZAR(finalYear.propertyValue)} at 6% p.a. `
+        narrative += `After paying down the bond, your equity reaches ${fmtZAR(finalYear.buyNetWorth)}. `
+
+        if (monthlyDiff > 0) {
+            narrative += `The renter's portfolio reaches only ${fmtZAR(finalYear.rentNetWorth)} because the bond repayment of ${fmtZAR(monthlyBond)} is ${fmtZAR(monthlyDiff)}/month higher than rent — leaving little to invest each month.`
         } else {
-            narrative += `The renter invests ${fmtZAR(Math.abs(monthlyDiff > 0 ? monthlyDiff : 0))}/month `
-            narrative += `- the difference between the bond payment and rent - into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a. `
-            narrative += `This compounds to ${fmtZAR(finalYear.rentNetWorth)}, outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}. `
-            narrative += `This is the power of compounding: small consistent investments snowball significantly over time.`
+            narrative += `Even though rent of ${fmtZAR(monthlyRent)} exceeds the bond repayment of ${fmtZAR(monthlyBond)}, the renter has no surplus from the cost difference to invest, so the buyer's property equity compounds ahead.`
         }
+    } else {
+        if (monthlyDiff > 0) {
+            narrative += `The bond repayment of ${fmtZAR(monthlyBond)} costs ${fmtZAR(monthlyDiff)}/month more than rent. The renter invests that difference into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a., which compounds to ${fmtZAR(finalYear.rentNetWorth)} — outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}.`
+        } else {
+            narrative += `Rent of ${fmtZAR(monthlyRent)} costs more than the bond repayment of ${fmtZAR(monthlyBond)}, so the renter has no cost advantage to invest. However the portfolio still grows to ${fmtZAR(finalYear.rentNetWorth)} through returns on any initial balance.`
+        }
+        narrative += ` This is the power of compounding: consistent monthly investments snowball significantly over time.`
+    }
 
         return narrative
     }
@@ -432,7 +436,11 @@ export default function PropertyVsRent() {
                     <strong>SA context:</strong> Prime rate is 10.25%.
                     Johannesburg property grows at approximately 3–6% p.a.
                     The JSE has returned approximately 8–11% p.a. historically.
-                    This simulation uses your inputs - not generic assumptions.
+                </p>
+                <p style={{ marginTop: '0.4rem', color: 'rgba(255, 255, 255, 0.86)', fontSize: 'var(--text-xs)' }}>
+                    This model assumes the renter invests only the monthly cost difference
+                    between the bond repayment and rent. If rent exceeds the bond, the renter
+                    has no monthly surplus from this difference to invest.
                 </p>
             </div>
 
