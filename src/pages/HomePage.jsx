@@ -23,40 +23,16 @@ export default function HomePage() {
                 <div>
                     <h1 className="page-title">ABSA NextGen Wealth Studio</h1>
                     <p className="page-subtitle">
-                        A financial planning tool built specifically for young South African
-                        professionals - simulate decisions, track goals, and understand
-                        your money before you commit.
+                        An ABSA NextGen initiative - a financial planning tool built specifically
+                        for young South African professionals. Simulate decisions, track goals,
+                        and understand your money before you commit.
                     </p>
                 </div>
             </div>
 
             <div className="home-body">
 
-                {hasData && (
-                    <div className="home-status-bar">
-                        <div className="home-status-item">
-                            <span className="home-status-label">Financial Health</span>
-                            <span className="home-status-value" style={{ color: healthColor }}>
-                                {health.pct}% - {health.label}
-                            </span>
-                        </div>
-                        <div className="home-status-divider" />
-                        <div className="home-status-item">
-                            <span className="home-status-label">Monthly Surplus</span>
-                            <span className="home-status-value"
-                                style={{ color: surplus >= 0 ? '#4ade80' : '#f87171' }}>
-                                {fmtZAR(surplus)}
-                            </span>
-                        </div>
-                        <div className="home-status-divider" />
-                        <div className="home-status-item">
-                            <span className="home-status-label">Gross Income</span>
-                            <span className="home-status-value">
-                                {fmtZAR(profile.grossIncome)}/month
-                            </span>
-                        </div>
-                    </div>
-                )}
+
 
                 <div className="home-feature-grid">
 

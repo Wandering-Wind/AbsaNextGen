@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
 
 :root {
+  --absa-red: #c6050e;
+  --absa-red-glow: rgba(232, 0, 45, 0.35);
+
   --p-100: #CDB4FF;   /* light purple  — highlights, active states */
   --p-200: #A084E8;   /* medium purple — primary actions */
   --p-300: #7C5CBF;   /* deep purple   — pressed states */
@@ -181,7 +184,7 @@ h1, h2, h3, h4 { line-height: 1.2; }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--p-200), var(--p-100));
+  /* background: linear-gradient(135deg, var(--p-200), var(--p-100)); */
   color: var(--dark-text);
   border: none;
   padding: 0.7rem 1.6rem;
@@ -189,13 +192,16 @@ h1, h2, h3, h4 { line-height: 1.2; }
   font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.02em;
-  box-shadow: 0 4px 16px rgba(160, 132, 232, 0.45);
+  /* box-shadow: 0 4px 16px rgba(160, 132, 232, 0.45); */
+  background: linear-gradient(135deg, #c0001f, var(--absa-red));
+  box-shadow: 0 4px 16px var(--absa-red-glow);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(160, 132, 232, 0.55);
+  /* box-shadow: 0 8px 24px rgba(160, 132, 232, 0.55); */
+  box-shadow: 0 8px 24px var(--absa-red-glow);
 }
 
 .btn-primary:active {

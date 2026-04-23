@@ -145,7 +145,8 @@
 .home-feature-cta {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--p-100);
+    color: var(--absa-red);
+    margin-top: 0.25rem;
 }
 
 .home-sa-strip {
