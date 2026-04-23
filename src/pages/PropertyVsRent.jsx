@@ -240,7 +240,6 @@ export default function PropertyVsRent() {
     //Narrative summary for my essay readers - check font size
     function buildNarrative() {
         const winner = buyWins ? 'buying' : 'renting and investing the difference'
-        const loser  = buyWins ? 'renting' : 'buying'
 
         let narrative = `Over ${years} years, ${winner} comes out ahead by ${fmtZAR(difference)}. `
 
@@ -257,7 +256,7 @@ export default function PropertyVsRent() {
         if (monthlyDiff > 0) {
             narrative += `The bond repayment of ${fmtZAR(monthlyBond)} costs ${fmtZAR(monthlyDiff)}/month more than rent. The renter invests that difference into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a., which compounds to ${fmtZAR(finalYear.rentNetWorth)} — outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}.`
         } else {
-            narrative += `Rent of ${fmtZAR(monthlyRent)} costs more than the bond repayment of ${fmtZAR(monthlyBond)}, so the renter has no cost advantage to invest. However the portfolio still grows to ${fmtZAR(finalYear.rentNetWorth)} through returns on any initial balance.`
+            narrative += `Rent of ${fmtZAR(monthlyRent)} costs more than the bond repayment of ${fmtZAR(monthlyBond)}, so the renter has no cost advantage to invest. In this scenario buying is the stronger wealth-building path since the buyer gains equity while the renter pays more each month with nothing to show for it.`
         }
         narrative += ` This is the power of compounding: consistent monthly investments snowball significantly over time.`
     }
