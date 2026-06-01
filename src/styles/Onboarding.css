@@ -1,0 +1,688 @@
+/* Onboarding wizard — split screen layout */
+
+/* Full-screen two-column shell.
+   Left = branding (fixed), Right = scrollable form */
+.ob-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+}
+
+/* ─── Left panel ─────────────────────────────────────────── */
+
+.ob-left {
+    background: var(--n-900);
+    display: flex;
+    align-items: center;
+    padding: 3rem 2.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.ob-left-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.ob-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.ob-brand-logo {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--absa-red);
+    letter-spacing: 0.14em;
+}
+
+.ob-brand-name {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    font-weight: 500;
+}
+
+.ob-left-headline {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+}
+
+/* The red word — applied via a span inside the headline if desired */
+.ob-left-headline span {
+    color: var(--absa-red);
+}
+
+.ob-left-body {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+}
+
+.ob-left-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.ob-left-list li {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* The icon inside list items needs to be the right colour */
+.ob-left-list li svg { color: var(--absa-red); flex-shrink: 0; }
+
+.ob-left-takes {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.30);
+    margin-top: 0.5rem;
+}
+
+/* ─── Right panel ────────────────────────────────────────── */
+
+.ob-right {
+    background: var(--n-0);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem 2rem;
+    overflow-y: auto;
+    min-height: 100vh;
+}
+
+.ob-form-wrap {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+/* ─── Step indicator ─────────────────────────────────────── */
+
+.ob-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+}
+
+/* Each step dot + label */
+.ob-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    flex: 1;
+    position: relative;
+}
+
+/* The line between dots — created with a pseudo-element on each item except the last */
+.ob-step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 13px; /* vertically centred on the dot */
+    left: calc(50% + 14px);
+    right: calc(-50% + 14px);
+    height: 1px;
+    background: var(--n-200);
+}
+
+/* Done steps get a red connecting line */
+.ob-step-item.ob-step--done:not(:last-child)::after {
+    background: var(--absa-red);
+}
+
+.ob-step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--n-300);
+    background: var(--n-0);
+    color: var(--n-400);
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    position: relative;
+    z-index: 1;
+}
+
+.ob-step--active .ob-step-dot {
+    background: var(--absa-red);
+    border-color: var(--absa-red);
+    color: #FFFFFF;
+}
+
+.ob-step--done .ob-step-dot {
+    background: var(--absa-red);
+    border-color: var(--absa-red);
+    color: #FFFFFF;
+}
+
+.ob-step-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--n-400);
+    text-align: center;
+}
+
+.ob-step--active .ob-step-label { color: var(--absa-red); }
+.ob-step--done .ob-step-label   { color: var(--n-600); }
+
+/* ─── Progress bar ───────────────────────────────────────── */
+
+.ob-progress-track {
+    height: 3px;
+    background: var(--n-200);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+}
+
+.ob-progress-fill {
+    height: 100%;
+    background: var(--absa-red);
+    border-radius: var(--r-pill);
+    /* transition controls how smoothly it moves when the step changes.
+       0.4s ease feels natural — not too slow, not instant. */
+    transition: width 0.4s ease;
+}
+
+/* ─── Step content ───────────────────────────────────────── */
+
+.ob-step-count {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--absa-red);
+    margin-bottom: 0.35rem;
+}
+
+.ob-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--n-900);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+}
+
+.ob-subtitle {
+    font-size: var(--text-sm);
+    color: var(--n-500);
+    line-height: 1.6;
+}
+
+/* ─── Form fields ────────────────────────────────────────── */
+
+.ob-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+.ob-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.ob-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--n-700);
+}
+
+.ob-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--n-300);
+    border-radius: var(--r-sm);
+    font-size: var(--text-md);
+    color: var(--n-900);
+    background: var(--n-0);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ob-input:focus {
+    border-color: var(--absa-red);
+    box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
+}
+
+.ob-input::placeholder { color: var(--n-400); }
+
+/* Remove number input arrows — they look messy on currency fields */
+.ob-input[type="number"]::-webkit-outer-spin-button,
+.ob-input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.ob-input[type="number"] { -moz-appearance: textfield; }
+
+.ob-hint {
+    font-size: var(--text-xs);
+    color: var(--n-500);
+    line-height: 1.5;
+}
+
+/* Currency input — R prefix + number together */
+.ob-currency-wrap {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--n-300);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ob-currency-wrap:focus-within {
+    border-color: var(--absa-red);
+    box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
+}
+
+.ob-currency-prefix {
+    padding: 0.7rem 0.75rem;
+    background: var(--n-50);
+    color: var(--n-500);
+    font-size: var(--text-md);
+    font-weight: 600;
+    border-right: 1px solid var(--n-200);
+    flex-shrink: 0;
+}
+
+.ob-currency-wrap .ob-input {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.ob-currency-wrap .ob-input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+/* Percentage input */
+.ob-pct-wrap {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--n-300);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ob-pct-wrap:focus-within {
+    border-color: var(--absa-red);
+    box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
+}
+
+.ob-pct-wrap .ob-input {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    flex: 1;
+}
+
+.ob-pct-wrap .ob-input:focus { border: none; box-shadow: none; }
+
+.ob-pct-suffix {
+    padding: 0.7rem 0.75rem;
+    background: var(--n-50);
+    color: var(--n-500);
+    font-size: var(--text-md);
+    font-weight: 600;
+    border-left: 1px solid var(--n-200);
+    flex-shrink: 0;
+}
+
+/* Live calculation preview shown on the income step */
+.ob-live-calc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.85rem 1rem;
+    background: var(--absa-red-light);
+    border: 1px solid var(--absa-red-border);
+    border-radius: var(--r-sm);
+}
+
+.ob-live-label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--absa-red);
+}
+
+.ob-live-value {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--n-900);
+    letter-spacing: -0.02em;
+}
+
+.ob-live-note {
+    font-size: var(--text-xs);
+    color: var(--n-500);
+}
+
+/* ─── Goal selection cards ───────────────────────────────── */
+
+.ob-goal-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.ob-goal-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    background: var(--n-0);
+    border: 1.5px solid var(--n-200);
+    border-radius: var(--r-md);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.ob-goal-card:hover {
+    border-color: var(--absa-red-border);
+    background: var(--absa-red-light);
+}
+
+.ob-goal-card--selected {
+    border-color: var(--absa-red);
+    background: var(--absa-red-light);
+    box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
+}
+
+.ob-goal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-sm);
+    background: var(--n-0);
+    border: 1px solid var(--n-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--n-600);
+}
+
+.ob-goal-card--selected .ob-goal-icon {
+    background: var(--absa-red);
+    border-color: var(--absa-red);
+    color: #FFFFFF;
+}
+
+.ob-goal-heading {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--n-900);
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.ob-goal-detail {
+    font-size: var(--text-xs);
+    color: var(--n-500);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ─── Password toggle ───────────────────────────────────── */
+
+/* Wraps the password input and positions the eye button inside it */
+.ob-password-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ob-password-wrap .ob-input {
+    padding-right: 2.75rem; /* make room for the eye button */
+    width: 100%;
+}
+
+.ob-eye-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--n-400);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    transition: color 0.15s;
+}
+
+.ob-eye-btn:hover { color: var(--n-700); }
+
+/* ─── Field header (label + mode tabs side by side) ──────── */
+
+.ob-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+
+/* ─── Mode tabs (Enter amount / Choose plan) ─────────────── */
+
+.ob-mode-tabs {
+    display: flex;
+    border: 1px solid var(--n-200);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+}
+
+.ob-mode-tab {
+    padding: 0.2rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    color: var(--n-500);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.ob-mode-tab:first-child { border-right: 1px solid var(--n-200); }
+
+.ob-mode-tab--active {
+    background: var(--absa-red);
+    color: #FFFFFF;
+}
+
+.ob-mode-tab:not(.ob-mode-tab--active):hover {
+    background: var(--n-100);
+    color: var(--n-900);
+}
+
+/* Full-width variant of the select for medical aid */
+.ob-select--full {
+    width: 100%;
+}
+
+/* Confirmation strip shown after a plan is selected */
+.ob-med-confirm {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 0.85rem;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    border-radius: var(--r-sm);
+    font-size: var(--text-xs);
+    color: var(--n-600);
+    margin-top: 0.4rem;
+}
+
+.ob-med-confirm strong {
+    color: var(--success);
+    font-weight: 700;
+}
+
+.ob-med-note {
+    width: 100%;
+    font-size: 0.68rem;
+    color: var(--n-400);
+    font-style: italic;
+}
+
+/* ─── Other income rows ─────────────────────────────────── */
+
+.ob-other-income-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Dropdown select styled to match input fields */
+.ob-select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--n-300);
+    border-radius: var(--r-sm);
+    font-size: var(--text-sm);
+    color: var(--n-700);
+    background: var(--n-0);
+    outline: none;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    transition: border-color 0.15s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236C757D' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+}
+
+.ob-select:focus { border-color: var(--absa-red); }
+
+/* Small × remove button */
+.ob-remove-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--n-300);
+    background: var(--n-0);
+    color: var(--n-500);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.ob-remove-btn:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger);
+}
+
+/* "Add another income source" button */
+.ob-add-income-btn {
+    align-self: flex-start;
+    background: transparent;
+    border: 1px dashed var(--n-300);
+    border-radius: var(--r-sm);
+    color: var(--n-500);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    padding: 0.55rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    width: 100%;
+    text-align: left;
+}
+
+.ob-add-income-btn:hover {
+    border-color: var(--absa-red);
+    color: var(--absa-red);
+    background: var(--absa-red-light);
+}
+
+/* ─── Error message ──────────────────────────────────────── */
+
+.ob-error {
+    font-size: var(--text-sm);
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    border-radius: var(--r-xs);
+    padding: 0.55rem 0.85rem;
+    font-weight: 500;
+}
+
+/* ─── Action buttons ─────────────────────────────────────── */
+
+.ob-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.ob-btn-next {
+    flex: 1;
+    padding: 0.8rem 1.5rem;
+    background: var(--absa-red);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--r-sm);
+    font-size: var(--text-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.ob-btn-next:hover  { background: var(--absa-red-hover); }
+.ob-btn-next:active { transform: translateY(1px); }
+
+.ob-btn-back {
+    padding: 0.8rem 1.25rem;
+    background: transparent;
+    color: var(--n-500);
+    border: 1px solid var(--n-300);
+    border-radius: var(--r-sm);
+    font-size: var(--text-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ob-btn-back:hover { background: var(--n-50); color: var(--n-900); }
+
+/* ─── Responsive — collapse to single column on smaller screens ── */
+
+@media (max-width: 860px) {
+    .ob-shell { grid-template-columns: 1fr; }
+
+    /* Hide left panel on mobile — keep the form clean and fast */
+    .ob-left { display: none; }
+
+    .ob-right { padding: 2rem 1.25rem; align-items: flex-start; }
+    .ob-form-wrap { max-width: 100%; }
+}

@@ -208,10 +208,10 @@ export default function MoneySnapshot() {
                             <div className={`sa-insight ${dti > 36 ? 'sa-insight--warn' : ''}`}>
                                 <span className="sa-insight-label"><Icon name="dti" size={19} glow/> Debt-to-Income</span>
                                 <span className="sa-insight-value">{dti}%
-                                    {dti === 0 && <> — <Icon name="ok"     size={17} glow /> no debt</>}
-                                    {dti > 0 && dti <= 36 && <> — <Icon name="ok"     size={17} glow /> bond-ready</>}
-                                    {dti > 36 && dti <= 50 && <> — <Icon name="warn"   size={17} glow /> above 36%</>}
-                                    {dti > 50 && <> — <Icon name="danger" size={17} glow /> critical</>}
+                                    {dti === 0 && <> - <Icon name="ok"     size={17} glow /> no debt</>}
+                                    {dti > 0 && dti <= 36 && <> - <Icon name="ok"     size={17} glow /> bond-ready</>}
+                                    {dti > 36 && dti <= 50 && <> - <Icon name="warn"   size={17} glow /> above 36%</>}
+                                    {dti > 50 && <> - <Icon name="danger" size={17} glow /> critical</>}
                                 </span>
                             </div>
 
@@ -234,10 +234,10 @@ export default function MoneySnapshot() {
                                     markers={emergencyMarkers}
                                 />
                                 <span className="sa-insight-sub">
-                                    {emergMonths < 1  && <><Icon name="danger" size={17} glow /> Less than 1 month — build this before investing</>}
+                                    {emergMonths < 1  && <><Icon name="danger" size={17} glow /> Less than 1 month - build this before investing</>}
                                     {emergMonths >= 1 && emergMonths < 3 && <><Icon name="warn" size={12} glow /> Below 3-month target</>}
-                                    {emergMonths >= 3 && emergMonths < 6 && <><Icon name="ok"   size={12} glow /> In range — keep building</>}
-                                    {emergMonths >= 6 && <><Icon name="ok"   size={17} glow /> Fully funded — redirect surplus to investments</>}
+                                    {emergMonths >= 3 && emergMonths < 6 && <><Icon name="ok"   size={12} glow /> In range - keep building</>}
+                                    {emergMonths >= 6 && <><Icon name="ok"   size={17} glow /> Fully funded - redirect surplus to investments</>}
                                 </span>
                             </div>
                         </div>

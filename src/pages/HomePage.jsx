@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/HomePage.css";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../context/UserProfileContext";
+import AuthContext from "../context/AuthContext";
 import { calcHealthScore, calcNetSurplus, fmtZAR } from "../components/financialCalcs";
 import Icon from "../components/Icons";
 
 export default function HomePage() {
     const { profile } = useUserProfile()
+    const { user }    = useContext(AuthContext)
     const health  = calcHealthScore(profile)
     const surplus = calcNetSurplus(profile)
     const hasData = profile.grossIncome > 0
@@ -21,11 +23,13 @@ export default function HomePage() {
         <>
             <div className="page-header">
                 <div>
-                    <h1 className="page-title">ABSA NextGen Wealth Studio</h1>
+                    {/* Personal greeting uses the name collected during onboarding.
+                        If somehow user is null, fall back to a generic greeting. */}
+                    <h1 className="page-title">
+                        {user?.name ? `Welcome back, ${user.name}.` : 'Welcome back.'}
+                    </h1>
                     <p className="page-subtitle">
-                        An ABSA NextGen initiative - a financial planning tool built specifically
-                        for young South African professionals. Simulate decisions, track goals,
-                        and understand your money before you commit.
+                        ABSA NextGen Wealth Studio - First Five Years
                     </p>
                 </div>
             </div>

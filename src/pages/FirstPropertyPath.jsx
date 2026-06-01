@@ -285,8 +285,8 @@ export default function FirstPropertyPath() {
 
                     <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
                         {canAfford
-                            ? <><Icon name="ok" size={17} glow /> Bond payment is {bondPct}% of take-home — within the 30% rule.</>
-                            : <><Icon name="warn" size={17} glow /> Bond payment is {bondPct}% of take-home — above 30%.</>
+                            ? <><Icon name="ok" size={17} glow /> Bond payment is {bondPct}% of take-home - within the 30% rule.</>
+                            : <><Icon name="warn" size={17} glow /> Bond payment is {bondPct}% of take-home - above 30%.</>
                         }
                     </div>
                     {dti > 36 && (

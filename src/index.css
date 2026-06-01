@@ -185,6 +185,52 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
 .sa-insight-label      { color: var(--n-600); }
 .page-subtitle         { color: var(--n-500); }
 
+/* ─── Formatted input (used across Onboarding, Snapshot, Studios) ─── */
+
+.fmt-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--n-300);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: var(--n-0);
+}
+
+.fmt-wrap:focus-within {
+  border-color: var(--absa-red);
+  box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
+}
+
+.fmt-prefix,
+.fmt-suffix {
+  padding: 0.6rem 0.75rem;
+  background: var(--n-50);
+  color: var(--n-500);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.fmt-prefix { border-right: 1px solid var(--n-200); }
+.fmt-suffix  { border-left:  1px solid var(--n-200); }
+
+.fmt-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.6rem 0.75rem;
+  font-size: var(--text-sm);
+  color: var(--n-900);
+  background: transparent;
+  min-width: 0;
+  font-family: var(--font-ui);
+  letter-spacing: 0.01em;
+}
+
+.fmt-input::placeholder { color: var(--n-400); }
+
 /* ─── Scrollbar ───────────────────────────────────────────── */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--n-100); }

@@ -1,63 +1,80 @@
-import React from "react";
 import "../styles/LoginPage.css";
 import { useState, useContext } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useUserProfile } from "../context/UserProfileContext";
 
-export default function LoginPage(){
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
- 
-    const {login} = useContext(AuthContext);
-    const navigate = useNavigate();
-    const location = useLocation();
+export default function LoginPage() {
+    const [email,    setEmail]    = useState("")
+    const [password, setPassword] = useState("")
+    const [error,    setError]    = useState("")
 
-    const from = location.state?.from?.pathname || "/home";
+    const { login }        = useContext(AuthContext)
+    const { reloadProfile } = useUserProfile()
+    const navigate          = useNavigate()
+    const location          = useLocation()
 
-    function handleLogin(e){
-        e.preventDefault();
+    /* After login, go back to wherever the user was trying to reach,
+       or default to /home */
+    const from = location.state?.from?.pathname || "/home"
 
-         const success = login(username, password);
-
-         if(success){
-            navigate (from, {replace: true});
-         }
-         else{
-            setError("Invalid username or password");
-         }
+    function handleLogin(e) {
+        e.preventDefault()
+        const success = login(email, password)
+        if (success) {
+            /* Reload the user's saved financial profile into context */
+            reloadProfile()
+            navigate(from, { replace: true })
+        } else {
+            setError("Incorrect email or password.")
+        }
     }
 
-    return(
+    return (
         <div className="login-page">
             <div className="login-card">
+
                 <div className="login-brand">
-      <span className="login-brand-logo">ABSA</span>
-      <span className="login-brand-name">NextGen</span>
-    </div>
-
-            <h1>Welcome back</h1>
-            <p className="login-subtitle">Sign in to access your financial snapshot. (Username can be anything and password should be MORE than 4 letters)</p>
-            <form className="login-form" onSubmit={handleLogin}>
-                <div>
-                    <label>Username</label>
-                    <input 
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <span className="login-brand-logo">ABSA</span>
+                    <span className="login-brand-name">NextGen Wealth Studio</span>
                 </div>
 
-                <div>
-                    <label>Password</label>
-                    <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
+                <h1>Welcome back</h1>
+                <span className="login-subtitle">Sign in to pick up where you left off.</span>
+
+                <form className="login-form" onSubmit={handleLogin}>
+                    <div>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            placeholder="amy@example.com"
+                            autoComplete="email"
+                        />
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                            autoComplete="current-password"
+                        />
+                    </div>
+
+                    {error && <p className="error">{error}</p>}
+
+                    <button type="submit">Sign in</button>
+                </form>
+
+                <div className="login-hint">
+                    New to NextGen?{' '}
+                    <Link to="/onboarding">Create your profile</Link>
+                    {' '}- takes 3 minutes.
                 </div>
 
-                {error && <p className="error">{error}</p>}
-
-                <button type="submit">Login</button>
-
-            </form>
             </div>
         </div>
     )

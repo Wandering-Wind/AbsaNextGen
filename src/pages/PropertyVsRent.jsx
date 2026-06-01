@@ -249,13 +249,13 @@ export default function PropertyVsRent() {
         narrative += `After paying down the bond, your equity reaches ${fmtZAR(finalYear.buyNetWorth)}. `
 
         if (monthlyDiff > 0) {
-            narrative += `The renter's portfolio reaches only ${fmtZAR(finalYear.rentNetWorth)} because the bond repayment of ${fmtZAR(monthlyBond)} is ${fmtZAR(monthlyDiff)}/month higher than rent — leaving little to invest each month.`
+            narrative += `The renter's portfolio reaches only ${fmtZAR(finalYear.rentNetWorth)} because the bond repayment of ${fmtZAR(monthlyBond)} is ${fmtZAR(monthlyDiff)}/month higher than rent - leaving little to invest each month.`
         } else {
             narrative += `Even though rent of ${fmtZAR(monthlyRent)} exceeds the bond repayment of ${fmtZAR(monthlyBond)}, the renter has no surplus from the cost difference to invest, so the buyer's property equity compounds ahead.`
         }
     } else {
         if (monthlyDiff > 0) {
-            narrative += `The bond repayment of ${fmtZAR(monthlyBond)} costs ${fmtZAR(monthlyDiff)}/month more than rent. The renter invests that difference into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a., which compounds to ${fmtZAR(finalYear.rentNetWorth)} — outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}.`
+            narrative += `The bond repayment of ${fmtZAR(monthlyBond)} costs ${fmtZAR(monthlyDiff)}/month more than rent. The renter invests that difference into a portfolio returning ${(investmentReturn * 100).toFixed(0)}% p.a., which compounds to ${fmtZAR(finalYear.rentNetWorth)} - outpacing the buyer's equity of ${fmtZAR(finalYear.buyNetWorth)}.`
         } else {
             narrative += `Rent of ${fmtZAR(monthlyRent)} costs more than the bond repayment of ${fmtZAR(monthlyBond)}, so the renter has no cost advantage to invest. In this scenario buying is the stronger wealth-building path since the buyer gains equity while the renter pays more each month with nothing to show for it.`
         }
