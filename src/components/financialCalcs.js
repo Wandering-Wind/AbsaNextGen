@@ -95,7 +95,7 @@ export function calcHealthScore(profile) {
     const pct = Math.round((total/30)*100)
 
     let label, status
-    if (pct>= 75) {label = "Doing Well"; status = 'doing well'}
+    if (pct>= 75) {label = "Doing Well"; status = 'doing-well'}
     else if (pct >= 50) {label = "Coping"; status = 'coping'}
     else {label = "Struggling"; status = 'struggling'}
 

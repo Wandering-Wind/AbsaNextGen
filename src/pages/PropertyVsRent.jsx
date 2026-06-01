@@ -3,6 +3,7 @@ import { useUserProfile } from '../context/UserProfileContext'
 import { fmtZAR, SA } from '../components/financialCalcs'
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
+import LearnCard from "../components/LearnCard";
  
 function calcBondRepayment(principal, annualRate, termYears) {
     const r = annualRate / 12
@@ -536,15 +537,3 @@ export default function PropertyVsRent() {
     )
 }
 
-function LearnCard({ term, explanation }) {
-    const [open, setOpen] = useState(false)
-    return (
-        <div className="learn-card">
-            <button onClick={() => setOpen(prev => !prev)}>
-                <span>{term}</span>
-                <span>{open ? '▲' : '▼'}</span>
-            </button>
-            {open && <p>{explanation}</p>}
-        </div>
-    )
-}

@@ -8,6 +8,7 @@ import {
     fmtZAR,
     SA,
 } from '../components/financialCalcs'
+import LearnCard from "../components/LearnCard";
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
 
@@ -413,15 +414,3 @@ export default function FirstPropertyPath() {
     )
 }
 
-function LearnCard({ term, explanation }) {
-    const [open, setOpen] = useState(false)
-    return (
-        <div className="learn-card">
-            <button onClick={() => setOpen(prev => !prev)}>
-                <span>{term}</span>
-                <span>{open ? '▲' : '▼'}</span>
-            </button>
-            {open && <p>{explanation}</p>}
-        </div>
-    )
-}

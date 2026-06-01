@@ -50,7 +50,7 @@ export default function LoginPage(){
 
                 <div>
                     <label>Password</label>
-                    <input type="text" value={password} onChange={(e)=> setPassword(e.target.value)}/>
+                    <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
                 </div>
 
                 {error && <p className="error">{error}</p>}

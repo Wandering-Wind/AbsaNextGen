@@ -6,44 +6,42 @@ export default function Navbar(){
 
     return(
         <div className="navbar">
-            <button className="profile-btn">👤</button>
-             
-                <div className="nav-links">
-                    <Link 
-                        to="/home" 
-                        className={location.pathname === "/home" ? "active" : ""}
-                    >
-                        Home
-                        {/*Should I name this home or AbsaNextGen */}
-                    </Link>
+            <div className="navbar-brand">
+                <span className="navbar-logo">ABSA</span>
+                <span className="navbar-product">NextGen Wealth Studio</span>
+            </div>
 
-                    <Link 
-                        to="/dashboard" 
-                        className={location.pathname === "/dashboard" ? "active" : ""}
-                    >
-                        Money Snapshot
-                    </Link>
+            <div className="nav-links">
+                <Link
+                    to="/home"
+                    className={location.pathname === "/home" ? "active" : ""}
+                >
+                    Home
+                </Link>
 
-                    <Link 
-                        to="/tracks/property" 
-                        className={location.pathname.startsWith("/tracks") ? "active" : ""}
-                    >
-                        Strategy Track
-                    </Link>
+                <Link
+                    to="/dashboard"
+                    className={location.pathname === "/dashboard" ? "active" : ""}
+                >
+                    Money Snapshot
+                </Link>
 
-                    <Link 
-                        to="/studio/rent-vs-buy" 
-                        className={location.pathname.startsWith("/studio") ? "active" : ""}
-                    >
-                        Money Studio
-                    </Link>
-                </div>
+                <Link
+                    to="/tracks/property"
+                    className={location.pathname.startsWith("/tracks") ? "active" : ""}
+                >
+                    Strategy Tracks
+                </Link>
 
-                <div className="navbar-brand">
-                    <span className="navbar-logo">ABSA</span>
-                    <span className="navbar-product">NextGen</span>
-                </div>
-            
+                <Link
+                    to="/studio/rent-vs-buy"
+                    className={location.pathname.startsWith("/studio") ? "active" : ""}
+                >
+                    Money Studio
+                </Link>
+            </div>
+
+            <button className="profile-btn" aria-label="Profile">👤</button>
         </div>
     )
 }
