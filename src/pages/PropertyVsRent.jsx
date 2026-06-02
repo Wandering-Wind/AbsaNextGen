@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
-import { fmtZAR, SA } from '../components/financialCalcs'
+import { fmtZAR, SA, calcBondRepayment } from '../components/financialCalcs'
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
 import LearnCard from "../components/LearnCard";
@@ -9,12 +9,6 @@ import {
     CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts'
  
-function calcBondRepayment(principal, annualRate, termYears) {
-    const r = annualRate / 12
-    const n = termYears * 12
-    if (r === 0) return principal / n
-    return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
-}
 
 //Main section of simulation
 //Returns the array things of yearly snapshots for both paths to compare

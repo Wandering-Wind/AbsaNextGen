@@ -219,7 +219,7 @@
   background: var(--n-0);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
   padding-bottom: 3rem;
   display: flex;
   flex-direction: column;

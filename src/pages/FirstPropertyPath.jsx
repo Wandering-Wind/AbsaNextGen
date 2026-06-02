@@ -1,416 +1,362 @@
-import { useState } from 'react'
+import { useState, useMemo, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { useUserProfile } from '../context/UserProfileContext'
+import AuthContext from '../context/AuthContext'
 import {
-    calcTakeHome,
-    calcNetSurplus,
-    calcDTI,
-    calcEmergencyMonths,
-    fmtZAR,
-    SA,
+    calcTakeHome, calcNetSurplus, calcTotalExpenses,
+    calcDTI, calcBondRepayment, calcTransferDuty, fmtZAR, SA,
 } from '../components/financialCalcs'
-import LearnCard from "../components/LearnCard";
-import "../styles/TracksStudioShared.css";
-import Icon from "../components/Icons";
+import "../styles/TracksStudioShared.css"
+import "../styles/Tracks.css"
+import Icon from '../components/Icons'
+import TrackTimeline  from '../components/track/TrackTimeline'
+import TrackYearDetail from '../components/track/TrackYearDetail'
 
-function calcBondRepayment(principal, annualRate, termYears) {
-    const r = annualRate / 12
-    const n = termYears * 12
-    if (r === 0) return principal / n
-    return Math.round((principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1))
-}
-
-function buildMilestones(targetDeposit, bondPayment, takeHome, surplus) {
-    const depositMonths = surplus > 0
-        ? Math.ceil(targetDeposit / (surplus * 0.5))
+/* Building all 5 milestone objects with personalized numbers from the user's profile. (Make more personalized rather than info dump)
+   Every number here is calculated from real profile data so trynna feel like a personal coach */
+function buildMilestones({ profile, targetPrice, depositPct, takeHome, surplus, expenses }) {
+    const deposit         = Math.round(targetPrice * (depositPct / 100))
+    const transferDuty    = calcTransferDuty(targetPrice)
+    const conveyancing    = Math.round(targetPrice * 0.02)
+    const totalCashNeeded = deposit + transferDuty + conveyancing
+    const bondRate        = SA.PRIME_RATE + SA.BOND_SPREAD
+    const bondPayment     = calcBondRepayment(targetPrice - deposit, bondRate, 20)
+    const bondAsPctTH     = takeHome > 0 ? Math.round((bondPayment / takeHome) * 100) : 0
+    const dti             = profile.grossIncome > 0
+        ? Math.round(((profile.carPayment || 0) + (profile.loanPayment || 0)) / profile.grossIncome * 100)
+        : 0
+    const emergencyTarget = Math.round(expenses * 3)
+    const bankBalance     = profile.bankBalance || 0
+    const emergencyPct    = expenses > 0 ? Math.min(100, Math.round((bankBalance / emergencyTarget) * 100)) : 0
+    const savingsToDeposit = Math.max(0, surplus * 0.6) /* assume 60% of surplus goes to deposit savings */
+    const depositProgress  = Math.min(100, Math.round((bankBalance / totalCashNeeded) * 100))
+    const monthsToDeposit  = savingsToDeposit > 0
+        ? Math.ceil((totalCashNeeded - bankBalance) / savingsToDeposit)
         : null
+
+    /* Status logic: done = target met, active = currently working on, upcoming = future */
+    const y1Status = emergencyPct >= 100 ? 'done' : emergencyPct > 30 ? 'active' : 'upcoming'
+    const y2Status = y1Status === 'done' ? (dti < 36 ? 'done' : 'active') : 'upcoming'
+    const y3Status = y2Status === 'done' ? 'active' : 'upcoming'
+    const y4Status = y3Status === 'done' ? 'active' : 'upcoming'
+    const y5Status = depositProgress >= 100 ? 'active' : 'upcoming'
 
     return [
         {
-            year: 1,
-            title: 'Build Your Emergency Fund',
-            target: 'R90 000 – R180 000',
-            description: 'Before saving for a deposit, you need 3-6 months of expenses as a cash buffer. This protects you from being forced into debt by unexpected costs.',
-            actions: [
-                'Open a separate high-interest savings account - not your cheque account.',
-                'Set up an automatic debit order on payday. Treat it like a fixed expense.',
-                'Target R90 000 minimum (3 months). R180 000 is ideal (6 months).',
-                'Do not invest in volatile assets until this buffer exists.',
+            year:     1,
+            label:    'Foundation',
+            sublabel: 'Emergency fund',
+            status:   y1Status,
+            mainTarget:   emergencyTarget,
+            mainCurrent:  bankBalance,
+            mainLabel:    '3-month emergency fund',
+            progressPct:  emergencyPct,
+            progressLabel: `${(bankBalance / Math.max(1, expenses)).toFixed(1)} months coverage`,
+            insight: emergencyPct >= 100
+                ? `You have ${fmtZAR(bankBalance)}, covering ${(bankBalance / Math.max(1, expenses)).toFixed(1)} months. Emergency fund complete.`
+                : surplus > 0
+                    ? `Putting ${fmtZAR(Math.round(surplus * 0.4))}/month toward your fund, you could reach 3 months in ${Math.ceil((emergencyTarget - bankBalance) / Math.max(1, surplus * 0.4))} months.`
+                    : 'Reduce expenses to free up surplus before building your emergency fund.',
+            focus: [
+                'Open a 32-day notice account, separate from your cheque account. Automate a monthly transfer on payday.',
+                `Your 3-month target is ${fmtZAR(emergencyTarget)}. Do not invest in volatile assets until this exists.`,
+                'If you have a TFSA, keep 3 months there for now - but do not withdraw for non-emergencies.',
             ],
-            nudge: 'Without an emergency fund, one job loss or car repair forces you into expensive debt - wiping months of progress.',
+            avoid:     ['Car upgrades', 'Increasing rent', 'Skipping RA', 'Taking on new debt'],
+            why:       'Without a buffer, one unexpected expense forces you into expensive credit that delays your deposit target by months. This is Year 1 for a reason.',
+            saContext: 'ABSA, Nedbank, and FNB currently offer 7-8% p.a. on 32-day notice accounts, vs 2-3% on a current account. On R90 000, that difference is R4 500/year.',
         },
         {
-            year: 2,
-            title: 'Clear High-Interest Debt & Start Deposit Fund',
-            target: `Start building toward ${fmtZAR(targetDeposit)} deposit`,
-            description: 'Eliminate any debt above 15% interest rate first. Then redirect those payments directly into your deposit fund.',
-            actions: [
-                'Pay off car finance or personal loans above 15% p.a. first (avalanche method).',
-                'Once cleared, redirect the full payment amount into a notice deposit or money market account.',
-                surplus > 0
-                    ? `Save aggressively - 25% of take-home (${fmtZAR(takeHome * 0.25)}/month) toward deposit.`
-                    : 'Your current surplus is too low to save aggressively. Reduce expenses first.',
-                'Keep RA contributions active - the tax saving subsidises your savings rate.',
+            year:     2,
+            label:    'Clear Debt',
+            sublabel: 'Reduce DTI + start deposit',
+            status:   y2Status,
+            mainTarget:   deposit,
+            mainCurrent:  Math.max(0, bankBalance - emergencyTarget),
+            mainLabel:    `Deposit target (${depositPct}% of ${fmtZAR(targetPrice)})`,
+            progressPct:  Math.min(100, Math.round((Math.max(0, bankBalance - emergencyTarget) / deposit) * 100)),
+            progressLabel: `${fmtZAR(Math.max(0, bankBalance - emergencyTarget))} saved toward deposit`,
+            insight: dti >= 36
+                ? `Your DTI is ${dti}%. Banks require below 36% for bond approval. Clearing ${fmtZAR((profile.carPayment || 0) + (profile.loanPayment || 0))}/month in debt is the priority.`
+                : `Your DTI is ${dti}% - already within the 36% threshold. Focus on growing your deposit savings to ${fmtZAR(deposit)}.`,
+            focus: [
+                dti >= 36
+                    ? `Pay off your highest-rate debt first (avalanche method). Your car payment of ${fmtZAR(profile.carPayment || 0)}/month is the biggest obstacle.`
+                    : `DTI is healthy at ${dti}%. Redirect ${fmtZAR(Math.round(surplus * 0.6))}/month to a dedicated deposit savings account.`,
+                'Once debt is cleared, redirect the full payment amount to your deposit fund immediately.',
+                `Target saving ${fmtZAR(Math.round(takeHome * 0.25))}/month (25% of take-home) toward your deposit.`,
             ],
-            nudge: 'A R500 000 car at 12% p.a. over 5 years costs R666 000 total and will disqualify you from a bond. Delay luxury purchases.',
+            avoid:     ['New vehicle finance', 'Hire purchase', 'Credit card debt', 'Increasing lifestyle spend'],
+            why:       'Banks calculate your bond affordability against your gross income. Every R1 000/month in existing debt reduces the bond amount they will approve.',
+            saContext: `SA banks use a DTI threshold of 36% of gross income. At ${fmtZAR(profile.grossIncome || 0)}/month gross, your maximum total monthly debt (including your future bond) should not exceed ${fmtZAR(Math.round((profile.grossIncome || 0) * 0.36))}.`,
         },
         {
-            year: 3,
-            title: 'Bond Pre-Approval & Credit Score',
-            target: 'Pre-approval letter from at least 2 banks',
-            description: 'Get your financial profile bond-ready. Banks assess your credit score, DTI, and employment history before approving a home loan.',
-            actions: [
-                'Check your credit score on Experian or TransUnion - target 650 or higher.',
-                'Ensure your debt-to-income ratio is below 36% (SA banks require this).',
-                'Keep 6 months of payslips and 3 months of bank statements ready.',
-                'Use a bond originator (like ooba or BetterBond) - it is free and shops multiple banks at once.',
-                'Do NOT apply for any new credit in the 6 months before your bond application.',
+            year:     3,
+            label:    'Pre-approval',
+            sublabel: 'Get bond-ready',
+            status:   y3Status,
+            mainTarget:   Math.round(totalCashNeeded * 0.6),
+            mainCurrent:  Math.max(0, bankBalance - emergencyTarget),
+            mainLabel:    '60% of total cash target',
+            progressPct:  Math.min(100, depositProgress),
+            progressLabel: `${fmtZAR(Math.max(0, bankBalance - emergencyTarget))} of ${fmtZAR(totalCashNeeded)} needed`,
+            insight: `Your bond payment on this property would be ${fmtZAR(bondPayment)}/month - ${bondAsPctTH}% of your take-home. Banks prefer this below 30%.`,
+            focus: [
+                'Compile pre-approval documents: 3 months payslips, 6 months bank statements, proof of ID and residence.',
+                'Avoid any new credit applications or missed payments for at least 12 months before applying.',
+                'Use a bond originator (ooba or BetterBond) - free service, submits to all major banks simultaneously.',
             ],
-            nudge: 'Bond originators are free and often secure better rates than going to your bank directly. Use one.',
+            avoid:     ['Job changes', 'New credit cards', 'Hire purchase', 'Missing payments'],
+            why:       'Pre-approval tells you exactly what you can afford before you make an offer. It also signals to sellers that you are a serious buyer - critical in competitive SA suburbs.',
+            saContext: `ooba and BetterBond are free bond originators that submit your application to ABSA, Standard Bank, FNB, and Nedbank simultaneously. You get competing offers, which gives you negotiating power on the interest rate.`,
         },
         {
-            year: 4,
-            title: 'Make Your Offer & Transfer Ownership',
-            target: `Budget for ${fmtZAR(bondPayment)}/month bond repayment + transfer costs`,
-            description: 'Making an offer is just the start. Budget carefully for transfer costs on top of your deposit - these are often forgotten.',
-            actions: [
-                'Budget for transfer costs: roughly 8–10% of property price (attorney fees, transfer duty, bond registration).',
-                'Negotiate the purchase price - sellers often accept 5–8% below asking in the current market.',
-                'A shorter bond term (15 years vs 20 years) saves hundreds of thousands in interest if your surplus allows.',
-                'Set up bond repayments by debit order immediately on registration.',
+            year:     4,
+            label:    'Final Stretch',
+            sublabel: 'Complete deposit + transfer costs',
+            status:   y4Status,
+            mainTarget:   totalCashNeeded,
+            mainCurrent:  Math.max(0, bankBalance - emergencyTarget),
+            mainLabel:    'Total cash needed at purchase',
+            progressPct:  Math.min(100, depositProgress),
+            progressLabel: `Deposit + transfer duty + conveyancing`,
+            insight: monthsToDeposit !== null && monthsToDeposit > 0
+                ? `At ${fmtZAR(savingsToDeposit)}/month in dedicated savings, you could reach your full ${fmtZAR(totalCashNeeded)} target in ${monthsToDeposit} months.`
+                : 'You are on track. Keep your savings rate consistent through the final stretch.',
+            focus: [
+                `Full cash breakdown: ${fmtZAR(deposit)} deposit + ${fmtZAR(transferDuty)} transfer duty + ${fmtZAR(conveyancing)} conveyancing = ${fmtZAR(totalCashNeeded)} total.`,
+                'Keep your credit record spotless. Do not apply for any new accounts.',
+                `Your future bond payment is ${fmtZAR(bondPayment)}/month. Make sure your budget already reflects this.`,
             ],
-            nudge: 'Transfer duty in SA: no duty on properties under R1.1M. Then 3% on R1.1M–R1.375M band, scaling up. Budget for this separately from your deposit.',
+            avoid:     ['Large purchases', 'Changing banks', 'Taking on new debt', 'Withdrawing savings'],
+            why:       'Transfer costs catch many first-time buyers off guard. Transfer duty, conveyancing fees, and bond registration can add R50 000 - R120 000 on top of your deposit.',
+            saContext: `Transfer duty on ${fmtZAR(targetPrice)}: ${fmtZAR(transferDuty)}. Conveyancing estimate: ${fmtZAR(conveyancing)}. These are paid from your own cash, not the bond.`,
         },
         {
-            year: 5,
-            title: 'Build Equity & Reinvest Your Surplus',
-            target: 'Extra bond payments + restart investment contributions',
-            description: 'Now that the deposit phase is over, redirect surplus back into wealth-building. Every extra rand into the bond saves you years of interest.',
-            actions: [
-                'Pay extra into your bond whenever possible - even R500/month extra saves years.',
-                'Do not access your access bond to fund lifestyle expenses.',
-                'Restart TFSA and JSE ETF contributions now that the deposit phase is over.',
-                'Reassess your RA - aim to max the 27.5% deduction as your income grows.',
-                'Your property should have grown approximately 34% after 5 years at 6% p.a.',
+            year:     5,
+            label:    'Purchase',
+            sublabel: 'Execute and own',
+            status:   y5Status,
+            mainTarget:   totalCashNeeded,
+            mainCurrent:  Math.max(0, bankBalance - emergencyTarget),
+            mainLabel:    'Cash ready for purchase',
+            progressPct:  Math.min(100, depositProgress),
+            progressLabel: `${depositProgress}% of purchase costs saved`,
+            insight: `Your bond payment will be ${fmtZAR(bondPayment)}/month (${bondAsPctTH}% of take-home). In the first 7-10 years, most of this goes to interest - that is normal and expected.`,
+            focus: [
+                'Make a written offer to purchase. Use a conveyancing attorney - not just the developer\'s recommended attorney.',
+                'Negotiate the bond rate: present competing offers from your bond originator. Even 0.25% off saves tens of thousands over 20 years.',
+                'Consider an access bond - you can pay extra and redraw later, which reduces your interest burden significantly.',
             ],
-            nudge: 'At 6% p.a. growth, a R1.5M property is worth approximately R2M after 5 years. But equity only benefits you when you sell or leverage it carefully.',
+            avoid:     ['Buying at peak market without research', 'Using all savings for deposit (keep 1-2 months buffer)', 'Skipping a property inspection'],
+            why:       'This is the payoff of 4 years of discipline. The goal now is to execute carefully. A rushed purchase or missed red flag can be expensive.',
+            saContext: `ABSA FlexiReserve is an access bond product - you pay in extra, reduce your balance, and can redraw if needed. On a ${fmtZAR(targetPrice - deposit)} bond at ${((bondRate) * 100).toFixed(2)}%, paying in ${fmtZAR(500)}/month extra saves years of interest.`,
         },
     ]
 }
 
-//Status Reporting thing
-const STATUS_ORDER  = ['not-started', 'in-progress', 'done']
-const STATUS_LABELS = {
-    'not-started': 'Not Started',
-    'in-progress': 'In Progress',
-    'done':        'Done ✓',
-}
-
 export default function FirstPropertyPath() {
-    const { profile } = useUserProfile()
+    const { profile }    = useUserProfile()
+    const { user }       = useContext(AuthContext)
+    const hasData        = profile.grossIncome > 0
 
-    //Tracking the property onluy inputs
-    const [targetPrice, setTargetPrice] = useState(1500000)
-    const [depositPct,  setDepositPct]  = useState(10)
-    const [bondTerm,    setBondTerm]    = useState(20)
-    const [bondRate,    setBondRate]    = useState(SA.PRIME_RATE + SA.BOND_SPREAD)
+    /* User-adjustable assumptions in the sidebar */
+    const [targetPrice,  setTargetPrice]  = useState(1500000)
+    const [depositPct,   setDepositPct]   = useState(10)
+    const [selectedYear, setSelectedYear] = useState(1)
 
-    //Milestone progress
-    const [statuses, setStatuses] = useState(
-        Array(5).fill('not-started')
-    )
+    /* Derived values that feed into milestones and the verdict */
+    const takeHome  = calcTakeHome(profile.grossIncome, profile.raPercent)
+    const surplus   = calcNetSurplus(profile)
+    const expenses  = calcTotalExpenses(profile)
+    const dti       = calcDTI(profile)
+    const deposit   = Math.round(targetPrice * (depositPct / 100))
+    const bondRate  = SA.PRIME_RATE + SA.BOND_SPREAD
+    const bondPmt   = calcBondRepayment(targetPrice - deposit, bondRate, 20)
+    const transferD = calcTransferDuty(targetPrice)
+    const convey    = Math.round(targetPrice * 0.02)
+    const totalCash = deposit + transferD + convey
 
-    //Learn section terms. Do I need to make it's own page or si this fine?
-    const [learnOpen, setLearnOpen] = useState(false)
-
-    const takeHome      = calcTakeHome(profile.grossIncome, profile.raPercent)
-    const surplus       = calcNetSurplus(profile)
-    const dti           = calcDTI(profile)
-    const emergMonths   = Number(calcEmergencyMonths(profile))
-    const targetDeposit = targetPrice * (depositPct / 100)
-    const bondPrincipal = targetPrice - targetDeposit
-    const bondPayment   = calcBondRepayment(bondPrincipal, bondRate, bondTerm)
-    const bondPct       = Math.round((bondPayment / takeHome) * 100)
-    const canAfford     = bondPct <= 30
-
-    //How many months does the user need to save for the deposit (assuming 50% of surplus goes to it)
-    const monthsToDeposit = surplus > 0
-        ? Math.ceil(targetDeposit / (surplus * 0.5))
+    /* How long to reach the deposit target from current savings */
+    const savingsRate     = Math.max(0, surplus * 0.6)
+    const bankBalance     = profile.bankBalance || 0
+    const monthsToGoal    = savingsRate > 0
+        ? Math.ceil((totalCash - bankBalance) / savingsRate)
+        : null
+    const buyYear         = monthsToGoal !== null
+        ? new Date().getFullYear() + Math.ceil(monthsToGoal / 12)
         : null
 
-    const milestones = buildMilestones(targetDeposit, bondPayment, takeHome, surplus)
+    /* Verdict status */
+    const isOnTrack   = savingsRate >= totalCash / (5 * 12)
+    const verdictStatus = surplus <= 0 ? 'deficit' : isOnTrack ? 'on-track' : 'at-risk'
 
-    const completedCount = statuses.filter(s => s === 'done').length
-    const progressPct    = Math.round((completedCount / 5) * 100)
+    const milestones = useMemo(() => buildMilestones({
+        profile, targetPrice, depositPct, takeHome, surplus, expenses
+    }), [profile, targetPrice, depositPct, takeHome, surplus, expenses])
 
-    //Status toggle NEED TO FIXXXX
-    function cycleStatus(idx) {
-        setStatuses(prev => {
-            const next    = [...prev]
-            const current = STATUS_ORDER.indexOf(prev[idx])
-            next[idx]     = STATUS_ORDER[(current + 1) % STATUS_ORDER.length]
-            return next
-        })
+    const activeMilestone = milestones[selectedYear - 1]
+
+    /* Empty state - no data entered yet */
+    if (!hasData) {
+        return (
+            <div className="pp-empty">
+                <div className="pp-empty-inner">
+                    <Icon name="tracks" size={40} colour="var(--n-300)"/>
+                    <h2>Set up your Money Snapshot first</h2>
+                    <p>Your Property Path projections are built from your actual income, expenses, and savings. Enter your financial details to unlock personalised milestones.</p>
+                    <Link to="/dashboard" className="btn-primary">Go to Money Snapshot</Link>
+                </div>
+            </div>
+        )
     }
 
     return (
         <>
-        <div className="page-header">
-            <div>
-                <h1 className="page-title">First Property Path</h1>
-                <p className="page-subtitle">
-                    A 5-year roadmap from renter to homeowner - built around SA bond
-                    rates, SARS deductions, and Johannesburg property realities.
-                </p>
-            </div>
-
-            
-
-             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
-                <div className="track-progress">
-                    <svg viewBox="0 0 100 100" width="80" height="80">
-                        <circle cx="50" cy="50" r="42" fill="none"
-                            stroke="rgba(255,255,255,0.1)" strokeWidth="10"/>
-                        <circle
-                            cx="50" cy="50" r="42"
-                            fill="none"
-                            stroke={progressPct === 100 ? '#4ade80' : '#A084E8'}
-                            strokeWidth="10"
-                            strokeLinecap="round"
-                            strokeDasharray={`${(progressPct / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
-                            transform="rotate(-90 50 50)"
-                            style={{ transition: 'stroke-dasharray 0.5s ease' }}
-                        />
-                        <text x="50" y="46" textAnchor="middle" fontSize="18"
-                            fontWeight="700" fill="white" dominantBaseline="middle">
-                            {progressPct}%
-                        </text>
-                        <text x="50" y="63" textAnchor="middle" fontSize="9"
-                            fill="rgba(255,255,255,0.5)">
-                            complete
-                        </text>
-                    </svg>
-                    <p style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginTop: '0.25rem' }}>
-                        {completedCount} of 5 done
-                    </p>
-                </div>
-
-                <button className="reset-btn" onClick={() => {
-                    setTargetPrice(1500000)
-                    setDepositPct(10)
-                    setBondTerm(20)
-                    setBondRate(SA.PRIME_RATE + SA.BOND_SPREAD)
-                    setStatuses(Array(5).fill('not-started'))
-                }}>
-                    Reset inputs
-                </button>
-            </div>
-        </div>
-
-        
-
-        <div className="split-body">
-
-            <aside className="split-left">
-
-                <h2 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--white)', borderBottom: '1px solid rgba(205,180,255,0.2)', paddingBottom: '0.5rem' }}>
-                    Your Property Goal
-                </h2>
-
-                <div className="input-field">
-                    <label>Target property price</label>
-                    <div className="input-prefix-wrap">
-                        <span className="input-prefix">R</span>
-                        <input
-                            type="number"
-                            value={targetPrice === 0 ? '' : targetPrice}
-                            placeholder="0"
-                            min={500000}
-                            step={50000}
-                            onChange={e => setTargetPrice(Number(e.target.value))}
-                        />
-                    </div>
-                    <span className="input-hint">Fourways 2-bed: ~R1.3M–R1.8M · Bryanston: ~R2M–R3M</span>
-                </div>
-
-                <div className="input-field">
-                    <label>Deposit: {depositPct}%</label>
-                    <input type="range" min={5} max={30} step={1} value={depositPct}
-                        onChange={e => setDepositPct(Number(e.target.value))} />
-                    <span className="input-hint">SA banks typically require 10% minimum</span>
-                </div>
-
-                <div className="input-field">
-                    <label>Bond term: {bondTerm} years</label>
-                    <input type="range" min={10} max={30} step={5} value={bondTerm}
-                        onChange={e => setBondTerm(Number(e.target.value))} />
-                </div>
-
-                <div className="input-field">
-                    <label>Interest rate: {(bondRate * 100).toFixed(2)}%</label>
-                    <input type="range" min={0.08} max={0.15} step={0.0025} value={bondRate}
-                        onChange={e => setBondRate(Number(e.target.value))} />
-                    <span className="input-hint">SA prime is 10.25%. First-time buyers: prime +0.5% to +1.5%</span>
-                </div>
-
-                <div className="calc-summary">
-                    <div className="calc-row">
-                        <span>Deposit needed</span>
-                        <strong>{fmtZAR(targetDeposit)}</strong>
-                    </div>
-                    <div className="calc-row">
-                        <span>Bond amount</span>
-                        <strong>{fmtZAR(bondPrincipal)}</strong>
-                    </div>
-                    <div className="calc-row">
-                        <span>Monthly bond payment</span>
-                        <strong>{fmtZAR(bondPayment)}</strong>
-                    </div>
-                    <div className="calc-row">
-                        <span>% of take-home</span>
-                        <strong className={bondPct > 30 ? 'text-warn' : 'text-ok'}>{bondPct}%</strong>
-                    </div>
-                    {monthsToDeposit && (
-                        <div className="calc-row">
-                            <span>Est. months to deposit</span>
-                            <strong>~{monthsToDeposit}</strong>
-                        </div>
-                    )}
-                </div>
-
-                <div className="recommendations">
-                    <h3 style={{ fontSize: 'var(--text-xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.55)' }}>
-                        Personalised Recommendations
-                    </h3>
-                    <p className="recommendations-sub">Based on your Money Snapshot inputs</p>
-
-                    <div className={`recommendation ${canAfford ? 'recommendation--ok' : 'recommendation--warn'}`}>
-                        {canAfford
-                            ? <><Icon name="ok" size={17} glow /> Bond payment is {bondPct}% of take-home - within the 30% rule.</>
-                            : <><Icon name="warn" size={17} glow /> Bond payment is {bondPct}% of take-home - above 30%.</>
-                        }
-                    </div>
-                    {dti > 36 && (
-                        <div className="recommendation recommendation--warn">
-                            <Icon name="warn"   size={17} glow /> Your DTI is {dti}% - above 36%. Pay down debt before applying.
-                        </div>
-                    )}
-                    {emergMonths < 1 && (
-                        <div className="recommendation recommendation--danger">
-                            <Icon name="danger" size={17} glow /> Less than 1 month emergency savings. Complete Year 1 first.
-                        </div>
-                    )}
-                    {surplus <= 0 && (
-                        <div className="recommendation recommendation--danger">
-                            <Icon name="danger" size={17} glow /> Expenses exceed income by {fmtZAR(Math.abs(surplus))}. Fix surplus first.
-                        </div>
-                    )}
-                    {surplus > 0 && surplus < 3000 && (
-                        <div className="recommendation recommendation--warn">
-                            <Icon name="warn"   size={17} glow /> Surplus of {fmtZAR(surplus)} is thin. This track will take longer than 5 years.
-                        </div>
-                    )}
-                    {surplus > 5000 && dti <= 36 && emergMonths >= 1 && canAfford && (
-                        <div className="recommendation recommendation--ok">
-                            <Icon name="ok" size={17} glow /> Your profile looks solid. {fmtZAR(surplus)}/month surplus gives real momentum.
-                        </div>
-                    )}
-                </div>
-
-            </aside>
-
-
-            <div className="split-right">
-
-
-        <div style={{ padding: '0 1.5rem', flexShrink: 0 }}>
-            <div className="philosophy-banner">
+            {/* Page header with live verdict */}
+            <div className="page-header">
                 <div>
-                    <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--p-100)', marginBottom: '0.5rem' }}>
-                        Who this track is for
-                    </h3>
-                    <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.75)', lineHeight: 1.65 }}>
-                        You are renting for R15 000–R25 000/month and feel the money
-                        disappearing. You want to own property but are not sure when you
-                        will be ready. This track prioritises aggressive savings, RA
-                        top-ups for tax breaks, and low-volatility JSE investing while
-                        you build your deposit.
-                    </p>
+                    <h1 className="page-title">{user?.name ? `${user.name}'s Property Path` : 'First Property Path'}</h1>
+                    <p className="page-subtitle">A personalised 5-year roadmap to your first property, built from your real numbers.</p>
                 </div>
-                <div>
-                    <div className="tradeoff-box tradeoff-box--avoid">
-                        <strong> <Icon name="danger" size={17} glow colour="#fca5a5" /> Avoid during this track</strong>
-                        <p>Luxury car finance · aggressive offshore speculation · lifestyle creep · new credit applications</p>
-                    </div>
-                    <div className="tradeoff-box tradeoff-box--prioritise">
-                        <strong> <Icon name="ok"     size={17} glow colour="#86efac" /> Prioritise</strong>
-                        <p>Emergency fund first · then deposit savings · then bond pre-approval · keep RA active</p>
-                    </div>
-                </div>
+                <VerdictBadge
+                    status={verdictStatus}
+                    buyYear={buyYear}
+                    monthsToGoal={monthsToGoal}
+                    surplus={surplus}
+                    totalCash={totalCash}
+                />
             </div>
-        </div>
 
-                <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--white)' }}>
-                    5-Year Milestone Timeline
-                </h2>
-                <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.55)', marginTop: '-0.5rem' }}>
-                    Click any status badge to track your progress. Each milestone is personalised to your income and goals.
-                </p>
+            <div className="split-body">
+                {/* LEFT - Inputs + key numbers */}
+                <div className="split-left">
+                    <div className="input-section">
+                        <p className="input-section-title"><Icon name="target" size={13}/> Your Goal</p>
 
-                {milestones.map((m, idx) => {
-                    const status = statuses[idx]
-                    const statusColour = {
-                        'not-started': '#9ca3af',
-                        'in-progress': '#f59e0b',
-                        'done':        '#22c55e',
-                    }[status]
-
-                    return (
-                        <div key={idx} className={`milestone milestone--${status}`}>
-                            <div className="milestone-header">
-                                <div className="milestone-year-wrap">
-                                    <div className="milestone-dot" style={{ background: statusColour }} />
-                                    <span className="milestone-year">Year {m.year}</span>
-                                </div>
-                                <h3 className="milestone-title">{m.title}</h3>
-                                <button
-                                    className="milestone-status-btn"
-                                    style={{ borderColor: statusColour, color: statusColour }}
-                                    onClick={() => cycleStatus(idx)}
-                                >
-                                    {STATUS_LABELS[status]}
-                                </button>
+                        <div className="input-field">
+                            <label>Target property price</label>
+                            <div className="input-prefix-wrap">
+                                <span className="input-prefix">R</span>
+                                <input
+                                    type="number"
+                                    value={targetPrice}
+                                    onChange={e => setTargetPrice(Number(e.target.value) || 0)}
+                                    min="500000"
+                                    step="50000"
+                                />
                             </div>
-                            <div className="milestone-target"> <Icon name="target" size={17} glow /> {m.target}</div>
-                            <p className="milestone-description">{m.description}</p>
-                            <ul className="milestone-actions">
-                                {m.actions.map((action, i) => <li key={i}>{action}</li>)}
-                            </ul>
-                            <div className="milestone-nudge"><Icon name="nudge" size={17} glow /> {m.nudge}</div>
+                            <p className="input-hint">JHB average 2-bed: R1.2M-R2M in northern suburbs.</p>
                         </div>
-                    )
-                })}
 
-                <div className="learn-section">
-                    <button className="learn-toggle" onClick={() => setLearnOpen(prev => !prev)}>
-                        <Icon name="learn" size={19} glow />
-                        {learnOpen ? 'Hide' : 'Show'} key property concepts
-                    </button>
-                    {learnOpen && (
-                        <div className="learn-grid">
-                            <LearnCard term="Bond (Home Loan)" explanation="A loan from a bank secured against your property. SA bonds are typically at prime rate + a margin. Missing payments can lead to repossession." />
-                            <LearnCard term="Transfer Duty" explanation="A government tax on property purchases. No duty under R1.1M. Then 3% on R1.1M–R1.375M. On a R1.5M home, budget ~R30 000 in transfer duty." />
-                            <LearnCard term="Bond Originator" explanation="A free service (ooba, BetterBond) that submits your application to multiple banks simultaneously. Costs you nothing." />
-                            <LearnCard term="Access Bond" explanation="Most SA bonds are access bonds - pay in extra and redraw later. Reduces balance and interest while keeping funds accessible." />
-                            <LearnCard term="DTI for Bond Approval" explanation="Banks require total debt payments below 36% of gross income. This includes your future bond payment. Get DTI down before applying." />
-                            <LearnCard term="Transfer Costs" explanation="Beyond transfer duty: attorney fees, bond registration, deeds office levies. Budget 8–10% of property price total." />
+                        <div className="input-field">
+                            <label>Deposit: {depositPct}%</label>
+                            <input
+                                type="range"
+                                min="10" max="30" step="5"
+                                value={depositPct}
+                                onChange={e => setDepositPct(Number(e.target.value))}
+                            />
+                            <p className="input-hint">10% is standard. 20% eliminates transfer duty on most properties.</p>
+                        </div>
+                    </div>
+
+                    {/* Key numbers card */}
+                    <div className="pp-key-numbers">
+                        <p className="pp-key-numbers-title">Your numbers</p>
+                        <div className="pp-key-row">
+                            <span>Required deposit</span>
+                            <strong>{fmtZAR(deposit)}</strong>
+                        </div>
+                        <div className="pp-key-row">
+                            <span>Transfer duty</span>
+                            <strong>{fmtZAR(transferD)}</strong>
+                        </div>
+                        <div className="pp-key-row">
+                            <span>Conveyancing (est.)</span>
+                            <strong>{fmtZAR(convey)}</strong>
+                        </div>
+                        <div className="pp-key-row pp-key-row--total">
+                            <span>Total cash needed</span>
+                            <strong>{fmtZAR(totalCash)}</strong>
+                        </div>
+                        <div className="pp-key-divider"/>
+                        <div className="pp-key-row">
+                            <span>Monthly bond (est.)</span>
+                            <strong>{fmtZAR(bondPmt)}</strong>
+                        </div>
+                        <div className="pp-key-row">
+                            <span>Your current surplus</span>
+                            <strong className={surplus < 0 ? 'pp-danger' : surplus < 2000 ? 'pp-warn' : 'pp-ok'}>{fmtZAR(surplus)}</strong>
+                        </div>
+                        <div className="pp-key-row">
+                            <span>Your DTI</span>
+                            <strong className={dti > 36 ? 'pp-danger' : dti > 25 ? 'pp-warn' : 'pp-ok'}>{dti}%</strong>
+                        </div>
+                    </div>
+
+                    {/* DTI explanation if high */}
+                    {dti > 36 && (
+                        <div className="pp-inline-alert pp-inline-alert--warn">
+                            <Icon name="warn" size={13}/>
+                            Your DTI of {dti}% exceeds the 36% bond approval threshold. Clearing debt is your Year 2 priority.
                         </div>
                     )}
                 </div>
 
+                {/* RIGHT - Timeline + year detail */}
+                <div className="split-right">
+                    <TrackTimeline
+                        milestones={milestones}
+                        selectedYear={selectedYear}
+                        onSelect={setSelectedYear}
+                    />
+                    <TrackYearDetail
+                        key={selectedYear}
+                        milestone={activeMilestone}
+                    />
+                </div>
             </div>
-        </div>
-        
         </>
     )
 }
 
+/* Verdict badge in the page header */
+
+function VerdictBadge({ status, buyYear, monthsToGoal, surplus, totalCash }) {
+    if (status === 'deficit') {
+        return (
+            <div className="pp-verdict pp-verdict--risk">
+                <Icon name="danger" size={14}/>
+                <div>
+                    <strong>At risk</strong>
+                    <span>No savings surplus. Reduce expenses first.</span>
+                </div>
+            </div>
+        )
+    }
+    if (status === 'on-track') {
+        return (
+            <div className="pp-verdict pp-verdict--ok">
+                <Icon name="ok" size={14}/>
+                <div>
+                    <strong>On track - buying in {buyYear}</strong>
+                    <span>{monthsToGoal} months to {fmtZAR(totalCash)} at your current savings rate</span>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <div className="pp-verdict pp-verdict--warn">
+            <Icon name="warn" size={14}/>
+            <div>
+                <strong>{buyYear ? `Projected: ${buyYear}` : 'Increase savings rate'}</strong>
+                <span>{monthsToGoal ? `${monthsToGoal} months at current pace` : 'Save more to hit your target'}</span>
+            </div>
+        </div>
+    )
+}
+
+/* PropertyTimeline and YearDetail have been moved to shared components:
+   src/components/track/TrackTimeline.jsx
+   src/components/track/TrackYearDetail.jsx */

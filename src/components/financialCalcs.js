@@ -131,3 +131,23 @@ export function calcEmergencyMonths(profile) {
   if (expenses === 0) return 0
   return ((profile.bankBalance || 0) / expenses).toFixed(1)
 }
+
+/* Standard bond repayment formula (PMT).
+   annualRate is a decimal e.g. 0.1075 for 10.75% */
+export function calcBondRepayment(principal, annualRate, termYears) {
+  const r = annualRate / 12
+  const n = termYears * 12
+  if (r === 0) return Math.round(principal / n)
+  return Math.round((principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1))
+}
+
+/* SARS transfer duty bands (2024/25 rates).
+   Returns the transfer duty payable on a given purchase price. */
+export function calcTransferDuty(price) {
+  if (price <= 1100000)  return 0
+  if (price <= 1375000)  return Math.round((price - 1100000) * 0.03)
+  if (price <= 1925000)  return Math.round(8250  + (price - 1375000) * 0.06)
+  if (price <= 2475000)  return Math.round(41250 + (price - 1925000) * 0.08)
+  if (price <= 11000000) return Math.round(85250 + (price - 2475000) * 0.11)
+  return Math.round(1024500 + (price - 11000000) * 0.13)
+}
