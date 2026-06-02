@@ -31,19 +31,19 @@
   --danger-bg:      #FEF2F2;
   --danger-border:  #FECACA;
 
-  /* ─── Legacy purple → remapped to ABSA red ──────────── */
+  /* Legacy purple remapping to ABSA red */
   /* These kept so existing component colour references still resolve */
   --p-100: #E2001A;
   --p-200: #C4001A;
   --p-300: #A30016;
 
-  /* ─── Elevation ──────────────────────────────────────── */
+  /* Elevation */
   --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05);
 
-  /* ─── Legacy aliases (kept for compatibility) ────────── */
+  /* Legacy (keeping for compatibility)*/
   --shadow-glass: var(--shadow-md);
   --shadow-card:  var(--shadow-sm);
   --shadow-float: var(--shadow-sm);
@@ -64,7 +64,7 @@
   --card-bg:     var(--n-0);
   --card-border: var(--n-200);
 
-  /* ─── Typography ─────────────────────────────────────── */
+  /* Typography */
   --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -75,7 +75,7 @@
   --text-xl:  1.375rem;   /* 22px */
   --text-2xl: 1.75rem;    /* 28px */
 
-  /* ─── Border radius ──────────────────────────────────── */
+  /* Border radius */
   --r-xs:   4px;
   --r-sm:   6px;
   --r-md:   10px;
@@ -83,7 +83,7 @@
   --r-xl:   18px;
   --r-pill: 999px;
 
-  /* ─── Legacy colour aliases ──────────────────────────── */
+  /* Legacy colour aliases*/
   --white:      #FFFFFF;
   --dark-text:  #1A1A1A;
   --off-white:  #F5F6F8;
@@ -93,16 +93,16 @@
 
   --absa-red-glow: rgba(226,0,26,0.18);
 
-  /* bg vars (no longer used for gradient, kept for compat) */
+  /* bg vars (no longer used for gradient, sighhh, keeping for compat) */
   --bg-from: var(--n-50);
   --bg-mid:  var(--n-50);
   --bg-to:   var(--n-50);
 
-  /* ─── Neumorphic (unused in light theme) ─────────────── */
+  /* Neumorphic (unused in light theme) */
   --neu-inset: inset 0 1px 3px rgba(0,0,0,0.06);
 }
 
-/* ─── Reset ──────────────────────────────────────────────── */
+/* Reset*/
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; scroll-behavior: smooth; }
 
@@ -126,7 +126,7 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
   background: var(--n-50);
 }
 
-/* ─── Global component tokens ────────────────────────────── */
+/* Global component tokens*/
 
 /* Card surface */
 .glass,
@@ -176,7 +176,7 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
   color: var(--absa-red);
 }
 
-/* ─── Global colour overrides for all pages ──────────────── */
+/* Global colour overrides for all pages */
 .result-card h3        { color: var(--n-500); }
 .input-field label     { color: var(--n-700); }
 .score-bar-label       { color: var(--n-600); }
@@ -185,7 +185,7 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
 .sa-insight-label      { color: var(--n-600); }
 .page-subtitle         { color: var(--n-500); }
 
-/* ─── Formatted input (used across Onboarding, Snapshot, Studios) ─── */
+/* Formatted input (used across Onboarding, Snapshot, Studios) */
 
 .fmt-wrap {
   display: flex;
@@ -231,7 +231,66 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
 
 .fmt-input::placeholder { color: var(--n-400); }
 
-/* ─── Scrollbar ───────────────────────────────────────────── */
+/* Chart tooltips (shared across all Recharts instances) */
+
+.chart-tooltip {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-radius: var(--r-sm);
+  padding: 0.6rem 0.85rem;
+  box-shadow: var(--shadow-md);
+  font-size: var(--text-xs);
+  min-width: 140px;
+}
+
+.chart-tooltip-title {
+  font-weight: 700;
+  color: var(--n-700);
+  margin-bottom: 0.35rem;
+  font-size: var(--text-xs);
+}
+
+.chart-tooltip-label {
+  display: block;
+  font-weight: 600;
+  color: var(--n-700);
+  margin-bottom: 0.15rem;
+}
+
+.chart-tooltip-value {
+  display: block;
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--n-900);
+  letter-spacing: -0.01em;
+}
+
+.chart-tooltip-pct {
+  display: block;
+  color: var(--n-500);
+  margin-top: 0.1rem;
+}
+
+.chart-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.2rem;
+  font-size: var(--text-xs);
+}
+
+/* Contextual explanation note inside tooltip */
+.chart-tooltip-note {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--n-200);
+  color: var(--n-500);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--n-100); }
 ::-webkit-scrollbar-thumb { background: var(--n-300); border-radius: 3px; }

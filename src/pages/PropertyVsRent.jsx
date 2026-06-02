@@ -4,6 +4,10 @@ import { fmtZAR, SA } from '../components/financialCalcs'
 import "../styles/TracksStudioShared.css";
 import Icon from "../components/Icons";
 import LearnCard from "../components/LearnCard";
+import {
+    LineChart, Line, XAxis, YAxis,
+    CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts'
  
 function calcBondRepayment(principal, annualRate, termYears) {
     const r = annualRate / 12
@@ -76,133 +80,87 @@ function runSimulation({
     return { snapshots, monthlyBond: Math.round(monthlyBond), deposit }
 }
 
-function LineChart({ snapshots }) {
+/* Renamed from LineChart to NetWorthChart to avoid clashing with
+   the LineChart component imported from recharts above. */
+function NetWorthChart({ snapshots }) {
     if (!snapshots.length) return null
 
-    const width  = 500
-    const height = 260
-    const padL   = 70
-    const padB   = 40
-    const padT   = 20
-    const padR   = 20
-    const chartW = width - padL - padR
-    const chartH = height - padT - padB
+    /* Shape the data the way Recharts expects: an array of objects */
+    const data = snapshots.map(s => ({
+        name:     `Yr ${s.year}`,
+        'Buy path': Math.round(s.buyNetWorth),
+        'Rent + invest': Math.round(s.rentNetWorth),
+    }))
 
-    const allValues = snapshots.flatMap(s => [s.buyNetWorth, s.rentNetWorth])
-    const minVal    = Math.min(0, ...allValues)
-    const maxVal    = Math.max(...allValues)
-    const range     = maxVal - minVal || 1
-
-    function xPos(year) {
-        return padL + ((year - 1) / (snapshots.length - 1)) * chartW
-    }
-    function yPos(val) {
-        return padT + chartH - ((val - minVal) / range) * chartH
+    /* Format large rand values on the Y axis */
+    function formatY(val) {
+        if (Math.abs(val) >= 1000000) return `R${(val / 1000000).toFixed(1)}M`
+        if (Math.abs(val) >= 1000)    return `R${(val / 1000).toFixed(0)}K`
+        return `R${val}`
     }
 
-    const buyPoints  = snapshots.map(s => `${xPos(s.year)},${yPos(s.buyNetWorth)}`).join(' ')
-    const rentPoints = snapshots.map(s => `${xPos(s.year)},${yPos(s.rentNetWorth)}`).join(' ')
-
-    //Y-axis labels (5 evenly spaced)
-    const yLabels = Array.from({ length: 5 }, (_, i) => {
-        const val = minVal + (range * i) / 4
-        return { val, y: yPos(val) }
-    })
+    /* Custom tooltip - explains the flat line when rent > bond repayment.
+       This directly fixes the feedback issue about the confusing chart. */
+    function CustomTooltip({ active, payload, label }) {
+        if (!active || !payload?.length) return null
+        const rentVal = payload.find(p => p.dataKey === 'Rent + invest')?.value ?? 0
+        return (
+            <div className="chart-tooltip">
+                <p className="chart-tooltip-title">{label}</p>
+                {payload.map((p, i) => (
+                    <div key={i} className="chart-tooltip-row">
+                        <span style={{ color: p.color }}>{p.name}</span>
+                        <strong>R {Math.abs(p.value).toLocaleString('en-ZA')}</strong>
+                    </div>
+                ))}
+                {/* Contextual note when the rent+invest line reads zero */}
+                {rentVal === 0 && (
+                    <p className="chart-tooltip-note">
+                        Rent currently costs more than the bond repayment,
+                        so there is no surplus to invest. The line shows R0.
+                    </p>
+                )}
+            </div>
+        )
+    }
 
     return (
         <div className="chart-wrap">
-            <svg viewBox={`0 0 ${width} ${height}`} className="line-chart">
-
-                {/*Grid lines*/}
-                {yLabels.map((l, i) => (
-                    <g key={i}>
-                        <line
-                            x1={padL} y1={l.y}
-                            x2={width - padR} y2={l.y}
-                            stroke="#e5e7eb" strokeWidth="1"
-                        />
-                        <text
-                            x={padL - 6} y={l.y}
-                            textAnchor="end"
-                            fontSize="16"
-                            fill="#9ca3af"
-                            dominantBaseline="middle"
-                        >
-                            {l.val >= 1000000
-                                ? `R${(l.val / 1000000).toFixed(1)}M`
-                                : `R${(l.val / 1000).toFixed(0)}K`
-                            }
-                        </text>
-                    </g>
-                ))}
-
-                {/*X-axis labels, does the spaces for these graphs work well?*/}
-                {snapshots.map(s => (
-                    <text
-                        key={s.year}
-                        x={xPos(s.year)} y={height - 8}
-                        textAnchor="middle"
-                        fontSize="17"
-                        fill="#9ca3af"
-                    >
-                        Yr {s.year}
-                    </text>
-                ))}
-
-                {/*Zero line if chart goes negative*/}
-                {minVal < 0 && (
-                    <line
-                        x1={padL} y1={yPos(0)}
-                        x2={width - padR} y2={yPos(0)}
-                        stroke="#6b7280" strokeWidth="1"
-                        strokeDasharray="4 2"
+            <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={data} margin={{ top: 10, right: 20, bottom: 5, left: 10 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--n-200)"/>
+                    <XAxis
+                        dataKey="name"
+                        tick={{ fontSize: 11, fill: 'var(--n-400)' }}
                     />
-                )}
-
-                <polyline
-                    points={buyPoints}
-                    fill="none"
-                    stroke="#e8002d"
-                    strokeWidth="2.5"
-                    strokeLinejoin="round"
-                />
-
-                <polyline
-                    points={rentPoints}
-                    fill="none"
-                    stroke="#6366f1"
-                    strokeWidth="2.5"
-                    strokeLinejoin="round"
-                    strokeDasharray="6 3"
-                />
-
-                {snapshots.map(s => (
-                    <circle
-                        key={s.year}
-                        cx={xPos(s.year)} cy={yPos(s.buyNetWorth)}
-                        r="4" fill="#e8002d"
+                    <YAxis
+                        tickFormatter={formatY}
+                        tick={{ fontSize: 11, fill: 'var(--n-400)' }}
+                        width={68}
                     />
-                ))}
-
-                {snapshots.map(s => (
-                    <circle
-                        key={s.year}
-                        cx={xPos(s.year)} cy={yPos(s.rentNetWorth)}
-                        r="4" fill="#6366f1"
+                    <Tooltip content={<CustomTooltip/>}/>
+                    <Legend
+                        wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }}
                     />
-                ))}
-            </svg>
-
-            <div className="chart-legend">
-                <div className="legend-item">
-                    <span className="legend-dot" style={{ background: '#e8002d' }} />
-                    Buy path (property equity)
-                </div>
-                <div className="legend-item">
-                    <span className="legend-dot legend-dot--dashed" style={{ background: '#6366f1' }} />
-                    Rent + invest difference
-                </div>
-            </div>
+                    <Line
+                        type="monotone"
+                        dataKey="Buy path"
+                        stroke="var(--absa-red)"
+                        strokeWidth={2.5}
+                        dot={{ r: 3, fill: 'var(--absa-red)' }}
+                        activeDot={{ r: 5 }}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="Rent + invest"
+                        stroke="#6366f1"
+                        strokeWidth={2.5}
+                        strokeDasharray="6 3"
+                        dot={{ r: 3, fill: '#6366f1' }}
+                        activeDot={{ r: 5 }}
+                    />
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     )
 }
@@ -297,7 +255,7 @@ export default function PropertyVsRent() {
 
                 <aside className="split-left">
 
-                    <h2 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--white)', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.4rem' }}>
+                    <h2 style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--white)', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.4rem' }}> 
                     {/* <h2>Buying scenario</h2> */} Buying Scenario
                     </h2>
 
@@ -431,7 +389,7 @@ export default function PropertyVsRent() {
     <div className="studio-top-row">
         <div className="result-card studio-chart-card">
             <h3>Net Worth Over Time</h3>
-            <LineChart snapshots={snapshots} />
+            <NetWorthChart snapshots={snapshots} />
         </div>
 
         <div className="studio-side-col">

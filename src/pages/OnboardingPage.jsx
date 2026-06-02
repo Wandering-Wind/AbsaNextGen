@@ -320,7 +320,7 @@ function StepAccount({ formData, onChange }) {
                     name="name"
                     value={formData.name}
                     onChange={onChange}
-                    placeholder="Amy Nkosi"
+                    placeholder="Username"
                     autoComplete="name"
                 />
             </Field>
@@ -332,7 +332,7 @@ function StepAccount({ formData, onChange }) {
                     name="email"
                     value={formData.email}
                     onChange={onChange}
-                    placeholder="amy@example.com"
+                    placeholder="name@example.com"
                     autoComplete="email"
                 />
             </Field>

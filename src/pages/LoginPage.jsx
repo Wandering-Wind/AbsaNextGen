@@ -15,7 +15,7 @@ export default function LoginPage() {
     const location          = useLocation()
 
     /* After login, go back to wherever the user was trying to reach,
-       or default to /home */
+       or default to /home, we out here trynna be fancy like that */
     const from = location.state?.from?.pathname || "/home"
 
     function handleLogin(e) {
@@ -49,7 +49,7 @@ export default function LoginPage() {
                             type="email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            placeholder="amy@example.com"
+                            placeholder="name@example.com"
                             autoComplete="email"
                         />
                     </div>
