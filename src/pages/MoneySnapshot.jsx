@@ -19,10 +19,12 @@ export default function MoneySnapshot() {
     const { profile, updateProfile, resetProfile } = useUserProfile()
     const [learnOpen, setLearnOpen] = useState(false)
 
-    const raAmount      = profile.grossIncome * (Math.min(profile.raPercent, 27.5) / 100)
-    const taxable       = profile.grossIncome - raAmount
-    const payeAmount    = taxable * SA.PAYE_RATE
-    const takeHome      = calcTakeHome(profile.grossIncome, profile.raPercent)
+    const otherIncome   = profile.otherIncome || []
+    const otherTotal    = otherIncome.reduce((sum, i) => sum + (Number(i.amount) || 0), 0)
+    const raAmount      = (profile.grossIncome + otherTotal) * (Math.min(profile.raPercent, 27.5) / 100)
+    const taxable       = profile.grossIncome + otherTotal - raAmount
+    const payeAmount    = taxable * SA.PAYE_RATE   // rough display only — actual PAYE uses brackets in calcTakeHome
+    const takeHome      = calcTakeHome(profile.grossIncome, profile.raPercent, otherIncome)
     const totalExpenses = calcTotalExpenses(profile)
     const netSurplus    = calcNetSurplus(profile)
     const surplusStatus = calcSurplusStatus(profile)

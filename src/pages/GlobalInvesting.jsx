@@ -226,7 +226,7 @@ export default function GlobalInvesting() {
     const hasData     = profile.grossIncome > 0
 
     const surplus   = calcNetSurplus(profile)
-    const takeHome  = calcTakeHome(profile.grossIncome, profile.raPercent)
+    const takeHome  = calcTakeHome(profile.grossIncome, profile.raPercent, profile.otherIncome)
     const expenses  = calcTotalExpenses(profile)
 
     /* Sidebar inputs */

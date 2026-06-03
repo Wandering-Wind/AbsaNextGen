@@ -1,5 +1,7 @@
 export const SA = {
-    PAYE_RATE: 0.18,
+    /* PAYE_RATE kept for rough display hints (e.g. MoneySnapshot RA saving label).
+       All actual tax calculations use calcPAYE() with real SARS brackets below. */
+    PAYE_RATE: 0.26,
     RA_MAX_PERCENT: 27.5,
     TFSA_ANNUAL_CAP: 46000,
     MEDICAL_CREDIT_PRIMARY: 364,
@@ -10,12 +12,29 @@ export const SA = {
     INFLATION: 0.05,
 }
 
-export function calcTakeHome(grossIncome, raPercent) {
-    const raFraction = Math.min(raPercent, SA.RA_MAX_PERCENT) / 100
-    const raAmount = grossIncome * raFraction
-    const taxableIncome = grossIncome - raAmount
-    const paye = taxableIncome * SA.PAYE_RATE
-    return Math.round(grossIncome - raAmount - paye)
+/* SARS 2024/25 income tax brackets
+   Primary rebate of R17 235. Returns annual PAYE in rands. */
+export function calcPAYE(annualTaxable) {
+    let tax = 0
+    if      (annualTaxable <= 237100)   tax = annualTaxable * 0.18
+    else if (annualTaxable <= 370500)   tax = 42678  + (annualTaxable - 237100)  * 0.26
+    else if (annualTaxable <= 512800)   tax = 77362  + (annualTaxable - 370500)  * 0.31
+    else if (annualTaxable <= 673000)   tax = 121475 + (annualTaxable - 512800)  * 0.36
+    else if (annualTaxable <= 857900)   tax = 179147 + (annualTaxable - 673000)  * 0.39
+    else if (annualTaxable <= 1817000)  tax = 251258 + (annualTaxable - 857900)  * 0.41
+    else                                tax = 644489 + (annualTaxable - 1817000) * 0.45
+    return Math.max(0, Math.round(tax - 17235)) // primary rebate
+}
+
+/* otherIncome array of { type, amount } saurr defaults to [] for
+   backward-compatible calls that don't pass it */
+export function calcTakeHome(grossIncome, raPercent, otherIncome = []) {
+    const otherTotal    = otherIncome.reduce((sum, i) => sum + (Number(i.amount) || 0), 0)
+    const totalGross    = grossIncome + otherTotal
+    const raAmount      = totalGross * (Math.min(raPercent, SA.RA_MAX_PERCENT) / 100)
+    const annualTaxable = (totalGross - raAmount) * 12
+    const monthlyPAYE   = Math.round(calcPAYE(annualTaxable) / 12)
+    return Math.round(totalGross - raAmount - monthlyPAYE)
 }
 
 export function calcTotalExpenses(profile){
@@ -31,7 +50,7 @@ export function calcTotalExpenses(profile){
 }
 
 export function calcNetSurplus(profile) {
-    const takeHome = calcTakeHome(profile.grossIncome, profile.raPercent)
+    const takeHome = calcTakeHome(profile.grossIncome, profile.raPercent, profile.otherIncome || [])
     const expenses = calcTotalExpenses(profile)
     return Math.round(takeHome - expenses)
 }
@@ -133,7 +152,7 @@ export function calcEmergencyMonths(profile) {
 }
 
 /* Standard bond repayment formula (PMT).
-   annualRate is a decimal e.g. 0.1075 for 10.75% */
+   annualRate is a decimal e.g. 0.1075 for 10.75% (yohh finances are so hard bro)*/
 export function calcBondRepayment(principal, annualRate, termYears) {
   const r = annualRate / 12
   const n = termYears * 12

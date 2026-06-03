@@ -166,7 +166,7 @@ export default function FirstPropertyPath() {
     const [selectedYear, setSelectedYear] = useState(1)
 
     /* Derived values that feed into milestones and the verdict */
-    const takeHome  = calcTakeHome(profile.grossIncome, profile.raPercent)
+    const takeHome  = calcTakeHome(profile.grossIncome, profile.raPercent, profile.otherIncome)
     const surplus   = calcNetSurplus(profile)
     const expenses  = calcTotalExpenses(profile)
     const dti       = calcDTI(profile)

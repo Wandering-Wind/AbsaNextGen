@@ -6,6 +6,7 @@ import { useUserProfile } from '../context/UserProfileContext'
 import '../styles/Onboarding.css'
 import Icon from '../components/Icons'
 import { FormattedCurrencyInput, FormattedPercentInput, formatNumber } from '../components/FormattedInput'
+import { calcTakeHome } from '../components/financialCalcs'
 
 /* MEDICAL AID: single-adult contributions */
 const MEDICAL_AIDS = [
@@ -90,7 +91,7 @@ export default function OnboardingPage() {
         name: '', email: '', password: '',
         grossIncome: '', raPercent: '8',
         otherIncome: [],  /* array of { id, type, amount } */
-        rent: '', utilities: '', medicalAid: '', carPayment: '', entertainment: '',
+        rent: '', utilities: '', medicalAid: '', carPayment: '', loanPayment: '', entertainment: '',
         tfsaContribution: '', bankBalance: '',
         primaryGoal: 'property',
     })
@@ -169,7 +170,7 @@ export default function OnboardingPage() {
                 utilities:        Number(formData.utilities)        || 0,
                 medicalAid:       Number(formData.medicalAid)       || 0,
                 carPayment:       Number(formData.carPayment)       || 0,
-                loanPayment:      0,
+                loanPayment:      Number(formData.loanPayment)      || 0,
                 tfsaContribution: Number(formData.tfsaContribution) || 0,
                 bankBalance:      Number(formData.bankBalance)      || 0,
                 entertainment:    Number(formData.entertainment)    || 0,
@@ -369,9 +370,8 @@ function StepAccount({ formData, onChange }) {
 function StepIncome({ formData, onChange, onAdd, onUpdate, onRemove, totalOtherIncome }) {
     const gross    = Number(formData.grossIncome) || 0
     const total    = gross + totalOtherIncome
-    const ra       = total * (Math.min(Number(formData.raPercent) || 0, 27.5) / 100)
-    const paye     = (total - ra) * 0.26
-    const takeHome = Math.max(0, total - paye - ra)
+    const otherIncomeForCalc = formData.otherIncome.map(i => ({ amount: Number(i.amount) || 0 }))
+    const takeHome = calcTakeHome(gross, Number(formData.raPercent) || 0, otherIncomeForCalc)
 
     return (
         <>
@@ -455,6 +455,10 @@ function StepExpenses({ formData, onChange }) {
 
             <Field label="Car payment">
                 <FormattedCurrencyInput name="carPayment" value={formData.carPayment} onChange={onChange}/>
+            </Field>
+
+            <Field label="Other loans" hint="Student loans, personal loans, credit card minimums.">
+                <FormattedCurrencyInput name="loanPayment" value={formData.loanPayment} onChange={onChange}/>
             </Field>
 
             {/* Medical aid - toggle between manual entry and plan selector (FIX THE UI of this) */}
