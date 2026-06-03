@@ -7,6 +7,7 @@ import FirstPropertyPath from './pages/FirstPropertyPath';
 import PropertyVsRent    from './pages/PropertyVsRent';
 import GlobalInvesting   from './pages/GlobalInvesting';
 import TravelTrack       from './pages/TravelTrack';
+import CarVsInvest       from './pages/CarVsInvest';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider }        from './context/AuthContext';
@@ -30,7 +31,7 @@ function App() {
                             <Route path='/studio/rent-vs-buy'      element={<PropertyVsRent/>}/>
                             <Route path='/tracks/global-investing' element={<GlobalInvesting/>}/>
                             <Route path='/tracks/travel'           element={<TravelTrack/>}/>
-                            <Route path='/studio/car-vs-invest'    element={<div className="coming-soon"><h2>Car vs Invest - coming soon</h2></div>}/>
+                            <Route path='/studio/car-vs-invest'    element={<CarVsInvest/>}/>
                             <Route path='/studio/offshore'         element={<div className="coming-soon"><h2>Offshore Portfolio - coming soon</h2></div>}/>
                         </Route>
                     </Routes>
