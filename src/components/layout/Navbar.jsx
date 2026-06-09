@@ -39,7 +39,7 @@ export default function Navbar() {
                 </Link>
 
                 <Link
-                    to="/tracks/property"
+                    to="/tracks"
                     className={location.pathname.startsWith("/tracks") ? "active" : ""}
                 >
                     Strategy Tracks

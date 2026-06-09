@@ -7,6 +7,7 @@ import FirstPropertyPath from './pages/FirstPropertyPath';
 import PropertyVsRent    from './pages/PropertyVsRent';
 import GlobalInvesting   from './pages/GlobalInvesting';
 import TravelTrack       from './pages/TravelTrack';
+import TracksHub         from './pages/TracksHub';
 import CarVsInvest       from './pages/CarVsInvest';
 import OffshoreStudio    from './pages/OffshoreStudio';
 
@@ -30,6 +31,7 @@ function App() {
                         <Route element={<RequireAuth><PageWrapper/></RequireAuth>}>
                             <Route path='/home'                    element={<HomePage/>}/>
                             <Route path='/dashboard'               element={<MoneySnapshot/>}/>
+                            <Route path='/tracks'                  element={<TracksHub/>}/>
                             <Route path='/tracks/property'         element={<FirstPropertyPath/>}/>
                             <Route path='/studio/rent-vs-buy'      element={<PropertyVsRent/>}/>
                             <Route path='/tracks/global-investing' element={<GlobalInvesting/>}/>

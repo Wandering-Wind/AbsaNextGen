@@ -5,9 +5,10 @@ export default function SubNav({type}){
     const location = useLocation();
 
     const trackLinks = [
-        {name: "Property Path", path: "/tracks/property"},
-        {name: "Global Investing", path: "/tracks/global-investing"},
-        {name: "Travel", path: "/tracks/travel"},
+        {name: "Overview",        path: "/tracks"},
+        {name: "Property Path",   path: "/tracks/property"},
+        {name: "Global Investing",path: "/tracks/global-investing"},
+        {name: "Travel",          path: "/tracks/travel"},
     ];
 
     const studioLinks = [
