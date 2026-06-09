@@ -4,10 +4,11 @@ import "../styles/pages/MoneySnapshot.css";
 import "../styles/shared/TracksStudioShared.css";
 import Icon from "../components/Icons";
 import LearnCard from "../components/LearnCard";
-import { 
+import {
             calcTakeHome, calcNetSurplus, calcHealthScore, calcSurplusStatus,
             calcSurplusMessage, calcMedicalCredit, calcTfsaHeadroom, calcDTI,
-            calcEmergencyMonths, calcTotalExpenses, fmtZAR, SA,
+            calcEmergencyMonths, calcTotalExpenses, buildSnapshotNarrative,
+            fmtZAR, SA,
         } from '../components/financialCalcs'
 
 import HealthGauge   from '../components/money_snapshot/HealthGauge'
@@ -36,6 +37,7 @@ export default function MoneySnapshot() {
     const emergMonths   = Number(calcEmergencyMonths(profile))
     const tfsaAnnual    = (profile.tfsaContribution || 0) * 12
     const tfsaPct       = Math.min(100, Math.round((tfsaAnnual / SA.TFSA_ANNUAL_CAP) * 100))
+    const narrative     = buildSnapshotNarrative(profile, takeHome)
 
     //Donut chart segments stuff
     const expenseSegments = [
@@ -150,6 +152,8 @@ export default function MoneySnapshot() {
                         </strong>
                         <p>{alertMessage}</p>
                     </div>
+
+                    <SnapshotNarrative sentences={narrative} />
 
                     <div className="result-row result-row--two">
                         <div className="result-card result-card--center">
@@ -304,6 +308,27 @@ function SliderField({ label, value, onChange, min, max, step, tooltip }) {
                 min={min} max={max} step={step}
                 onChange={e => onChange(e.target.value)}
             />
+        </div>
+    )
+}
+
+/* Narrative card which should render only when the user has entered income data */
+function SnapshotNarrative({ sentences }) {
+    if (!sentences || sentences.length === 0) return null
+
+    return (
+        <div className="narrative-card">
+            <p className="narrative-eyebrow">Position Summary</p>
+            <div className="narrative-sentences">
+                {sentences.map((s, i) => (
+                    <p
+                        key={i}
+                        className={`narrative-sentence narrative-sentence--${s.sentiment}`}
+                    >
+                        {s.text}
+                    </p>
+                ))}
+            </div>
         </div>
     )
 }

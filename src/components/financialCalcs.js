@@ -1,6 +1,6 @@
 export const SA = {
     /* PAYE_RATE kept for rough display hints (e.g. MoneySnapshot RA saving label).
-       All actual tax calculations use calcPAYE() with real SARS brackets below. */
+       All actual tax calculations use calcPAYE() with the SARS brackets below */
     PAYE_RATE: 0.26,
     RA_MAX_PERCENT: 27.5,
     TFSA_ANNUAL_CAP: 46000,
@@ -12,8 +12,7 @@ export const SA = {
     INFLATION: 0.05,
 }
 
-/* SARS 2024/25 income tax brackets
-   Primary rebate of R17 235. Returns annual PAYE in rands. */
+/* SARS income tax brackets */
 export function calcPAYE(annualTaxable) {
     let tax = 0
     if      (annualTaxable <= 237100)   tax = annualTaxable * 0.18
@@ -23,7 +22,7 @@ export function calcPAYE(annualTaxable) {
     else if (annualTaxable <= 857900)   tax = 179147 + (annualTaxable - 673000)  * 0.39
     else if (annualTaxable <= 1817000)  tax = 251258 + (annualTaxable - 857900)  * 0.41
     else                                tax = 644489 + (annualTaxable - 1817000) * 0.45
-    return Math.max(0, Math.round(tax - 17235)) // primary rebate
+    return Math.max(0, Math.round(tax - 17235))
 }
 
 /* otherIncome array of { type, amount } saurr defaults to [] for
@@ -151,8 +150,7 @@ export function calcEmergencyMonths(profile) {
   return ((profile.bankBalance || 0) / expenses).toFixed(1)
 }
 
-/* Standard bond repayment formula (PMT).
-   annualRate is a decimal e.g. 0.1075 for 10.75% (yohh finances are so hard bro)*/
+/* Standard bond repayment formula (yohh finances are so hard bro)*/
 export function calcBondRepayment(principal, annualRate, termYears) {
   const r = annualRate / 12
   const n = termYears * 12
@@ -160,8 +158,110 @@ export function calcBondRepayment(principal, annualRate, termYears) {
   return Math.round((principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1))
 }
 
-/* SARS transfer duty bands (2024/25 rates).
-   Returns the transfer duty payable on a given purchase price. */
+/* Snapshot narrative - returns an bunch of { text, sentiment } objects
+   Each combining the user's numbers into context and like what it means for them
+   The sentiments are one of: 'positive' | 'caution' | 'negative' | 'neutral'   */
+export function buildSnapshotNarrative(profile, takeHome) {
+  if (!profile || !profile.grossIncome || profile.grossIncome === 0) return []
+
+  const lines = []
+  const gross = profile.grossIncome
+
+  /* 1.Income band context */
+  if (gross < 25000) {
+    lines.push({
+      text:      `At ${fmtZAR(gross)}/month gross you are in the graduate band. The RA and TFSA habits you build now compound across decades - the consistency matters more than the amount at this stage.`,
+      sentiment: 'neutral',
+    })
+  } else if (gross < 55000) {
+    lines.push({
+      text:      `At ${fmtZAR(gross)}/month gross, PAYE starts to bite hardest in this range. Using your RA allowance aggressively is the single most effective tax tool available to you right now.`,
+      sentiment: 'neutral',
+    })
+  } else {
+    lines.push({
+      text:      `At ${fmtZAR(gross)}/month gross your tax exposure is significant. Maxing your RA and TFSA before lifestyle expenses absorb the difference is the priority call at this income level.`,
+      sentiment: 'caution',
+    })
+  }
+
+  /* 2.Housing allocation */
+  if (takeHome > 0 && (profile.rent || 0) > 0) {
+    const pct = Math.round(((profile.rent || 0) / takeHome) * 100)
+    if (pct <= 25) {
+      lines.push({
+        text:      `Housing at ${pct}% of take-home is lean - well below the 30% threshold that signals financial strain. That headroom can go directly into wealth-building.`,
+        sentiment: 'positive',
+      })
+    } else if (pct <= 33) {
+      lines.push({
+        text:      `Housing is taking ${pct}% of take-home, which sits within the acceptable range. Worth monitoring if interest rates or rent escalations push it past 33%.`,
+        sentiment: 'neutral',
+      })
+    } else {
+      lines.push({
+        text:      `At ${pct}% of take-home, housing is absorbing a large share of your income. The general guideline is 30% maximum - this level limits what you can build elsewhere.`,
+        sentiment: 'caution',
+      })
+    }
+  }
+
+  /* 3. Lifestyle spend */
+  if (takeHome > 0 && (profile.entertainment || 0) > 0) {
+    const pct = Math.round(((profile.entertainment || 0) / takeHome) * 100)
+    if (pct < 10) {
+      lines.push({
+        text:      `Lifestyle spend at ${pct}% of take-home is disciplined. Typical for your income band is 10-15% - you have real room to redirect here if priorities shift.`,
+        sentiment: 'positive',
+      })
+    } else if (pct <= 15) {
+      lines.push({
+        text:      `Entertainment and dining at ${pct}% of take-home is typical for your income band - not excessive, not negligible. This is a healthy baseline.`,
+        sentiment: 'neutral',
+      })
+    } else if (pct <= 25) {
+      lines.push({
+        text:      `Lifestyle spend at ${pct}% of take-home is above average for your income band. This is the most negotiable category in your budget if you need to free up capital.`,
+        sentiment: 'caution',
+      })
+    } else {
+      lines.push({
+        text:      `At ${pct}% of take-home, lifestyle and entertainment is significantly above average. This is the category where wealth accumulation most commonly stalls.`,
+        sentiment: 'negative',
+      })
+    }
+  }
+
+  /* 4. Savings rate and forward-look */
+  if (takeHome > 0) {
+    const savingsPct = Math.round(((profile.tfsaContribution || 0) / takeHome) * 100)
+    if (savingsPct === 0) {
+      lines.push({
+        text:      `No TFSA contribution is currently set. Even R500/month started now builds the habit and the compound base that accelerates meaningfully over five years.`,
+        sentiment: 'negative',
+      })
+    } else if (savingsPct < 10) {
+      lines.push({
+        text:      `A ${savingsPct}% savings rate is a foundation. The target for meaningful 5-year accumulation is 15-20% of take-home - there is room to grow this gradually.`,
+        sentiment: 'caution',
+      })
+    } else if (savingsPct < 20) {
+      lines.push({
+        text:      `Saving ${savingsPct}% of take-home puts you in a healthy range. Pushing toward 20% would place you firmly in the wealth-building tier for your income band.`,
+        sentiment: 'positive',
+      })
+    } else {
+      lines.push({
+        text:      `At ${savingsPct}% savings rate you are ahead of most earners in your income band. Protect this discipline as income grows - lifestyle inflation is the main threat at this stage.`,
+        sentiment: 'positive',
+      })
+    }
+  }
+
+  return lines
+}
+
+/* SARS transfer duty bands (2024/25 rates) */
 export function calcTransferDuty(price) {
   if (price <= 1100000)  return 0
   if (price <= 1375000)  return Math.round((price - 1100000) * 0.03)
