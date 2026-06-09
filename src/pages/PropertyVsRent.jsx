@@ -4,8 +4,8 @@ import {
     fmtZAR, SA, calcBondRepayment,
     calcNetSurplus, calcTakeHome, calcTotalExpenses,
 } from '../components/financialCalcs'
-import "../styles/TracksStudioShared.css"
-import "../styles/PropertyVsRent.css"
+import "../styles/shared/TracksStudioShared.css"
+import "../styles/pages/PropertyVsRent.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
 import {

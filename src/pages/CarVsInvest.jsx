@@ -3,8 +3,8 @@ import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcNetSurplus,
 } from '../components/financialCalcs'
-import "../styles/TracksStudioShared.css"
-import "../styles/CarVsInvest.css"
+import "../styles/shared/TracksStudioShared.css"
+import "../styles/pages/CarVsInvest.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
 import {

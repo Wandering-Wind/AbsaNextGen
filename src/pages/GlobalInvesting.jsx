@@ -6,8 +6,8 @@ import AuthContext from '../context/AuthContext'
 import {
     calcTakeHome, calcNetSurplus, calcTotalExpenses, fmtZAR, SA,
 } from '../components/financialCalcs'
-import "../styles/TracksStudioShared.css"
-import "../styles/Tracks.css"
+import "../styles/shared/TracksStudioShared.css"
+import "../styles/shared/Tracks.css"
 import Icon from '../components/Icons'
 import TrackTimeline   from '../components/track/TrackTimeline'
 import TrackYearDetail from '../components/track/TrackYearDetail'

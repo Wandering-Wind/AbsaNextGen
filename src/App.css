@@ -85,6 +85,15 @@
   border-bottom-color: var(--absa-red);
 }
 
+/* Navbar right-side action group (bell + profile) */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 /* Profile button - right */
 .profile-btn {
   width: 32px;
@@ -98,7 +107,6 @@
   justify-content: center;
   font-size: 0.85rem;
   flex-shrink: 0;
-  margin-left: auto;
   transition: background 0.15s, box-shadow 0.15s;
 }
 

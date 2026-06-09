@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
-import "../styles/MoneySnapshot.css";
-import "../styles/TracksStudioShared.css";
+import "../styles/pages/MoneySnapshot.css";
+import "../styles/shared/TracksStudioShared.css";
 import Icon from "../components/Icons";
 import LearnCard from "../components/LearnCard";
 import { 

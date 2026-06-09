@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "../styles/HomePage.css";
+import "../styles/pages/HomePage.css";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../context/UserProfileContext";
 import AuthContext from "../context/AuthContext";

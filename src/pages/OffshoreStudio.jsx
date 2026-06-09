@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import { fmtZAR, SA, calcNetSurplus } from '../components/financialCalcs'
-import "../styles/TracksStudioShared.css"
-import "../styles/OffshoreStudio.css"
+import "../styles/shared/TracksStudioShared.css"
+import "../styles/pages/OffshoreStudio.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
 import {

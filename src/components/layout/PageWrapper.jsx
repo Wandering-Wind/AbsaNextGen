@@ -2,6 +2,8 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import SubNav from "./SubNav";
+import NudgeStack from "../nudges/NudgeStack";
+import "../../styles/components/Nudges.css";
 
 
 export default function PageWrapper(){
@@ -23,6 +25,9 @@ export default function PageWrapper(){
                     <Outlet/>
                 </div>
             {/* </div> */}
+
+            {/* Floating signal stack - renders above page content */}
+            <NudgeStack />
 
         </div>
     )

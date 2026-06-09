@@ -15,11 +15,13 @@ import { AuthProvider }        from './context/AuthContext';
 import RequireAuth             from './components/RequireAuth';
 import PageWrapper             from './components/layout/PageWrapper';
 import { UserProfileProvider } from './context/UserProfileContext';
+import { NudgeProvider }       from './context/NudgeContext';
 
 function App() {
     return (
         <AuthProvider>
             <UserProfileProvider>
+                <NudgeProvider>
                 <BrowserRouter>
                     <Routes>
                         <Route path='/'           element={<LoginPage/>}/>
@@ -37,6 +39,7 @@ function App() {
                         </Route>
                     </Routes>
                 </BrowserRouter>
+                </NudgeProvider>
             </UserProfileProvider>
         </AuthProvider>
     )
