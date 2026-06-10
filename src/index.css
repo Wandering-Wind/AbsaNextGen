@@ -52,12 +52,12 @@
   --n-900: #edf0f8;
 
   /* Semantic status */
-  --success:        #4ade80;
-  --success-bg:     rgba(74,222,128,0.09);
-  --success-border: rgba(74,222,128,0.22);
-  --warning:        #fbbf24;
-  --warning-bg:     rgba(251,191,36,0.09);
-  --warning-border: rgba(251,191,36,0.22);
+  --success:        #16a34a;
+  --success-bg:     rgba(22,163,74,0.08);
+  --success-border: rgba(22,163,74,0.20);
+  --warning:        #b45309;
+  --warning-bg:     rgba(180,83,9,0.08);
+  --warning-border: rgba(180,83,9,0.20);
   --danger:         #f87171;
   --danger-bg:      rgba(248,113,113,0.09);
   --danger-border:  rgba(248,113,113,0.22);

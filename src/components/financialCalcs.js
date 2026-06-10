@@ -96,6 +96,7 @@ export function calcDebtScore(profile) {
 
 export function calcEmergencyScore(profile) {
     const monthlyExpenses = calcTotalExpenses(profile)
+    if (monthlyExpenses === 0 && (profile.bankBalance || 0) === 0) return 0
     if (monthlyExpenses === 0) return 10
     const months = (profile.bankBalance || 0) / monthlyExpenses
     if (months >= 6) return 10

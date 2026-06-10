@@ -56,7 +56,6 @@ export default function DonutChart({ segments }) {
                     </PieChart>
                 </ResponsiveContainer>
 
-                /* Center label */
                 <div style={{
                     position: 'absolute',
                     top: '50%', left: '50%',

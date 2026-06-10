@@ -507,11 +507,32 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--n-500);
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--n-200);
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.input-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--absa-red);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-section:hover .input-section-title {
+  color: var(--absa-red);
+}
+
+.input-section:hover .input-section-title::after {
+  width: 100%;
 }
 
 .input-field { display: flex; flex-direction: column; gap: 0.3rem; }
@@ -671,17 +692,37 @@
 /* Surplus alerts */
 
 .surplus-alert {
-  padding: 0.75rem 1rem;
-  border-radius: var(--r-sm);
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--r-md);
   font-size: var(--text-sm);
   line-height: 1.55;
-  border-left: 2px solid;
+  border: 1px solid var(--n-200);
   font-weight: 500;
+  color: var(--n-700);
+  position: relative;
+  overflow: hidden;
 }
 
-.surplus-alert--surplus  { background: var(--success-bg);  border-color: var(--success); color: var(--success); }
-.surplus-alert--breakeven{ background: var(--warning-bg);  border-color: var(--warning); color: var(--warning); }
-.surplus-alert--deficit  { background: var(--danger-bg);   border-color: var(--danger);  color: var(--danger);  }
+.surplus-alert::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.surplus-alert p { color: var(--n-600); font-weight: 400; margin-top: 0.2rem; }
+
+.surplus-alert--surplus   { background: var(--success-bg); border-color: var(--success-border); }
+.surplus-alert--surplus::before   { background: var(--success); }
+.surplus-alert--surplus   strong  { color: var(--success); }
+
+.surplus-alert--breakeven { background: var(--warning-bg); border-color: var(--warning-border); }
+.surplus-alert--breakeven::before { background: var(--warning); }
+.surplus-alert--breakeven strong  { color: var(--warning); }
+
+.surplus-alert--deficit   { background: var(--danger-bg);  border-color: rgba(248,113,113,0.22); }
+.surplus-alert--deficit::before   { background: var(--danger); }
+.surplus-alert--deficit   strong  { color: var(--danger); }
 
 /* Score bars */
 

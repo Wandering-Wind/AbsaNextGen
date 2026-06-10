@@ -4,10 +4,10 @@ export default function WaterfallBar({ gross, raAmount, payeAmount, expenses, su
     if (gross === 0) return null
 
     const segments = [
-        { label: 'RA',       value: raAmount,   colour: '#818cf8' },
-        { label: 'PAYE',     value: payeAmount,  colour: '#f87171' },
-        { label: 'Expenses', value: expenses,    colour: '#fb923c' },
-        { label: 'Surplus',  value: Math.max(0, surplus), colour: '#4ade80' },
+        { label: 'RA',       value: raAmount,              colour: '#E2001A' },
+        { label: 'PAYE',     value: payeAmount,            colour: '#7C0012' },
+        { label: 'Expenses', value: expenses,              colour: '#374151' },
+        { label: 'Surplus',  value: Math.max(0, surplus),  colour: '#059669' },
     ]
 
     const total = segments.reduce((s, seg) => s + seg.value, 0)
