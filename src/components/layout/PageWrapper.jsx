@@ -22,6 +22,8 @@ export default function PageWrapper() {
 
     return (
         <div className="app-container">
+            <a href="#main-content" className="skip-link">Skip to main content</a>
+
             {/* Overlay backdrop for mobile only */}
             {navOpen && (
                 <div className="nav-overlay" onClick={() => setNavOpen(false)} aria-hidden="true" />
@@ -56,9 +58,9 @@ export default function PageWrapper() {
                     <div className="subnav-wrapper"><SubNav type="studio" /></div>
                 )}
 
-                <div className="page-container">
+                <main id="main-content" className="page-container">
                     <Outlet />
-                </div>
+                </main>
 
                 <NudgeStack />
             </div>

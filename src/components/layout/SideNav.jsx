@@ -105,7 +105,7 @@ export default function SideNav({ isOpen, onClose }) {
     }
 
     return (
-        <aside className={`side-nav${isOpen ? " side-nav--open" : ""}`}>
+        <aside className={`side-nav${isOpen ? " side-nav--open" : ""}`} aria-label="Site navigation">
             {/* Brand */}
             <div className="side-nav-brand">
                 <Link to="/home" className="side-nav-brand-link" onClick={handleNavClick}>
@@ -121,12 +121,13 @@ export default function SideNav({ isOpen, onClose }) {
 
             {/* Nav links */}
             <p className="side-nav-section-label">Navigation</p>
-            <nav className="side-nav-links">
+            <nav className="side-nav-links" aria-label="Main">
                 {NAV_ITEMS.map(item => (
                     <React.Fragment key={item.to}>
                         <Link
                             to={item.to}
                             className={isActive(item) ? "active" : ""}
+                            aria-current={isActive(item) ? "page" : undefined}
                             onClick={handleNavClick}
                         >
                             <item.Icon size={15} strokeWidth={1.75} />
@@ -139,6 +140,7 @@ export default function SideNav({ isOpen, onClose }) {
                                         key={sub.to}
                                         to={sub.to}
                                         className={`side-nav-sub-link${isActive(sub) ? " active" : ""}`}
+                                        aria-current={isActive(sub) ? "page" : undefined}
                                         onClick={handleNavClick}
                                     >
                                         {sub.label}
@@ -153,6 +155,7 @@ export default function SideNav({ isOpen, onClose }) {
                                         key={sub.to}
                                         to={sub.to}
                                         className={`side-nav-sub-link${isActive(sub) ? " active" : ""}`}
+                                        aria-current={isActive(sub) ? "page" : undefined}
                                         onClick={handleNavClick}
                                     >
                                         {sub.label}

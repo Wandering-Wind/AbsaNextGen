@@ -295,6 +295,34 @@ h1, h2, h3, h4 { line-height: 1.25; color: var(--n-900); font-weight: 700; }
   line-height: 1.5;
 }
 
+/* Skip-to-content link - visually hidden until focused */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  background: var(--absa-red);
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* Keyboard focus ring - only visible on keyboard nav, not mouse clicks */
+:focus-visible {
+  outline: 2px solid var(--absa-red);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Suppress the focus ring on elements that have their own focus style */
+.login-field input:focus-visible,
+.fmt-wrap:focus-within { outline: none; }
+
 /* Scrollbar */
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--n-50); }

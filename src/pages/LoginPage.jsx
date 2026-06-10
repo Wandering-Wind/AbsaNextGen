@@ -34,7 +34,7 @@ export default function LoginPage() {
     return (
         <div className="login-shell">
 
-            {/* Left panel — same brand treatment as onboarding */}
+            {/* Left panel - same brand treatment as onboarding */}
             <div className="login-left">
                 <div className="login-left-inner">
                     <div className="login-brand">
@@ -57,7 +57,7 @@ export default function LoginPage() {
                 </div>
             </div>
 
-            {/* Right panel — sign in form */}
+            {/* Right panel - sign in form */}
             <div className="login-right">
                 <div className="login-form-wrap">
 
