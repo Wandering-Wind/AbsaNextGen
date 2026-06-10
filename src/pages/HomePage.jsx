@@ -45,7 +45,7 @@ export default function HomePage() {
                             <span className="home-feature-icon">
                                 <Icon name="snapshot" size={28}/>
                             </span>
-                            <span className="home-feature-tag">Start here</span>
+                            <span className="home-feature-tag home-feature-tag--start">Start here</span>
                         </div>
                         <h2>Money Snapshot</h2>
                         <p>
@@ -89,7 +89,7 @@ export default function HomePage() {
                     <Link to="/studio/rent-vs-buy" className="home-feature-card">
                         <div className="home-feature-card-header">
                             <span className="home-feature-icon">
-                                <Icon name="studio" size={28} colour="#af8ac3" />
+                                <Icon name="studio" size={28} />
                             </span>
                             <span className="home-feature-tag home-feature-tag--purple">Simulate</span>
                         </div>

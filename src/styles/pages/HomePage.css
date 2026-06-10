@@ -56,7 +56,7 @@
 
 .home-feature-card {
     background: var(--n-0);
-    border: 1px solid var(--n-200);
+    border: 1px solid var(--n-300);
     border-radius: var(--r-lg);
     padding: 1.5rem;
     text-decoration: none;
@@ -64,14 +64,34 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
     box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Red top accent rule drummmmrolll: revealing on hover */
+.home-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--absa-red);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
 
 .home-feature-card:hover {
-    border-color: var(--absa-red-border);
+    border-color: rgba(226,0,26,0.30);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+}
+
+.home-feature-card:hover::before {
+    opacity: 1;
 }
 
 .home-feature-card-header {
@@ -117,25 +137,74 @@
     border-color: var(--n-300);
 }
 
+/* Start here giving a lil shimmer moment on card hover */
+.home-feature-tag--start {
+    background: linear-gradient(
+        90deg,
+        var(--absa-red)    0%,
+        var(--absa-red)    30%,
+        #ff4d5e            45%,
+        #ff9aa3            50%,
+        #ff4d5e            55%,
+        var(--absa-red)    70%,
+        var(--absa-red)    100%
+    );
+    background-size: 250% 100%;
+    background-position: 0% center;
+    color: #ffffff;
+    border-color: var(--absa-red);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+}
+
+.home-feature-card:hover .home-feature-tag--start {
+    animation: cta-shimmer 2.8s ease infinite;
+}
+
 .home-feature-card h2 {
     font-size: var(--text-lg);
     font-weight: 700;
     color: var(--n-900);
     margin: 0;
     letter-spacing: -0.01em;
+    position: relative;
+    padding-bottom: 2px;
+    display: inline-block;
 }
 
+.home-feature-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--absa-red);
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-feature-card:hover h2::after {
+    width: 100%;
+}
+
+/* Description be shifting up slightly on hover to make room for the list below */
 .home-feature-card > p {
     font-size: var(--text-sm);
     color: var(--n-500);
     line-height: 1.65;
     margin: 0;
     flex: 1;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.home-feature-card:hover > p {
+    transform: translateY(-6px);
+}
+
+/* Feature list: hidden by default, reveals on card hover */
 .home-feature-list {
     list-style: none;
-    padding: 0.65rem 0.85rem;
+    padding: 0;
     margin: 0;
     background: var(--n-50);
     border-radius: var(--r-sm);
@@ -143,6 +212,22 @@
     display: flex;
     flex-direction: column;
     gap: 0.28rem;
+    /* Hidden state */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition:
+        max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity    0.3s  ease 0.08s,
+        padding    0.35s ease;
+}
+
+.home-feature-card:hover .home-feature-list {
+    max-height: 200px;
+    opacity: 1;
+    padding: 0.65rem 0.85rem;
 }
 
 .home-feature-list li {
@@ -162,14 +247,40 @@
     font-weight: 700;
 }
 
+/* Shimmer sweeps fully off-screen, holds, then loops */
+@keyframes cta-shimmer {
+    0%   { background-position: 250% center; }
+    45%  { background-position: -200% center; }
+    100% { background-position: -200% center; }
+}
+
+/* Link shimmer text effect on card hover */
 .home-feature-cta {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--absa-red);
     margin-top: 0.15rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    background: linear-gradient(
+        90deg,
+        var(--absa-red)    0%,
+        var(--absa-red)    35%,
+        #ff6070            47%,
+        #ffb8c0            50%,
+        #ff6070            53%,
+        var(--absa-red)    65%,
+        var(--absa-red)    100%
+    );
+    background-size: 300% 100%;
+    background-position: 250% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.home-feature-card:hover .home-feature-cta {
+    animation: cta-shimmer 2.8s ease infinite;
 }
 
 /* SA parameters strip */

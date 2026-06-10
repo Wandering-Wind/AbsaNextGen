@@ -64,7 +64,7 @@ const GLOW_MAP = {
     target:   'var(--p-100)',
     snapshot: 'var(--p-100)',
     tracks:   'var(--p-100)',
-    studio:   '#7dd3fc',
+    studio:   'var(--p-100)',
     'buy-wins':'var(--p-100)',
     'rent-wins':'var(--success)',
 }
