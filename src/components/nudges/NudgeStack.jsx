@@ -1,15 +1,13 @@
 import { useNudges } from '../../context/NudgeContext'
 import NudgeItem from './NudgeItem'
 
-/* Maximum number of cards visible at once in the floating stack thang */
 const MAX_VISIBLE = 3
 
 export default function NudgeStack() {
-    const { activeNudges, dismissNudge } = useNudges()
+    const { stackNudges, hideFromStack } = useNudges()
 
-    /* Show the highest-priority nudges first (since they are already sorted) */
-    const visible  = activeNudges.slice(0, MAX_VISIBLE)
-    const overflow = activeNudges.length - MAX_VISIBLE
+    const visible  = stackNudges.slice(0, MAX_VISIBLE)
+    const overflow = stackNudges.length - MAX_VISIBLE
 
     if (visible.length === 0) return null
 
@@ -23,7 +21,7 @@ export default function NudgeStack() {
                 <NudgeItem
                     key={nudge.id}
                     nudge={nudge}
-                    onDismiss={dismissNudge}
+                    onHide={hideFromStack}
                 />
             ))}
 

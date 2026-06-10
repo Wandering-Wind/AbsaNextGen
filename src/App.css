@@ -22,7 +22,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   z-index: 100;
   /* Dark theme vars so all children render correctly */
   --n-0:   #0b0d18;

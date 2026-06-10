@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useUserProfile } from './UserProfileContext'
 import {
     calcNetSurplus,
@@ -11,8 +11,8 @@ import {
 
 const NudgeContext = createContext()
 
-/* localStorage key for dismissed nudge IDs */
-const DISMISSED_KEY = 'absa_dismissed_nudges'
+/* localStorage key for explicitly read nudge IDs */
+const READ_KEY = 'absa_read_nudges'
 
 
 function computeNudges(profile) {
@@ -24,9 +24,8 @@ function computeNudges(profile) {
     const emergencyMonths = parseFloat(calcEmergencyMonths(profile))
     const health          = calcHealthScore(profile)
     const tfsaMonthly     = profile.tfsaContribution || 0
-    const tfsaMaxMonthly  = SA.TFSA_ANNUAL_CAP / 12   /* ~R3 833/month */
+    const tfsaMaxMonthly  = SA.TFSA_ANNUAL_CAP / 12
 
-    /* Alert tier (red would be priority, fix the layout since the whole colour scheme is red, priority 1-3) */
 
     if (surplus < -500) {
         nudges.push({
@@ -70,7 +69,6 @@ function computeNudges(profile) {
         })
     }
 
-    /* Reminder tier (amber, priority 4-7) - look at colour once the structure is done */
 
     if (emergencyMonths >= 1 && emergencyMonths < 3) {
         nudges.push({
@@ -94,8 +92,6 @@ function computeNudges(profile) {
         })
     }
 
-    /* Insight tier (blue, priority 4-6) */
-
     const tfsaPct = tfsaMaxMonthly > 0
         ? Math.round((tfsaMonthly / tfsaMaxMonthly) * 100)
         : 0
@@ -111,7 +107,7 @@ function computeNudges(profile) {
         })
     }
 
-    /* Win tier (green, priority 8-10) */
+    /* Win tier */
 
     if (dti > 0 && dti <= 20) {
         nudges.push({
@@ -157,64 +153,73 @@ function computeNudges(profile) {
         })
     }
 
-    /* Sort by priority soo most urgent first */
     return nudges.sort((a, b) => a.priority - b.priority)
 }
-
-/* Provider */
 
 export function NudgeProvider({ children }) {
     const { profile } = useUserProfile()
 
     const [allNudges, setAllNudges] = useState([])
 
-    /* Load dismissed IDs from localStorage on mount */
-    const [dismissedIds, setDismissedIds] = useState(() => {
+    /* stackHiddenIds: in-memory only - nudges hidden from the floating popup stack.
+       Resets on page load so active alerts resurface after a refresh */
+    const [stackHiddenIds, setStackHiddenIds] = useState(new Set())
+
+    /* readIds: persisted - nudges the user explicitly marked as read in the panel */
+    const [readIds, setReadIds] = useState(() => {
         try {
-            const stored = localStorage.getItem(DISMISSED_KEY)
+            const stored = localStorage.getItem(READ_KEY)
             return stored ? new Set(JSON.parse(stored)) : new Set()
         } catch {
             return new Set()
         }
     })
 
-    /* Re-compute nudges whenever them profile changes */
     useEffect(() => {
         const computed = computeNudges(profile)
         setAllNudges(computed)
 
-        /* Remove dismissed IDs whose condition no longer applies. Iterate the colour.
-           But also this way, if the situation gets worse again later, the nudge resurfaces */
+        /* Clean up readIds for nudges that no longer apply */
         const computedIds = new Set(computed.map(n => n.id))
-        setDismissedIds(prev => {
+        setReadIds(prev => {
             const cleaned = new Set([...prev].filter(id => computedIds.has(id)))
             if (cleaned.size !== prev.size) {
-                localStorage.setItem(DISMISSED_KEY, JSON.stringify([...cleaned]))
+                localStorage.setItem(READ_KEY, JSON.stringify([...cleaned]))
             }
             return cleaned
         })
     }, [profile])
 
-    /* Dismiss a single nudge by ID - persists to localStorage */
-    const dismissNudge = useCallback((id) => {
-        setDismissedIds(prev => {
-            const next = new Set([...prev, id])
-            localStorage.setItem(DISMISSED_KEY, JSON.stringify([...next]))
-            return next
-        })
+    /* Hide from the floating stack only - does NOT mark as read in the panel */
+    const hideFromStack = useCallback((id) => {
+        setStackHiddenIds(prev => new Set([...prev, id]))
     }, [])
 
-    const activeNudges    = allNudges.filter(n => !dismissedIds.has(n.id))
-    const dismissedNudges = allNudges.filter(n =>  dismissedIds.has(n.id))
-    const unreadCount     = activeNudges.length
-    const hasAlerts       = activeNudges.some(n => n.type === 'alert')
+    /* Explicitly mark as read - persisted, moves to Acknowledged in panel */
+    const markAsRead = useCallback((id) => {
+        setReadIds(prev => {
+            const next = new Set([...prev, id])
+            localStorage.setItem(READ_KEY, JSON.stringify([...next]))
+            return next
+        })
+        setStackHiddenIds(prev => new Set([...prev, id]))
+    }, [])
+
+    const activeNudges = allNudges.filter(n => !readIds.has(n.id))
+    const readNudges   = allNudges.filter(n =>  readIds.has(n.id))
+    /* Stack shows active nudges not yet hidden from the popup */
+    const stackNudges  = activeNudges.filter(n => !stackHiddenIds.has(n.id))
+
+    const unreadCount = activeNudges.length
+    const hasAlerts   = activeNudges.some(n => n.type === 'alert')
 
     return (
         <NudgeContext.Provider value={{
             activeNudges,
-            dismissedNudges,
-            allNudges,
-            dismissNudge,
+            readNudges,
+            stackNudges,
+            hideFromStack,
+            markAsRead,
             unreadCount,
             hasAlerts,
         }}>

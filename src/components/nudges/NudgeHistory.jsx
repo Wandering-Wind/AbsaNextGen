@@ -3,29 +3,40 @@ import { useNudges } from '../../context/NudgeContext'
 import Icon from '../Icons'
 import { TYPE_CONFIG } from './NudgeItem'
 
-/* Single card in the history panel */
-function HistoryCard({ nudge, dimmed }) {
+function HistoryCard({ nudge, onMarkRead, isRead }) {
     const config = TYPE_CONFIG[nudge.type] ?? TYPE_CONFIG.insight
 
     return (
-        <div className={`nudge-history-card${dimmed ? ' nudge-history-card--dimmed' : ''}`}>
-            <span
-                className="nudge-type-badge"
-                style={{
-                    background:  config.bg,
-                    color:       dimmed ? '#ADB5BD' : config.accent,
-                    borderColor: dimmed ? '#DEE2E6' : config.border,
-                }}
-            >
-                {config.label}
-            </span>
+        <div className={`nudge-history-card${isRead ? ' nudge-history-card--read' : ''}`}>
+            <div className="nudge-history-card-top">
+                <span
+                    className="nudge-type-badge"
+                    style={{
+                        background:  isRead ? 'rgba(255,255,255,0.04)' : config.bg,
+                        color:       isRead ? '#4b5563' : config.accent,
+                        borderColor: isRead ? '#374151' : config.border,
+                    }}
+                >
+                    {config.label}
+                </span>
+
+                {!isRead && (
+                    <button
+                        className="nudge-mark-read"
+                        onClick={() => onMarkRead(nudge.id)}
+                        aria-label="Mark as read"
+                    >
+                        Mark read
+                    </button>
+                )}
+            </div>
 
             <div className="nudge-history-row">
                 <span className="nudge-history-icon" aria-hidden="true">
                     <Icon
                         name={nudge.icon}
                         size={15}
-                        colour={dimmed ? '#ADB5BD' : config.accent}
+                        colour={isRead ? '#4b5563' : config.accent}
                     />
                 </span>
                 <div>
@@ -37,13 +48,11 @@ function HistoryCard({ nudge, dimmed }) {
     )
 }
 
-/* History panel */
 export default function NudgeHistory({ onClose }) {
-    const { activeNudges, dismissedNudges } = useNudges()
-    const hasAny   = activeNudges.length > 0 || dismissedNudges.length > 0
+    const { activeNudges, readNudges, markAsRead } = useNudges()
+    const hasAny   = activeNudges.length > 0 || readNudges.length > 0
     const panelRef = useRef(null)
 
-    /* Close on Escape key */
     useEffect(() => {
         function handleKey(e) {
             if (e.key === 'Escape') onClose()
@@ -52,14 +61,12 @@ export default function NudgeHistory({ onClose }) {
         return () => document.removeEventListener('keydown', handleKey)
     }, [onClose])
 
-    /* Trap focus inside the panel when open */
     useEffect(() => {
         panelRef.current?.focus()
     }, [])
 
     return (
         <>
-            {/* Transparent overlay - clicking outside closes the panel */}
             <div
                 className="nudge-history-overlay"
                 onClick={onClose}
@@ -102,18 +109,28 @@ export default function NudgeHistory({ onClose }) {
                             <p className="nudge-history-section-label">Active</p>
                             <div className="nudge-history-list">
                                 {activeNudges.map(n => (
-                                    <HistoryCard key={n.id} nudge={n} dimmed={false} />
+                                    <HistoryCard
+                                        key={n.id}
+                                        nudge={n}
+                                        onMarkRead={markAsRead}
+                                        isRead={false}
+                                    />
                                 ))}
                             </div>
                         </section>
                     )}
 
-                    {dismissedNudges.length > 0 && (
+                    {readNudges.length > 0 && (
                         <section>
                             <p className="nudge-history-section-label">Acknowledged</p>
                             <div className="nudge-history-list">
-                                {dismissedNudges.map(n => (
-                                    <HistoryCard key={n.id} nudge={n} dimmed={true} />
+                                {readNudges.map(n => (
+                                    <HistoryCard
+                                        key={n.id}
+                                        nudge={n}
+                                        onMarkRead={markAsRead}
+                                        isRead={true}
+                                    />
                                 ))}
                             </div>
                         </section>

@@ -1,54 +1,50 @@
 import { useState, useEffect, useRef } from 'react'
 import Icon from '../Icons'
 
-/* Each typa nudge gets its own accent colour, background tint,
-   border colour, and label text */
+/* Each nudge type gets an accent colour and badge tint */
 export const TYPE_CONFIG = {
     alert: {
-        label:    'ALERT',
-        accent:   '#DC2626',
-        bg:       '#FEF2F2',
-        border:   '#FECACA',
+        label:  'ALERT',
+        accent: '#ef4444',
+        bg:     'rgba(153,27,27,0.18)',
+        border: 'rgba(239,68,68,0.28)',
     },
     win: {
-        label:    'MILESTONE',
-        accent:   '#15803D',
-        bg:       '#F0FDF4',
-        border:   '#BBF7D0',
+        label:  'MILESTONE',
+        accent: '#16a34a',
+        bg:     'rgba(22,101,52,0.18)',
+        border: 'rgba(22,163,74,0.28)',
     },
     insight: {
-        label:    'INSIGHT',
-        accent:   '#2563EB',
-        bg:       '#EFF6FF',
-        border:   '#BFDBFE',
+        label:  'INSIGHT',
+        accent: '#94a3b8',
+        bg:     'rgba(55,65,81,0.35)',
+        border: 'rgba(100,116,139,0.3)',
     },
     reminder: {
-        label:    'REMINDER',
-        accent:   '#B45309',
-        bg:       '#FFFBEB',
-        border:   '#FDE68A',
+        label:  'REMINDER',
+        accent: '#b45309',
+        bg:     'rgba(146,64,14,0.18)',
+        border: 'rgba(180,83,9,0.28)',
     },
 }
 
-/* Automatic dismissing timer in milliseconds */
 const AUTO_DISMISS_MS = 8000
 
-export default function NudgeItem({ nudge, onDismiss }) {
+export default function NudgeItem({ nudge, onHide }) {
     const [exiting, setExiting] = useState(false)
     const timerRef = useRef(null)
 
     const config = TYPE_CONFIG[nudge.type] ?? TYPE_CONFIG.insight
 
-    /* Trigger the slide-out animation, then call onDismiss after it finishes */
+    /* Hides from stack only - does not mark as read in the panel */
     function triggerExit() {
         if (exiting) return
         clearTimeout(timerRef.current)
         setExiting(true)
-        /* 320ms matches the CSS slide-out animation duration */
-        setTimeout(() => onDismiss(nudge.id), 320)
+        setTimeout(() => onHide(nudge.id), 320)
     }
 
-    /* Start the auto-dismiss countdown on mount */
     useEffect(() => {
         timerRef.current = setTimeout(triggerExit, AUTO_DISMISS_MS)
         return () => clearTimeout(timerRef.current)
@@ -67,9 +63,9 @@ export default function NudgeItem({ nudge, onDismiss }) {
                     <span
                         className="nudge-type-badge"
                         style={{
-                            background:   config.bg,
-                            color:        config.accent,
-                            borderColor:  config.border,
+                            background:  config.bg,
+                            color:       config.accent,
+                            borderColor: config.border,
                         }}
                     >
                         {config.label}
@@ -96,12 +92,12 @@ export default function NudgeItem({ nudge, onDismiss }) {
 
             </div>
 
-            {/* Depleting progress bar - visual countdown to auto-dismiss */}
+            {/* Depleting timer bar along the bottom */}
             <div
                 className="nudge-progress"
                 style={{
-                    background:         config.accent,
-                    animationDuration:  `${AUTO_DISMISS_MS}ms`,
+                    background:        config.accent,
+                    animationDuration: `${AUTO_DISMISS_MS}ms`,
                 }}
                 aria-hidden="true"
             />

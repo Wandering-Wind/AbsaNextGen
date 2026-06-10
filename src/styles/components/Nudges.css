@@ -1,6 +1,6 @@
-﻿/* Nudge system which will be the floating notification cards, the bell button, and the history panel */
+/* Nudge system - floating notification cards, bell button, history panel */
 
-/* Floating stack of cards (bottom-right) */
+/* Floating stack (bottom-right) */
 
 .nudge-stack {
     position: fixed;
@@ -11,7 +11,6 @@
     flex-direction: column;
     gap: 0.6rem;
     align-items: flex-end;
-    /* Stack itself is non-interactive; individual cards re-enable pointer events */
     pointer-events: none;
 }
 
@@ -20,33 +19,18 @@
 
 .nudge-item {
     width: 318px;
-    background: var(--n-0);
-    border: 1px solid var(--n-200);
+    background: #111827;
+    border: 1px solid #1f2937;
     border-radius: var(--r-lg);
     box-shadow:
-        0 8px 24px rgba(0,0,0,0.10),
-        0 2px 8px  rgba(0,0,0,0.06),
-        0 0 0 1px  rgba(0,0,0,0.02);
+        0 8px 32px rgba(0,0,0,0.45),
+        0 2px 8px  rgba(0,0,0,0.25);
     overflow: hidden;
     position: relative;
     pointer-events: all;
-    /* Slide in from the right with a slight spring overshoot / Change when fixed the layout of the website */
     animation: nudge-slide-in 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-/* Type-specific left accent border */
-.nudge-item--alert   { border-left: 3px solid #DC2626; }
-.nudge-item--win     { border-left: 3px solid #15803D; }
-.nudge-item--insight { border-left: 3px solid #4B7BB5; }
-.nudge-item--reminder{ border-left: 3px solid #C4920F; }
-
-/* Subtle colour-tinted glow on the left edge */
-.nudge-item--alert::before   { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(220,38,38,0.04) 0%, transparent 55%); pointer-events: none; border-radius: inherit; }
-.nudge-item--win::before     { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(21,128,61,0.04) 0%, transparent 55%);  pointer-events: none; border-radius: inherit; }
-.nudge-item--insight::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(75,123,181,0.05) 0%, transparent 55%);  pointer-events: none; border-radius: inherit; }
-.nudge-item--reminder::before{ content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(196,146,15,0.05) 0%, transparent 55%);   pointer-events: none; border-radius: inherit; }
-
-/* Exit state - plays the slide-out animation */
 .nudge-item--exiting {
     animation: nudge-slide-out 0.3s ease-in both !important;
 }
@@ -78,7 +62,6 @@
     border-radius: var(--r-pill);
     border: 1px solid transparent;
     line-height: 1.7;
-    /* Prevents text wrapping on long labels */
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -86,7 +69,7 @@
 .nudge-dismiss {
     background: transparent;
     border: none;
-    color: var(--n-400);
+    color: #4b5563;
     font-size: 1.2rem;
     line-height: 1;
     padding: 0;
@@ -103,8 +86,8 @@
 }
 
 .nudge-dismiss:hover {
-    color: var(--n-700);
-    background: var(--n-100);
+    color: #e5e7eb;
+    background: #1f2937;
 }
 
 .nudge-dismiss:focus-visible {
@@ -136,7 +119,7 @@
 .nudge-title {
     font-size: 0.8125rem;
     font-weight: 700;
-    color: var(--n-900);
+    color: #f9fafb;
     margin-bottom: 0.22rem;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -144,12 +127,12 @@
 
 .nudge-text {
     font-size: var(--text-xs);
-    color: var(--n-500);
+    color: #6b7280;
     line-height: 1.6;
 }
 
 
-/* Progress bar (automatic-dismiss for like the visual countdown) */
+/* Depleting timer bar at the bottom of the card */
 
 .nudge-progress {
     position: absolute;
@@ -157,10 +140,9 @@
     left: 0;
     height: 2px;
     width: 100%;
-    opacity: 0.55;
+    opacity: 0.7;
     transform-origin: left center;
     animation: nudge-drain linear forwards;
-    /* border-radius only on the right end since left is flush to the card edge */
     border-radius: 0 1px 0 0;
 }
 
@@ -170,12 +152,12 @@
 .nudge-overflow {
     font-size: var(--text-xs);
     font-weight: 600;
-    color: var(--n-500);
-    background: var(--n-0);
-    border: 1px solid var(--n-200);
+    color: #9ca3af;
+    background: #111827;
+    border: 1px solid #1f2937;
     border-radius: var(--r-pill);
     padding: 0.28rem 0.9rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     pointer-events: none;
     text-align: center;
     letter-spacing: 0.01em;
@@ -208,7 +190,7 @@
 }
 
 
-/* Bell button (lives inside Navbar) */
+/* Bell button */
 
 .nudge-bell-btn {
     position: relative;
@@ -237,14 +219,12 @@
     outline-offset: 2px;
 }
 
-/* State: has unread signals */
 .nudge-bell-btn--active {
     border-color: var(--absa-red-border);
     background: var(--absa-red-light);
     color: var(--absa-red);
 }
 
-/* Pulse when at least one ALERT type signal is active */
 .nudge-bell-btn--pulsing {
     animation: nudge-bell-pulse 2.2s ease-in-out infinite;
 }
@@ -254,7 +234,6 @@
     50%        { box-shadow: 0 0 0 5px rgba(220,38,38,0.15); }
 }
 
-/* Count badge */
 .nudge-bell-badge {
     position: absolute;
     top:   -5px;
@@ -270,7 +249,6 @@
     align-items: center;
     justify-content: center;
     padding: 0 3px;
-    /* White border makes the badge pop against any background */
     border: 2px solid var(--n-0);
     line-height: 1;
     pointer-events: none;
@@ -279,7 +257,6 @@
 
 /* History panel */
 
-/* Full-screen transparent click-to-close overlay */
 .nudge-history-overlay {
     position: fixed;
     inset: 0;
@@ -290,17 +267,16 @@
 
 .nudge-history-panel {
     position: fixed;
-    top: 58px;
-    right: 1rem;
+    bottom: 1rem;
+    left: 228px;
     width: 376px;
-    max-height: calc(100vh - 76px);
-    background: var(--n-0);
-    border: 1px solid var(--n-200);
+    max-height: calc(100vh - 2rem);
+    background: #111827;
+    border: 1px solid #1f2937;
     border-radius: var(--r-lg);
     box-shadow:
-        0 20px 48px rgba(0,0,0,0.11),
-        0 4px 16px rgba(0,0,0,0.07),
-        0 0 0 1px rgba(0,0,0,0.02);
+        0 20px 48px rgba(0,0,0,0.5),
+        0 4px 16px rgba(0,0,0,0.3);
     z-index: 8999;
     display: flex;
     flex-direction: column;
@@ -312,11 +288,11 @@
 @keyframes nudge-panel-in {
     from {
         opacity: 0;
-        transform: translateY(-10px) scale(0.97);
+        transform: translateX(-10px) scale(0.97);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateX(0) scale(1);
     }
 }
 
@@ -325,9 +301,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1rem 0.9rem 1.1rem;
-    border-bottom: 1px solid var(--n-200);
+    border-bottom: 1px solid #1f2937;
     flex-shrink: 0;
-    background: var(--n-0);
+    background: #111827;
 }
 
 .nudge-history-eyebrow {
@@ -342,13 +318,13 @@
 .nudge-history-heading {
     font-size: var(--text-md);
     font-weight: 700;
-    color: var(--n-900);
+    color: #f9fafb;
     letter-spacing: -0.01em;
 }
 
 .nudge-history-close {
     background: transparent;
-    border: 1px solid var(--n-200);
+    border: 1px solid #1f2937;
     border-radius: var(--r-sm);
     width: 32px;
     height: 32px;
@@ -356,7 +332,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.15rem;
-    color: var(--n-500);
+    color: #6b7280;
     cursor: pointer;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
     flex-shrink: 0;
@@ -364,9 +340,9 @@
 }
 
 .nudge-history-close:hover {
-    background: var(--n-50);
-    border-color: var(--n-300);
-    color: var(--n-900);
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
 }
 
 .nudge-history-close:focus-visible {
@@ -374,7 +350,6 @@
     outline-offset: 2px;
 }
 
-/* Scrollable content area */
 .nudge-history-body {
     overflow-y: auto;
     padding: 0.6rem 0.85rem 1.1rem;
@@ -384,13 +359,12 @@
     flex: 1;
 }
 
-/* Section headings inside the panel (Active / Acknowledged) */
 .nudge-history-section-label {
     font-size: var(--text-xs);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--n-400);
+    color: #4b5563;
     padding: 0.6rem 0 0.3rem;
 }
 
@@ -402,31 +376,62 @@
 
 .nudge-history-empty {
     font-size: var(--text-sm);
-    color: var(--n-400);
+    color: #4b5563;
     padding: 1.5rem 0;
     text-align: center;
     line-height: 1.65;
 }
 
 /* Card in the history list */
+
 .nudge-history-card {
-    background: var(--n-50);
-    border: 1px solid var(--n-200);
+    background: #1a2235;
+    border: 1px solid #1f2937;
     border-radius: var(--r-md);
     padding: 0.7rem 0.8rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.45rem;
     transition: background 0.15s;
 }
 
-.nudge-history-card:not(.nudge-history-card--dimmed):hover {
-    background: var(--n-100);
+.nudge-history-card:not(.nudge-history-card--read):hover {
+    background: #1f2a3d;
 }
 
-/* Acknowledged (dismissed) cards - greyed out */
-.nudge-history-card--dimmed {
-    opacity: 0.45;
+/* Read (acknowledged) cards - muted */
+.nudge-history-card--read {
+    opacity: 0.4;
+}
+
+.nudge-history-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+/* Mark as read button */
+.nudge-mark-read {
+    background: transparent;
+    border: 1px solid #374151;
+    border-radius: var(--r-sm);
+    color: #6b7280;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.18rem 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nudge-mark-read:hover {
+    background: #1f2937;
+    border-color: var(--absa-red-border);
+    color: var(--absa-red);
 }
 
 .nudge-history-row {
@@ -445,19 +450,19 @@
 .nudge-history-item-title {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--n-700);
+    color: #e5e7eb;
     margin-bottom: 0.12rem;
     line-height: 1.3;
 }
 
 .nudge-history-item-text {
     font-size: var(--text-xs);
-    color: var(--n-500);
+    color: #6b7280;
     line-height: 1.55;
 }
 
 
-/* Responsive - collapse stack on narrow screen */
+/* Responsive */
 
 @media (max-width: 480px) {
     .nudge-stack {
@@ -469,8 +474,9 @@
         max-width: 318px;
     }
     .nudge-history-panel {
-        right: 0.5rem;
         left: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.5rem;
         width: auto;
     }
 }
