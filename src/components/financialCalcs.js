@@ -170,7 +170,7 @@ export function buildSnapshotNarrative(profile, takeHome) {
   /* 1.Income band context */
   if (gross < 25000) {
     lines.push({
-      text:      `At ${fmtZAR(gross)}/month gross you are in the graduate band. The RA and TFSA habits you build now compound across decades - the consistency matters more than the amount at this stage.`,
+      text:      `At ${fmtZAR(gross)}/month gross, you are in the graduate band. The RA and TFSA habits you build now compound across decades - the consistency matters more than the amount at this stage.`,
       sentiment: 'neutral',
     })
   } else if (gross < 55000) {
@@ -252,7 +252,7 @@ export function buildSnapshotNarrative(profile, takeHome) {
       })
     } else {
       lines.push({
-        text:      `At ${savingsPct}% savings rate you are ahead of most earners in your income band. Protect this discipline as income grows - lifestyle inflation is the main threat at this stage.`,
+        text:      `At ${savingsPct}% savings rate, you are ahead of most earners in your income band. Protect this discipline as income grows - lifestyle inflation is the main threat at this stage.`,
         sentiment: 'positive',
       })
     }
