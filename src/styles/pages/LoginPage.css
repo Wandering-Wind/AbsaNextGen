@@ -126,9 +126,22 @@
     background: #f8f9fb;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
+    justify-content: flex-start;
+    padding: 3rem 3rem 3rem 4rem;
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 900 900' preserveAspectRatio='xMaxYMin slice'%3E%3Cg stroke='%23b40010' fill='none' stroke-linecap='round'%3E%3Cline x1='900' y1='20'  x2='720' y2='200' stroke-width='1.4' stroke-opacity='0.22'/%3E%3Cline x1='900' y1='75'  x2='720' y2='255' stroke-width='1.4' stroke-opacity='0.22'/%3E%3Cline x1='900' y1='130' x2='720' y2='310' stroke-width='1.4' stroke-opacity='0.22'/%3E%3Cline x1='900' y1='185' x2='720' y2='365' stroke-width='1.4' stroke-opacity='0.22'/%3E%3Cline x1='900' y1='240' x2='720' y2='420' stroke-width='1.4' stroke-opacity='0.22'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: 100% 100%;
 }
 
 .login-form-wrap {
@@ -175,12 +188,6 @@
     line-height: 1.6;
     display: block;
     margin: 0;
-}
-
-.login-divider {
-    height: 1px;
-    background: #e5e7eb;
-    margin-bottom: 1.75rem;
 }
 
 /* Form */
@@ -312,5 +319,6 @@
     .login-right {
         padding: 2rem 1.5rem;
         min-height: auto;
+        justify-content: center;
     }
 }

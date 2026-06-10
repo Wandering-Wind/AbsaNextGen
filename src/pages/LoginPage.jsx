@@ -67,8 +67,6 @@ export default function LoginPage() {
                         <p className="login-subtitle">Sign in to continue building toward your goals.</p>
                     </div>
 
-                    <div className="login-divider" />
-
                     <form className="login-form" onSubmit={handleLogin}>
                         <div className="login-field">
                             <label>Email</label>
