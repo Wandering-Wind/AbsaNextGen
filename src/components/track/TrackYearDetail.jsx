@@ -10,6 +10,8 @@
      avoid: string[],
      why,
      saContext,
+     warning:   string | null  - contextual alert from profile data, null when not triggered
+     tradeoffs: [{ type: 'prioritise' | 'avoid', heading: string, body: string }]
    }
 
    Optional props for micro-actions (from useTrackProgress):
@@ -18,9 +20,9 @@
      onToggle:  (year, idx) => void
 */
 
-import Icon       from '../Icons'
+import Icon         from '../Icons'
 import MicroActions from './MicroActions'
-import { fmtZAR } from '../financialCalcs'
+import { fmtZAR }  from '../financialCalcs'
 
 export default function TrackYearDetail({ milestone: m, actions, completed, onToggle }) {
     if (!m) return null
@@ -58,6 +60,14 @@ export default function TrackYearDetail({ milestone: m, actions, completed, onTo
                 </div>
             </div>
 
+            {/* Contextual warning which will only be rendered when the user's profile triggers a specific risk */}
+            {m.warning && (
+                <div className="pp-inline-alert pp-inline-alert--warn">
+                    <Icon name="warn" size={13}/>
+                    {m.warning}
+                </div>
+            )}
+
             {/* Insight callout */}
             <div className="pp-insight">
                 <Icon name="nudge" size={14} colour="var(--warning)"/>
@@ -89,6 +99,19 @@ export default function TrackYearDetail({ milestone: m, actions, completed, onTo
                     <p className="pp-why-text">{m.why}</p>
                 </div>
             </div>
+
+            {/* Decision trade-offs on the tension between two valid choices */}
+            {m.tradeoffs && m.tradeoffs.length > 0 && (
+                <div className="pp-content-block">
+                    <p className="pp-block-title">Decision trade-offs</p>
+                    {m.tradeoffs.map((t, i) => (
+                        <div key={i} className={`tradeoff-box tradeoff-box--${t.type}`}>
+                            <strong>{t.heading}</strong>
+                            <p>{t.body}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* Micro-actions - behavioral checkboxes the system cannot auto-detect */}
             {actions && actions.length > 0 && (

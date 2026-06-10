@@ -101,6 +101,21 @@ function buildMilestones({ profile, monthlyAmount, jseSplit, offSplit, projectio
             avoid:     ['Crypto', 'Individual stock picks', 'High-fee unit trusts (TER > 1%)', 'Investing without an emergency fund'],
             why:       'Compound interest only works if you stay invested. Starting with R500/month at age 28 vs 33 makes a bigger difference than doubling your contribution at 33.',
             saContext: `ABSA Share Investing and EasyEquities both offer TFSA accounts. EasyEquities charges a platform fee of 0.25% p.a. vs typical unit trust TERs of 1.5-2%. On ${fmtZAR(annualAmount)}, that difference is ${fmtZAR(Math.round(annualAmount * 0.015))} per year.`,
+            warning:   !hasEmergency
+                ? `Your emergency fund is not complete (${emergencyPct}% built). Starting long-term investments without a buffer means you will likely be forced to sell at a loss when an unexpected expense hits.`
+                : null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'TFSA before any taxable investment account',
+                    body:    'Every rand of growth, dividends, and capital gains inside a TFSA is permanently tax-free. Fill R46 000/year before investing a single rand in a taxable account. The tax saving compounds every year.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Individual stock picking over ETF investing',
+                    body:    'Over 80% of active fund managers underperform their benchmark index net of fees over 10 years. A Satrix MSCI World ETF at 0.25% TER gives you global diversification for a fraction of what stock-picking costs.',
+                },
+            ],
         },
         {
             year:         2,
@@ -122,6 +137,21 @@ function buildMilestones({ profile, monthlyAmount, jseSplit, offSplit, projectio
             avoid:     ['Exceeding R2M SDA without tax clearance', 'Currency trading or forex speculation', 'Stopping contributions during market dips'],
             why:       `The rand has depreciated approximately 5% per year against USD over the past decade. An investment earning 10% in USD terms returns approximately 15% in ZAR terms. This is your hedge.`,
             saContext: `The Single Discretionary Allowance (SDA) allows R2M/year offshore without SARS tax clearance. You are using ${fmtZAR(sdaUsed)}/year - ${Math.round((sdaUsed / 2000000) * 100)}% of your annual allowance. Above R2M, you need a tax clearance certificate from SARS.`,
+            warning:   sdaUsed > 1600000
+                ? `You are using ${fmtZAR(sdaUsed)}/year of your R2M SDA. If contributions continue at this rate, you will need SARS FIA tax clearance before the end of Year 2.`
+                : null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Rand-hedge through USD assets',
+                    body:    'Offshore investing is not just about chasing higher returns. It is about holding assets outside the SA economy. Even if returns are equal, geographic and currency diversification reduces your single-country risk materially.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Selling offshore assets during rand weakness',
+                    body:    'Rand weakness is the moment your offshore holdings are most valuable in ZAR terms. Selling at that point locks in losses and removes the hedge exactly when it is working for you. Automate contributions to remove emotion from the decision.',
+                },
+            ],
         },
         {
             year:         3,
@@ -143,6 +173,21 @@ function buildMilestones({ profile, monthlyAmount, jseSplit, offSplit, projectio
             avoid:     ['Panic selling', 'Checking your portfolio daily', 'Moving to cash after a correction', 'Chasing high-performing individual stocks'],
             why:       'Year 3 is when most investors make their biggest mistake - selling during volatility. The investors who stayed invested through every SA market correction in the past 20 years have outperformed those who tried to time the market.',
             saContext: 'The JSE All Share Index has returned approximately 11% p.a. over the past 20 years despite multiple crises (2008 GFC, 2020 Covid, load shedding, rand depreciation). Volatility is the price of those returns.',
+            warning:   (profile.raPercent || 0) < 10 && (profile.grossIncome || 0) > 30000
+                ? `Your RA contribution is at ${profile.raPercent || 0}%. You have significant tax-deductible headroom available. Every additional percentage point reduces your PAYE bill immediately.`
+                : null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Increasing RA contributions as income grows',
+                    body:    `RA contributions up to 27.5% of gross income are tax-deductible. At ${fmtZAR(profile.grossIncome || 0)}/month, a 5% RA increase saves approximately ${fmtZAR(Math.round((profile.grossIncome || 0) * 0.05 * 0.26))}/month in PAYE - a 26% return before any investment growth.`,
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Reducing contributions after a strong market year',
+                    body:    'The worst investing mistake is pulling back when recent returns look "good enough". Compounding requires consistent contributions - particularly the ones made when markets have already run and feel overpriced.',
+                },
+            ],
         },
         {
             year:         4,
@@ -164,6 +209,19 @@ function buildMilestones({ profile, monthlyAmount, jseSplit, offSplit, projectio
             avoid:     ['Increasing lifestyle spend (lifestyle creep)', 'Moving to lower-return "safe" assets too early', 'High advisor fees on a growing portfolio'],
             why:       `At Year 4, your portfolio is approaching a size where investment returns meaningfully contribute to your wealth growth. Protecting your contribution rate now has outsized long-term impact.`,
             saContext: `At ${fmtZAR(y4.total)}, a 1% difference in fees costs ${fmtZAR(Math.round(y4.total * 0.01))}/year. Satrix ETFs charge 0.1-0.2% TER vs 1.5-2% for actively managed funds. Over 20 years, the fee difference compounds to hundreds of thousands of rands.`,
+            warning:   null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Annual fee review as your portfolio grows',
+                    body:    `At ${fmtZAR(y4.total)}, a 0.5% fee reduction saves ${fmtZAR(Math.round(y4.total * 0.005))}/year. Platform and fund fees scale with portfolio size. The rand value becomes material enough to review actively.`,
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Moving to conservative assets too early',
+                    body:    'Bonds and cash return 3-4% less than equities per year over the long term. At your age and with a 10+ year horizon, volatility is not risk - it is the cost of superior returns. It only becomes risk when you are forced to sell.',
+                },
+            ],
         },
         {
             year:         5,
@@ -185,6 +243,19 @@ function buildMilestones({ profile, monthlyAmount, jseSplit, offSplit, projectio
             avoid:     ['Withdrawing gains without a clear plan', 'Over-concentrating in any single asset', 'Ignoring CGT implications on large disposals'],
             why:       'Year 5 is not the end - it is the proof of concept. A portfolio built over 5 years with consistent, low-fee, diversified investing is the foundation for financial independence. The next 5 years compound even faster.',
             saContext: `CGT annual exclusion: R40 000/year. Inclusion rate for individuals: 40% of the gain. Effective max CGT rate for SA individuals: approximately 18%. Structuring disposals across tax years minimises your liability.`,
+            warning:   null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Staging large withdrawals across tax years',
+                    body:    'The R40 000 CGT exclusion resets each February 28th. Spreading large disposals across two or three tax years can reduce effective CGT liability by tens of thousands of rands. Plan withdrawals around the tax year boundary.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Converting USD assets back to rands prematurely',
+                    body:    'Selling offshore assets and converting to rands crystallises the currency gain but removes the hedge. Keep USD assets in USD unless you have a specific ZAR requirement. Your offshore portfolio is worth more in a weaker rand environment.',
+                },
+            ],
         },
     ]
 }

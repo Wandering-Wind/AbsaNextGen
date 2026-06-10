@@ -117,6 +117,23 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             avoid:     ['Using your emergency fund for travel', 'Booking on credit without a savings plan', 'Skipping your RA contribution to fund a trip', 'Keeping travel savings in your main account'],
             why:       'A dedicated account creates a hard barrier against impulse spending. When the money is earmarked and separate, the decision to spend it on something else requires a deliberate action - and that friction is the whole point.',
             saContext: `ABSA, Nedbank, and Standard Bank all offer 32-day notice accounts earning 7-8% p.a. on balances above R5 000. On a ${fmtZAR(fxCost)} travel goal, that's ${fmtZAR(Math.round(fxCost * 0.075))}/year in interest - your trip gets cheaper the longer you save.`,
+            warning:   !hasEmergency
+                ? `Your emergency fund is not complete. Build it to 3 months of expenses (${fmtZAR(emergencyTarget)}) before ring-fencing money for travel.`
+                : travelPct > 40
+                    ? `You are directing ${travelPct}% of your surplus to travel savings - above the 40% safe zone. Reduce to under ${fmtZAR(Math.round(surplus * 0.35))}/month to keep other goals on track.`
+                    : null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: '32-day notice account over your main account',
+                    body:    'Keeping travel savings in your cheque account makes them invisible as a goal and too easy to raid. A 32-day notice account earns 7-8% p.a. and adds friction that protects the target. The slight inconvenience is the feature.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Funding your first trip with credit',
+                    body:    'A trip funded on credit and repaid over 12 months at 22% p.a. costs 20-25% more than the sticker price. The debt repayment months erase the emotional benefit of the experience. Save before you go.',
+                },
+            ],
         },
         {
             year:     2,
@@ -144,6 +161,21 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             avoid:     ['Buying forex at OR Tambo airport (8–12% worse than online)', 'Skipping travel insurance', 'Booking last-minute at premium prices', 'Funding any shortfall with a credit card'],
             why:       'The first trip is proof of concept. You saved, you went, you came back financially intact. That experience makes every subsequent trip easier to plan - and removes the guilt that comes from funding travel impulsively.',
             saContext: `South African passport holders have visa-free or visa-on-arrival access to 103 countries. For the rest, budget R800–R2 500 per visa application. SARS allows you to carry R25 000 in foreign currency cash when travelling without a tax clearance certificate - above that, you need one.`,
+            warning:   region.fxRisk && y2.total < fxCost * 0.6
+                ? `You are at ${Math.round((y2.total / Math.max(1, fxCost)) * 100)}% of your forex-adjusted target and currency depreciation is moving it. Consider increasing contributions by ${fmtZAR(Math.round((fxCost - y2.total) / 12))}/month.`
+                : null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Buying forex 4-6 months early',
+                    body:    `Online forex platforms give rates 8-12% better than OR Tambo airport exchanges. On a ${fmtZAR(fxCost)} purchase, that is ${fmtZAR(Math.round(fxCost * 0.09))} saved. ABSA Global Forex offers forward rate contracts up to 6 months in advance.`,
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Skipping travel insurance to save on cost',
+                    body:    'A medical evacuation abroad costs R150 000-R500 000. ABSA travel insurance starts at R250-400 per trip. This is not where to cut corners - one hospitalisation without cover erases years of savings.',
+                },
+            ],
         },
         {
             year:     3,
@@ -165,6 +197,19 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             avoid:     ['Paying interest on travel credit card spend - it wipes every benefit', 'Letting points expire (Avios expire after 36 months of inactivity)', 'Annual travel card fees that exceed your points value', 'Booking through third-party sites that don\'t earn points'],
             why:       'Year 3 is where travel becomes a system instead of a project. The difference between someone who travels expensively and someone who travels smartly is almost entirely the infrastructure they built in years 2–3.',
             saContext: `eBucks is the most misunderstood loyalty programme in SA. At top tier, FNB customers can redeem eBucks at face value (1 eBuck = R1) on FlySafair flights - unlike most cash-back programmes where redemption rates are heavily discounted. For frequent travellers, this can effectively halve domestic flight costs.`,
+            warning:   null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Points on everyday spend, paid in full monthly',
+                    body:    'Using a travel rewards card for groceries, fuel, and subscriptions earns meaningful points with zero net cost - provided you pay the full balance every month. The points are a free benefit of purchases you were making anyway.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Carrying a balance on a rewards credit card',
+                    body:    'Interest at 22% p.a. wipes every point, benefit, and cashback earned. A rewards card only benefits you when the balance is cleared each month. If you carry a balance, the effective cost of points is negative.',
+                },
+            ],
         },
         {
             year:     4,
@@ -186,6 +231,19 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             avoid:     ['Leaving SA without any income replacement', 'Cancelling your RA during a sabbatical - you lose compound growth permanently', 'Ignoring ongoing SA costs while abroad', 'Returning home in debt'],
             why:       'Extended travel is fundamentally different from a 2-week trip. You are funding a period of life without income. The planning horizon and financial discipline required are much closer to early retirement planning than to a holiday.',
             saContext: `SARS taxes South Africans on worldwide income. If you work remotely for a foreign employer while abroad, income not remitted to SA may fall under the R1.25M foreign income exemption - but above that, full SARS tax applies. Get a tax professional involved before any arrangement over 60 days.`,
+            warning:   null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Planning income continuity before a sabbatical',
+                    body:    'Extended travel without income is fundable from savings for 1-3 months. Beyond that, you need either remote work or a negotiated sabbatical - both require 6-12 months of preparation. The financial plan and the employment plan are the same plan.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Pausing your RA during extended travel',
+                    body:    'The compound growth lost from even one year of paused RA contributions is permanent. Work the trip cost into your budget without stopping your RA. If the numbers do not add up, reduce the trip duration rather than halt compounding.',
+                },
+            ],
         },
         {
             year:     5,
@@ -207,6 +265,19 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             avoid:     ['Neglecting your investment portfolio in favour of travel', 'Spending the entire fund without rebuilding', 'Failing to update beneficiaries and estate plans before long-haul travel', 'Lifestyle inflation through travel spend'],
             why:       'Year 5 is not the destination - it\'s the proof of concept. You built a life that includes travel without financial compromise. The same discipline that funded your travel fund is the discipline that makes every other financial goal achievable.',
             saContext: `South Africa is one of the best countries in the world to travel from on a relative cost basis. Your rand buys you meaningfully more in SE Asia, Eastern Europe, Latin America, and most of Africa than it does at home. Intentional destination selection is not budget travel - it\'s smart travel.`,
+            warning:   null,
+            tradeoffs: [
+                {
+                    type:    'prioritise',
+                    heading: 'Merging travel savings into a broader lifestyle fund',
+                    body:    'After 5 years your travel habit is established. A permanently ring-fenced travel account may be less efficient than a general savings pot where travel is one planned use among others. Review whether the separation still serves you.',
+                },
+                {
+                    type:    'avoid',
+                    heading: 'Over-optimising points at the expense of actual travel',
+                    body:    'Points are a means to travel, not a hobby in themselves. If optimising your redemption takes more time than planning the actual trip, something has gone wrong. Use the system when it is easy - do not let it use you.',
+                },
+            ],
         },
     ]
 }
