@@ -11,18 +11,55 @@
 /* Left panel */
 
 .ob-left {
-    background: var(--n-900);
+    background: #0b0d18;
     display: flex;
     align-items: center;
     padding: 3rem 2.5rem;
     position: sticky;
     top: 0;
     height: 100vh;
+    overflow: hidden;
+}
+
+/* Red diagonal vector geometry on the branding panel kinda same language as the card */
+.ob-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(225deg,
+            rgba(226,0,26,0.28) 0%,
+            rgba(226,0,26,0.12) 6%,
+            rgba(226,0,26,0.04) 15%,
+            transparent 25%
+        ),
+        linear-gradient(45deg,
+            rgba(180,0,14,0.18) 0%,
+            rgba(180,0,14,0.07) 5%,
+            transparent 14%
+        ),
+        linear-gradient(
+            140deg,
+            transparent                 0%,
+            transparent                 calc(55% - 1px),
+            rgba(180,0,14,0.14)         calc(55% - 1px),
+            rgba(226,0,26,0.24)         calc(55%),
+            rgba(180,0,14,0.14)         calc(55% + 1px),
+            transparent                 calc(55% + 1px),
+            transparent                 calc(59.5% - 0.5px),
+            rgba(180,0,14,0.09)         calc(59.5% - 0.5px),
+            rgba(226,0,26,0.16)         calc(59.5%),
+            rgba(180,0,14,0.09)         calc(59.5% + 0.5px),
+            transparent                 calc(59.5% + 0.5px)
+        );
 }
 
 .ob-left-inner {
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
     gap: 1.5rem;
 }
 
@@ -88,10 +125,24 @@
     margin-top: 0.5rem;
 }
 
-/* Right panel */
+/* Right panel — white/light surface for the form.
+   Overriding all dark-theme CSS variables so every child component
+   renders correctly on a light background without touching their styles. */
 
 .ob-right {
-    background: var(--n-0);
+    /* Remap the dark neutral scale to light values */
+    --n-0:   #ffffff;
+    --n-50:  #f8f9fb;
+    --n-100: #f1f3f6;
+    --n-200: #e2e6ec;
+    --n-300: #d0d5de;
+    --n-400: #8e9ab0;
+    --n-500: #6b7589;
+    --n-600: #404d64;
+    --n-700: #232d40;
+    --n-900: #111827;
+    color-scheme: light;
+    background: #ffffff;
     display: flex;
     justify-content: center;
     align-items: flex-start;
