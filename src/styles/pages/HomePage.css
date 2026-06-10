@@ -112,9 +112,9 @@
 }
 
 .home-feature-tag--teal {
-    background: #EFF6FF;
+    background: rgba(29,78,216,0.07);
     color: #1D4ED8;
-    border-color: #BFDBFE;
+    border-color: rgba(29,78,216,0.18);
 }
 
 .home-feature-card h2 {

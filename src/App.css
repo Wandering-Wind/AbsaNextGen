@@ -1,193 +1,247 @@
 /* APP SHELL */
 
-/* Red diagonal vector geometry - inspired by the card's accent lines.
-   Corner triangles + two thin crossing lines, all in dark red shades.
-   These sit behind all content via z-index: -1. */
 .app-container {
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  background: transparent;
+  flex-direction: row;
   overflow: hidden;
-  position: relative;
-  isolation: isolate;
 }
 
-/* Corner triangle accents */
-.app-container::before {
+/* Side navigation */
+
+@keyframes metal-sweep-v {
+  0%   { background-position: center 200%; }
+  100% { background-position: center -200%; }
+}
+
+.side-nav {
+  width: 220px;
+  flex-shrink: 0;
+  height: 100vh;
+  background: #0b0d18;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 100;
+  /* Dark theme vars so all children render correctly */
+  --n-0:   #0b0d18;
+  --n-50:  #0f1120;
+  --n-100: #151828;
+  --n-200: #1e2236;
+  --n-300: #2a2e48;
+  --n-400: #46506a;
+  --n-500: #768098;
+  --n-600: #9ca8be;
+  --n-700: #c4cad8;
+  --n-900: #edf0f8;
+  color-scheme: dark;
+}
+
+/* Red diagonal vectors with same card-face language as onboarding left panel */
+.side-nav::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
   background:
     linear-gradient(225deg,
-      rgba(226,0,26,0.22) 0%,
-      rgba(226,0,26,0.10) 5%,
-      rgba(226,0,26,0.03) 13%,
-      transparent 22%
+      rgba(226,0,26,0.28) 0%,
+      rgba(226,0,26,0.12) 6%,
+      rgba(226,0,26,0.04) 15%,
+      transparent 25%
     ),
     linear-gradient(45deg,
-      rgba(180,0,14,0.14) 0%,
-      rgba(180,0,14,0.06) 5%,
-      transparent 13%
-    );
-}
-
-/* Diagonal crossing lines */
-.app-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background:
+      rgba(180,0,14,0.18) 0%,
+      rgba(180,0,14,0.07) 5%,
+      transparent 14%
+    ),
     linear-gradient(
       140deg,
-      transparent                   0%,
-      transparent                   calc(62% - 1px),
-      rgba(180,0,14,0.12)           calc(62% - 1px),
-      rgba(226,0,26,0.20)           calc(62%),
-      rgba(180,0,14,0.12)           calc(62% + 1px),
-      transparent                   calc(62% + 1px),
-      transparent                   calc(65.5% - 0.5px),
-      rgba(180,0,14,0.08)           calc(65.5% - 0.5px),
-      rgba(226,0,26,0.13)           calc(65.5%),
-      rgba(180,0,14,0.08)           calc(65.5% + 0.5px),
-      transparent                   calc(65.5% + 0.5px)
+      transparent                 0%,
+      transparent                 calc(55% - 1px),
+      rgba(180,0,14,0.14)         calc(55% - 1px),
+      rgba(226,0,26,0.24)         calc(55%),
+      rgba(180,0,14,0.14)         calc(55% + 1px),
+      transparent                 calc(55% + 1px),
+      transparent                 calc(59.5% - 0.5px),
+      rgba(180,0,14,0.09)         calc(59.5% - 0.5px),
+      rgba(226,0,26,0.16)         calc(59.5%),
+      rgba(180,0,14,0.09)         calc(59.5% + 0.5px),
+      transparent                 calc(59.5% + 0.5px)
     );
 }
 
-/* Navbar */
-
-.navbar-wrapper {
-  flex-shrink: 0;
-  z-index: 100;
-  position: relative;
-  /* Polished dark panel - subtle top-edge gloss */
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.04) 0%,
-      rgba(255,255,255,0.01) 50%,
-      transparent 100%
-    ),
-    var(--n-50);
-  border-bottom: 1px solid var(--n-300);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.5);
-}
-
-/* The single metallic-red accent line - this is the only animation in the shell */
-.navbar-wrapper::after {
+/* Vertical metallic sweep on the right edge with the only animation in the shell */
+.side-nav::after {
   content: '';
   position: absolute;
-  bottom: -1px;
-  left: 0;
+  top: 0;
   right: 0;
-  height: 1px;
-  background: var(--metal-red);
-  background-size: var(--metal-red-size);
-  animation: metal-sweep 10s linear infinite;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(140,0,16,0.15) 10%,
+    rgba(196,0,26,0.35) 25%,
+    rgba(226,0,26,0.55) 40%,
+    rgba(255,51,72,0.70) 50%,
+    rgba(255,112,128,0.80) 52%,
+    rgba(255,51,72,0.70) 54%,
+    rgba(226,0,26,0.55) 65%,
+    rgba(196,0,26,0.35) 78%,
+    rgba(140,0,16,0.15) 92%,
+    transparent 100%
+  );
+  background-size: 100% 300%;
+  animation: metal-sweep-v 10s linear infinite;
   z-index: 1;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 2rem;
-  height: 56px;
-  gap: 0;
+.side-nav-brand {
+  padding: 1.5rem 1.25rem 1.1rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
-.navbar-brand {
+.side-nav-brand-link {
   display: flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  flex-shrink: 0;
-  margin-right: 2.5rem;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
 }
 
-/* Brand name - solid red, confident, no animation */
-.navbar-logo {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--absa-red);
-  letter-spacing: 0.16em;
-}
-
-.navbar-product {
-  font-size: 0.72rem;
-  color: var(--n-400);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-}
-
-.nav-links {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  flex: 1;
-}
-
-.nav-links a {
+/* White badge containing the ABSA logo with intentional brand stamp on dark panel */
+.side-nav-logo-badge {
+  width: 38px;
+  height: 38px;
+  background: #ffffff;
+  border-radius: var(--r-sm);
   display: flex;
   align-items: center;
-  padding: 0 1rem;
-  height: 56px;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+
+.side-nav-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.side-nav-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.side-nav-logo {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--absa-red);
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.side-nav-product {
+  font-size: 0.68rem;
+  color: var(--n-400);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.side-nav-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--n-400);
+  padding: 0 1.25rem 0.4rem;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.side-nav-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0 0.65rem;
+  position: relative;
+  z-index: 2;
+}
+
+.side-nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: var(--r-sm);
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--n-500);
   text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
 }
 
-.nav-links a:hover  { color: var(--n-700); border-bottom-color: var(--n-300); }
-.nav-links a.active { color: var(--absa-red); font-weight: 600; border-bottom-color: var(--absa-red); }
+.side-nav-links a:hover {
+  background: var(--n-100);
+  color: var(--n-700);
+}
 
-.navbar-actions {
+.side-nav-links a.active {
+  background: var(--absa-red-light);
+  border-color: var(--absa-red-border);
+  color: var(--absa-red);
+  font-weight: 600;
+}
+
+.side-nav-footer {
+  padding: 0.85rem 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-left: auto;
+  border-top: 1px solid var(--n-200);
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
+
+/* Profile button */
 
 .profile-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--absa-red-light);
-  border: 1px solid var(--absa-red-border);
-  color: var(--absa-red);
+  border: 1px solid;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   flex-shrink: 0;
-  transition: background 0.15s, border-color 0.15s;
+  cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s;
 }
 
-.profile-btn:hover {
-  background: rgba(226,0,26,0.14);
-  border-color: rgba(226,0,26,0.40);
-}
+.profile-btn:hover   { opacity: 0.85; }
+.profile-btn--open   { box-shadow: 0 0 0 2px var(--absa-red); }
+.profile-menu        { position: relative; margin-left: auto; }
 
-.profile-btn--initials { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em; }
-
-.profile-btn--open {
-  box-shadow: 0 0 0 2px var(--n-50), 0 0 0 3px var(--absa-red);
-}
-
-.profile-menu { position: relative; }
+/* Profile dropdown which opens upward and to the right from the side nav footer */
 
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
+  bottom: calc(100% + 8px);
+  left: 0;
   width: 232px;
   background:
     linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%),
@@ -196,14 +250,21 @@
   box-shadow: var(--shadow-lg);
   border-radius: 10px;
   padding: 0.75rem;
-  z-index: 200;
-  transform-origin: top right;
+  z-index: 300;
+  transform-origin: bottom left;
   animation: profile-dropdown-in 0.15s ease;
 }
 
+/* When inside the side nav, pop the dropdown to the right instead */
+.side-nav-profile-dropdown {
+  bottom: 0;
+  left: calc(100% + 8px);
+  transform-origin: bottom left;
+}
+
 @keyframes profile-dropdown-in {
-  from { opacity: 0; transform: scale(0.96) translateY(-4px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
 }
 
 .profile-dropdown-identity { display: flex; align-items: flex-start; gap: 0.625rem; padding-bottom: 0.625rem; }
@@ -274,12 +335,36 @@
 
 .profile-dropdown-signout:hover { background: var(--absa-red-light); }
 
+/* Main content area */
+
+.main-area {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Light theme vars cascade to all content children */
+  --n-0:   #ffffff;
+  --n-50:  #f8f9fb;
+  --n-100: #f1f3f6;
+  --n-200: #e2e6ec;
+  --n-300: #d0d5de;
+  --n-400: #8e9ab0;
+  --n-500: #6b7589;
+  --n-600: #404d64;
+  --n-700: #232d40;
+  --n-900: #111827;
+  color-scheme: light;
+  background: var(--n-50);
+}
+
 /* Sub-nav */
 
 .subnav-wrapper {
   flex-shrink: 0;
   z-index: 99;
-  background: var(--n-50);
+  background: var(--n-0);
   border-bottom: 1px solid var(--n-200);
 }
 
@@ -329,11 +414,8 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%),
-    var(--n-50);
-  /* Precise red left accent - card corner language */
-  border-left: 2px solid var(--absa-red);
+  background: var(--n-0);
+  border-left: 3px solid var(--absa-red);
 }
 
 .page-title {
@@ -364,9 +446,7 @@
 }
 
 .split-left {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.018) 0%, transparent 25%),
-    var(--n-50);
+  background: var(--n-0);
   border-right: 1px solid var(--n-200);
   overflow-y: auto;
   overflow-x: hidden;
@@ -380,7 +460,7 @@
 }
 
 .split-right {
-  background: transparent;
+  background: var(--n-50);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 1rem 1.5rem;
@@ -393,6 +473,7 @@
 }
 
 .home-body {
+  background: var(--n-50);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -506,11 +587,11 @@
   background:
     linear-gradient(
       130deg,
-      rgba(255,255,255,0.045) 0%,
-      rgba(255,255,255,0.015) 35%,
+      rgba(255,255,255,0.06) 0%,
+      rgba(255,255,255,0.02) 35%,
       transparent 60%
     ),
-    var(--n-50);
+    var(--n-0);
   border: 1px solid var(--n-200);
   box-shadow: var(--shadow-sm);
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -730,21 +811,142 @@
 .text-warn { color: var(--warning) !important; }
 .app-icon  { flex-shrink: 0; display: inline-block; vertical-align: middle; }
 
+/* Mobile header bar (burger + logo) which desktop hidden */
+
+.mobile-header {
+  display: none;
+}
+
+/* Overlay backdrop for mobile drawer */
+.nav-overlay {
+  display: none;
+}
+
 /* Responsive */
 
 @media (max-width: 900px) {
-  .app-container { padding: 0; }
+  /* Side nav becomes a slide-in drawer */
+  .side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+  }
+
+  .side-nav--open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.55);
+  }
+
+  /* Dim overlay behind open drawer */
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 150;
+    animation: overlay-in 0.2s ease;
+  }
+
+  @keyframes overlay-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Mobile header bar */
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 52px;
+    padding: 0 1rem;
+    flex-shrink: 0;
+    background: #0b0d18;
+    border-bottom: 1px solid #1e2236;
+    position: relative;
+    z-index: 100;
+  }
+
+  /* Thin metallic sweep on mobile header bottom edge */
+  .mobile-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--metal-red);
+    background-size: var(--metal-red-size);
+    animation: metal-sweep 10s linear infinite;
+  }
+
+  .burger-btn {
+    background: none;
+    border: none;
+    color: var(--n-600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-sm);
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+    /* Use dark-theme var for mobile header context */
+    --n-600: #9ca8be;
+  }
+
+  .burger-btn:hover {
+    background: rgba(255,255,255,0.07);
+    color: #edf0f8;
+  }
+
+  .mobile-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .mobile-header-logo-badge {
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+
+  .mobile-header-logo-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .mobile-header-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #edf0f8;
+    letter-spacing: 0.04em;
+  }
+
+  /* Content adjustments */
   .split-body { grid-template-columns: 1fr; overflow: visible; }
   .split-left { border-right: none; border-bottom: 1px solid var(--n-200); max-height: 260px; }
-  .navbar { padding: 0 1rem; }
   .subnav { padding: 0 1rem; }
-  .page-header { padding: 1rem 1.25rem 0.75rem; }
+  .page-header { padding: 1rem 1.25rem 0.75rem; border-left-width: 2px; }
   .split-right { padding: 1.25rem; }
   .home-body { padding: 1.25rem; }
 }
 
 @media (max-width: 640px) {
-  .nav-links a { padding: 0 0.65rem; font-size: 0.72rem; }
-  .navbar-brand { display: none; }
   .result-row--two, .result-row--three { grid-template-columns: 1fr; }
 }

@@ -1,5 +1,16 @@
 ﻿
 .login-page {
+  --n-0:   #ffffff;
+  --n-50:  #f8f9fb;
+  --n-100: #f1f3f6;
+  --n-200: #e2e6ec;
+  --n-300: #d0d5de;
+  --n-400: #8e9ab0;
+  --n-500: #6b7589;
+  --n-600: #404d64;
+  --n-700: #232d40;
+  --n-900: #111827;
+  color-scheme: light;
   min-height: 100vh;
   display: flex;
   align-items: center;

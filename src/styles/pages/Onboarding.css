@@ -125,9 +125,9 @@
     margin-top: 0.5rem;
 }
 
-/* Right panel — white/light surface for the form.
+/* Right panel with white/light surface for the form
    Overriding all dark-theme CSS variables so every child component
-   renders correctly on a light background without touching their styles. */
+   renders correctly on a light background without touching their styles */
 
 .ob-right {
     /* Remap the dark neutral scale to light values */
