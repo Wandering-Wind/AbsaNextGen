@@ -16,87 +16,64 @@ function projectedValue(monthlyAmount, years, annualRate) {
     return Math.round(monthlyAmount * ((Math.pow(1 + r, n) - 1) / r))
 }
 
-/* Track definitions - might change to having static content with one of them being recommended
-   Note: it's currently feeling like the numbers are more critisizing the user rather than inviting them in
-*/
+/* Track definitions */
 const TRACKS = [
     {
-        id:          'property',
-        path:        '/tracks/property',
-        eyebrow:     '5-YEAR TRACK',
-        title:       'First Property Path',
+        id:       'property',
+        path:     '/tracks/property',
+        eyebrow:  '5-YEAR TRACK',
+        title:    'First Property Path',
         description: 'A structured plan to buy your first home in Johannesburg. Covers emergency fund, deposit savings, bond pre-approval, transfer costs, and ownership - in that order.',
         stats: [
             { label: 'Horizon',   value: '5 years'    },
             { label: 'Min/month', value: 'R2 000+'    },
             { label: 'Risk',      value: 'Low-medium' },
         ],
-        tableRow: {
-            goal:    'Own first home',
-            tool:    'RA + TFSA',
-            suited:  'DTI under 36%',
-        },
-        color:       '#E2001A',
-        colorBg:     '#FFF0F1',
-        colorBorder: '#FCCDD1',
-        iconName:    'bank',
-        projYears:   5,
-        projRate:    0.075,
-        projLabel:   'Projected deposit saved',
-        projNote:    'at 7.5% p.a. on 60% of your surplus',
-        cta:         'Start Property Path',
+        tableRow: { goal: 'Own first home', tool: 'RA + TFSA',  suited: 'DTI under 36%' },
+        iconName:  'bank',
+        projYears: 5,
+        projRate:  0.075,
+        projLabel: 'Projected deposit saved',
+        projNote:  'at 7.5% p.a. on 60% of your surplus',
+        cta:       'Start Property Path',
     },
     {
-        id:          'investing',
-        path:        '/tracks/global-investing',
-        eyebrow:     '5-YEAR TRACK',
-        title:       'Global Investing',
+        id:       'investing',
+        path:     '/tracks/global-investing',
+        eyebrow:  '5-YEAR TRACK',
+        title:    'Global Investing',
         description: 'Build a dual portfolio across JSE equities and offshore exposure. TFSA-first, scaling into international markets as your balance grows.',
         stats: [
-            { label: 'Horizon',   value: '5 years'     },
-            { label: 'Min/month', value: 'R500+'        },
-            { label: 'Risk',      value: 'Medium-high'  },
+            { label: 'Horizon',   value: '5 years'    },
+            { label: 'Min/month', value: 'R500+'       },
+            { label: 'Risk',      value: 'Medium-high' },
         ],
-        tableRow: {
-            goal:    'Build portfolio',
-            tool:    'TFSA + RA',
-            suited:  'Any profile',
-        },
-        color:       '#8B0015',
-        colorBg:     '#FDF1F2',
-        colorBorder: '#EEB8BE',
-        iconName:    'tfsa',
-        projYears:   5,
-        projRate:    0.11,
-        projLabel:   'Portfolio value estimate',
-        projNote:    'at 11% p.a. on 50% of surplus + TFSA',
-        cta:         'Start Investing Track',
+        tableRow: { goal: 'Build portfolio', tool: 'TFSA + RA', suited: 'Any profile' },
+        iconName:  'tfsa',
+        projYears: 5,
+        projRate:  0.11,
+        projLabel: 'Portfolio value estimate',
+        projNote:  'at 11% p.a. on 50% of surplus + TFSA',
+        cta:       'Start Investing Track',
     },
     {
-        id:          'travel',
-        path:        '/tracks/travel',
-        eyebrow:     '1-3 YEAR TRACK',
-        title:       'Travel Fund',
+        id:       'travel',
+        path:     '/tracks/travel',
+        eyebrow:  '1-3 YEAR TRACK',
+        title:    'Travel Fund',
         description: 'Save toward a meaningful travel goal - regional or international. Short enough to feel achievable, structured enough to actually happen.',
         stats: [
             { label: 'Horizon',   value: '1-3 years' },
             { label: 'Min/month', value: 'R1 000+'   },
-            { label: 'Risk',      value: 'Low'        },
+            { label: 'Risk',      value: 'Low'       },
         ],
-        tableRow: {
-            goal:    'Travel fund',
-            tool:    'TFSA',
-            suited:  'Any surplus',
-        },
-        color:       '#C2410C',
-        colorBg:     '#FFF3EE',
-        colorBorder: '#F5C4B8',
-        iconName:    'target',
-        projYears:   2,
-        projRate:    0.075,
-        projLabel:   '2-year savings target',
-        projNote:    'at 7.5% p.a. on 40% of your surplus',
-        cta:         'Start Travel Track',
+        tableRow: { goal: 'Travel fund', tool: 'TFSA', suited: 'Any surplus' },
+        iconName:  'target',
+        projYears: 2,
+        projRate:  0.075,
+        projLabel: '2-year savings target',
+        projNote:  'at 7.5% p.a. on 40% of your surplus',
+        cta:       'Start Travel Track',
     },
 ]
 
@@ -134,10 +111,10 @@ function getTrackFit(trackId, dti, emergencyMonths, surplus) {
 }
 
 const FIT_CONFIG = {
-    strong:      { label: 'Strong fit',             color: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
-    good:        { label: 'Good fit',               color: '#2563EB', bg: '#EFF6FF', border: '#BFDBFE' },
-    foundations: { label: 'Build foundations first', color: '#B45309', bg: '#FFFBEB', border: '#FDE68A' },
-    unknown:     { label: 'Add your Snapshot data', color: '#6C757D', bg: '#F5F6F8', border: '#DEE2E6' },
+    strong:      { label: 'Strong fit',              color: 'var(--success)', bg: 'var(--success-bg)', border: 'var(--success-border)' },
+    good:        { label: 'Good fit',                color: 'var(--n-600)',   bg: 'var(--n-50)',        border: 'var(--n-200)'          },
+    foundations: { label: 'Build foundations first', color: 'var(--warning)', bg: 'var(--warning-bg)', border: 'var(--warning-border)' },
+    unknown:     { label: 'Add your Snapshot data',  color: 'var(--n-400)',   bg: 'var(--n-50)',        border: 'var(--n-200)'          },
 }
 
 export default function TracksHub() {
@@ -180,6 +157,8 @@ export default function TracksHub() {
 
                 {/* Current position strip */}
                 <div className="tracks-position-strip">
+                    <p className="tracks-section-eyebrow">Your position</p>
+                    <div className="tracks-position-body">
                     {hasData ? (
                         <>
                             <div className="tracks-position-items">
@@ -215,6 +194,7 @@ export default function TracksHub() {
                             </p>
                         </div>
                     )}
+                    </div>
                 </div>
 
                 {/* Track cards */}
@@ -226,7 +206,7 @@ export default function TracksHub() {
 
                 {/* Comparison table */}
                 <div className="tracks-compare">
-                    <p className="tracks-compare-eyebrow">Side by side</p>
+                    <p className="tracks-section-eyebrow">Side by side</p>
                     <div className="tracks-compare-table-wrap">
                         <table className="tracks-compare-table">
                             <thead>
@@ -279,14 +259,12 @@ function TrackCard({ track, hasData }) {
     const fitCfg = FIT_CONFIG[track.fit.level]
 
     return (
-        <div className={`track-hub-card track-hub-card--${track.id}`}>
-            <div className="track-hub-band" style={{ background: track.color }} />
-
+        <div className="track-hub-card">
             <div className="track-hub-card-body">
 
                 <div className="track-hub-top">
-                    <div className="track-hub-icon" style={{ background: track.colorBg, borderColor: track.colorBorder }}>
-                        <Icon name={track.iconName} size={22} colour={track.color} />
+                    <div className="track-hub-icon">
+                        <Icon name={track.iconName} size={22} colour="var(--absa-red)" />
                     </div>
                     <span
                         className="track-hub-fit-badge"
@@ -296,44 +274,42 @@ function TrackCard({ track, hasData }) {
                     </span>
                 </div>
 
-                <div>
-                    <p className="track-hub-eyebrow" style={{ color: track.color }}>
-                        {track.eyebrow}
-                    </p>
+                <div className="track-hub-text-block">
+                    <p className="track-hub-eyebrow">{track.eyebrow}</p>
                     <h2 className="track-hub-title">{track.title}</h2>
+                    {/* Description hidden by default, shown on hover */}
                     <p className="track-hub-description">{track.description}</p>
                 </div>
 
-                <div className="track-hub-stats">
-                    {track.stats.map(s => (
-                        <div key={s.label} className="track-hub-stat">
-                            <span className="track-hub-stat-value">{s.value}</span>
-                            <span className="track-hub-stat-label">{s.label}</span>
-                        </div>
-                    ))}
-                </div>
+                {/* Stats + projection always visible */}
+                <div className="track-hub-detail">
+                    <div className="track-hub-stats">
+                        {track.stats.map(s => (
+                            <div key={s.label} className="track-hub-stat">
+                                <span className="track-hub-stat-value">{s.value}</span>
+                                <span className="track-hub-stat-label">{s.label}</span>
+                            </div>
+                        ))}
+                    </div>
 
-                {/* Year projection both personal and customized calculated */}
-                <div className="track-hub-projection" style={{ borderColor: track.colorBorder, background: track.colorBg }}>
-                    <span className="track-hub-proj-label">{track.projLabel}</span>
-                    {hasData && track.projAmount > 0 ? (
-                        <>
-                            <span className="track-hub-proj-value" style={{ color: track.color }}>
-                                {fmtZAR(track.projAmount)}
+                    <div className="track-hub-projection">
+                        <span className="track-hub-proj-label">{track.projLabel}</span>
+                        {hasData && track.projAmount > 0 ? (
+                            <>
+                                <span className="track-hub-proj-value">{fmtZAR(track.projAmount)}</span>
+                                <span className="track-hub-proj-note">{track.projNote}</span>
+                            </>
+                        ) : (
+                            <span className="track-hub-proj-empty">
+                                {hasData ? 'Increase your surplus to see a projection' : 'Add your Snapshot data'}
                             </span>
-                            <span className="track-hub-proj-note">{track.projNote}</span>
-                        </>
-                    ) : (
-                        <span className="track-hub-proj-empty">
-                            {hasData ? 'Increase your surplus to see a projection' : 'Add your Snapshot data'}
-                        </span>
-                    )}
+                        )}
+                    </div>
+
+                    <p className="track-hub-fit-reason">{track.fit.reason}</p>
                 </div>
 
-                {/* Fit from real profile data */}
-                <p className="track-hub-fit-reason">{track.fit.reason}</p>
-
-                <Link to={track.path} className="track-hub-cta" style={{ background: track.color }}>
+                <Link to={track.path} className="track-hub-cta">
                     {track.cta}
                 </Link>
 

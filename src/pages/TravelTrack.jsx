@@ -296,7 +296,7 @@ function TravelTooltip({ active, payload, label }) {
                 <strong>{fmtZAR(contributed)}</strong>
             </div>
             <div className="chart-tooltip-row">
-                <span style={{ color: '#22c55e' }}>Interest</span>
+                <span style={{ color: 'var(--success)' }}>Interest</span>
                 <strong>{fmtZAR(interest)}</strong>
             </div>
             <div className="chart-tooltip-row" style={{ borderTop: '1px solid var(--n-200)', paddingTop: '0.25rem', marginTop: '0.25rem' }}>
@@ -547,20 +547,20 @@ export default function TravelTrack() {
                                         <stop offset="95%" stopColor="var(--absa-red)" stopOpacity={0.02}/>
                                     </linearGradient>
                                     <linearGradient id="interestGrad" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%"  stopColor="#22c55e" stopOpacity={0.4}/>
-                                        <stop offset="95%" stopColor="#22c55e" stopOpacity={0.02}/>
+                                        <stop offset="5%"  stopColor="var(--success)" stopOpacity={0.4}/>
+                                        <stop offset="95%" stopColor="var(--success)" stopOpacity={0.02}/>
                                     </linearGradient>
                                 </defs>
                                 <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--n-400)' }} axisLine={false} tickLine={false}/>
                                 <YAxis hide/>
                                 <Tooltip content={<TravelTooltip/>} cursor={{ stroke: 'var(--n-200)', strokeWidth: 1 }}/>
                                 <Area type="monotone" dataKey="contributed" stackId="1" stroke="var(--absa-red)"    fill="url(#travelGrad)"   strokeWidth={2}/>
-                                <Area type="monotone" dataKey="interest"    stackId="1" stroke="#22c55e"            fill="url(#interestGrad)" strokeWidth={2}/>
+                                <Area type="monotone" dataKey="interest"    stackId="1" stroke="var(--success)"            fill="url(#interestGrad)" strokeWidth={2}/>
                             </AreaChart>
                         </ResponsiveContainer>
                         <div className="gi-chart-legend">
                             <span><span className="gi-legend-dot" style={{ background: 'var(--absa-red)' }}/>Saved</span>
-                            <span><span className="gi-legend-dot" style={{ background: '#22c55e' }}/>Interest</span>
+                            <span><span className="gi-legend-dot" style={{ background: 'var(--success)' }}/>Interest</span>
                         </div>
                     </div>
                 </div>
