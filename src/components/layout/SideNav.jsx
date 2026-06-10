@@ -33,6 +33,13 @@ const NAV_ITEMS = [
     { to: "/studio",    label: "Money Studio",    Icon: FlaskConical, prefix: "/studio" },
 ];
 
+const TRACKS_SUB_ITEMS = [
+    { to: "/tracks",                  label: "Overview",        exact: true },
+    { to: "/tracks/property",         label: "Property Path"               },
+    { to: "/tracks/global-investing", label: "Global Investing"            },
+    { to: "/tracks/travel",           label: "Travel"                      },
+];
+
 const STUDIO_SUB_ITEMS = [
     { to: "/studio",              label: "Overview",        exact: true },
     { to: "/studio/rent-vs-buy",  label: "Rent vs Buy"                 },
@@ -125,6 +132,20 @@ export default function SideNav({ isOpen, onClose }) {
                             <item.Icon size={15} strokeWidth={1.75} />
                             <span>{item.label}</span>
                         </Link>
+                        {item.prefix === "/tracks" && location.pathname.startsWith("/tracks") && (
+                            <div className="side-nav-sub">
+                                {TRACKS_SUB_ITEMS.map(sub => (
+                                    <Link
+                                        key={sub.to}
+                                        to={sub.to}
+                                        className={`side-nav-sub-link${isActive(sub) ? " active" : ""}`}
+                                        onClick={handleNavClick}
+                                    >
+                                        {sub.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                         {item.prefix === "/studio" && location.pathname.startsWith("/studio") && (
                             <div className="side-nav-sub">
                                 {STUDIO_SUB_ITEMS.map(sub => (

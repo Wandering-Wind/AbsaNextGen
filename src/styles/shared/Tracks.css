@@ -842,7 +842,7 @@
 }
 
 .gi-alloc-off {
-    background: #6366f1;
+    background: #374151;
 }
 
 .gi-alloc-jse span,
@@ -854,8 +854,6 @@
     padding: 0 0.4rem;
     letter-spacing: 0.02em;
 }
-
-/* The returned summary row */
 
 .gi-return-summary {
     display: flex;

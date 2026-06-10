@@ -319,7 +319,7 @@ function TrackCard({ track, hasData }) {
 }
 
 function PositionStat({ label, value, status, tooltip }) {
-    const colour = status === 'ok' ? 'var(--success)' : status === 'warn' ? 'var(--warning)' : 'var(--danger)'
+    const colour = status === 'ok' ? '#166534' : status === 'warn' ? '#92400e' : '#991b1b'
     return (
         <div className="position-stat">
             <span className="position-stat-value" style={{ color: colour }}>{value}</span>
