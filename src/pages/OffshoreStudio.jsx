@@ -1,4 +1,6 @@
 ﻿import { useState, useMemo } from 'react'
+import { ArrowLeftRight, CheckCircle, AlertTriangle, Receipt } from 'lucide-react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { useUserProfile } from '../context/UserProfileContext'
 import { fmtZAR, SA, calcNetSurplus } from '../components/financialCalcs'
 import "../styles/shared/TracksStudioShared.css"
@@ -345,11 +347,10 @@ export default function OffshoreStudio() {
 
                         <div className="input-field">
                             <label>Monthly offshore amount</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={monthlyZAR || ''} placeholder="0" min={500} step={500}
-                                    onChange={e => { setMonthlyZAR(Number(e.target.value)); setActiveAlloc(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyZAR}
+                                onChange={v => { setMonthlyZAR(v); setActiveAlloc(null) }}
+                            />
                             {surplus !== null && (
                                 <p className="input-hint">
                                     Your surplus is {fmtZAR(surplus)}/month. At {fmtZAR(monthlyZAR)}, that's {Math.round((monthlyZAR / surplus) * 100)}% directed offshore.
@@ -487,7 +488,7 @@ export default function OffshoreStudio() {
                     {/* Coaching callouts */}
                     <div className="ops-coaching">
 
-                        <CoachCallout title="💱 The currency multiplier - how rand depreciation stacks on investment returns" type="info">
+                        <CoachCallout title={<><ArrowLeftRight size={13} strokeWidth={1.75}/> The currency multiplier - how rand depreciation stacks on investment returns</>} type="info">
                             <p>
                                 Your portfolio earns <strong>{(usdReturn * 100).toFixed(1)}% p.a. in USD</strong>.
                                 When the rand depreciates 5% per year against the dollar, your <strong>effective ZAR return becomes {effectiveBase}% p.a.</strong> -
@@ -500,8 +501,8 @@ export default function OffshoreStudio() {
 
                         <CoachCallout
                             title={annualContrib <= SDA_LIMIT
-                                ? `✅ Your allowance - ${fmtZAR(annualContrib)}/year within the R2M SDA`
-                                : `⚠️ You've exceeded the SDA - FIA clearance required`}
+                                ? <><CheckCircle size={13} strokeWidth={1.75}/> Your allowance - {fmtZAR(annualContrib)}/year within the R2M SDA</>
+                                : <><AlertTriangle size={13} strokeWidth={1.75}/> You've exceeded the SDA - FIA clearance required</>}
                             type={annualContrib <= SDA_LIMIT ? 'nudge' : 'warn'}
                         >
                             <p>
@@ -523,7 +524,7 @@ export default function OffshoreStudio() {
                             </p>
                         </CoachCallout>
 
-                        <CoachCallout title="🧾 The tax reality - what SARS wants when you invest offshore" type="warn">
+                        <CoachCallout title={<><Receipt size={13} strokeWidth={1.75}/> The tax reality - what SARS wants when you invest offshore</>} type="warn">
                             <p>
                                 As a South African tax resident, your <strong>worldwide income is taxable in SA</strong>.
                                 Dividends from foreign companies (e.g. US ETFs) attract a <strong>15% withholding tax</strong> at source under the SA-US tax treaty.

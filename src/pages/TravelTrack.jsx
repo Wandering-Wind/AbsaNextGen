@@ -1,4 +1,5 @@
 ﻿import { useState, useMemo, useContext, useCallback } from 'react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { Link } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -495,16 +496,10 @@ export default function TravelTrack() {
                         <p className="input-section-title"><Icon name="savings" size={13}/> Monthly savings</p>
                         <div className="input-field">
                             <label>Amount per month</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input
-                                    type="number"
-                                    value={monthlyAmount}
-                                    onChange={e => setMonthlyAmount(Math.max(0, Number(e.target.value)))}
-                                    min="0"
-                                    step="250"
-                                />
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyAmount}
+                                onChange={v => setMonthlyAmount(v)}
+                            />
                             <p className="input-hint">Your surplus is {fmtZAR(surplus)}/month. Keep travel under 40% ({fmtZAR(Math.round(surplus * 0.4))}/month).</p>
                         </div>
                         {/* Derailment check */}

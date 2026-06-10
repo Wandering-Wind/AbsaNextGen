@@ -1,4 +1,5 @@
 import { useState, useMemo, useContext, useCallback } from 'react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { Link } from 'react-router-dom'
 import { useUserProfile } from '../context/UserProfileContext'
 import AuthContext from '../context/AuthContext'
@@ -323,16 +324,10 @@ export default function FirstPropertyPath() {
 
                         <div className="input-field">
                             <label>Target property price</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input
-                                    type="number"
-                                    value={targetPrice}
-                                    onChange={e => setTargetPrice(Number(e.target.value) || 0)}
-                                    min="500000"
-                                    step="50000"
-                                />
-                            </div>
+                            <FormattedNumberInput
+                                value={targetPrice}
+                                onChange={v => setTargetPrice(v || 0)}
+                            />
                             <p className="input-hint">JHB average 2-bed: R1.2M-R2M in northern suburbs.</p>
                         </div>
 
@@ -447,7 +442,3 @@ function VerdictBadge({ status, buyYear, monthsToGoal, surplus, totalCash }) {
         </div>
     )
 }
-
-/* PropertyTimeline and YearDetail have been moved to shared components:
-   src/components/track/TrackTimeline.jsx
-   src/components/track/TrackYearDetail.jsx */

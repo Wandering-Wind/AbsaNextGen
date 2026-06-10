@@ -16,6 +16,7 @@ import DonutChart    from '../components/money_snapshot/DonutChart'
 import WaterfallBar  from '../components/money_snapshot/WaterfallBar'
 import ProgressBar   from '../components/money_snapshot/ProgressBar'
 import Tooltip       from '../components/Tooltip'
+import { FormattedNumberInput } from '../components/FormattedInput'
 
 export default function MoneySnapshot() {
     const { profile, updateProfile, resetProfile } = useUserProfile()
@@ -274,24 +275,14 @@ export default function MoneySnapshot() {
     )
 }
 
-function InputField({ label, value, onChange, tooltip, min = 0, max }) {
+function InputField({ label, value, onChange, tooltip }) {
     return (
         <div className="input-field">
             <label>
                 {label}
                 {tooltip && <Tooltip text={tooltip} />}
             </label>
-            <div className="input-prefix-wrap">
-                <span className="input-prefix">R</span>
-                <input
-                    type="number"
-                    value={value === 0 ? '' : value}
-                    placeholder="0"
-                    min={min}
-                    max={max}
-                    onChange={e => onChange(e.target.value)}
-                />
-            </div>
+            <FormattedNumberInput value={value} onChange={onChange} />
         </div>
     )
 }

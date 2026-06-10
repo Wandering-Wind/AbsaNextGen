@@ -1,4 +1,6 @@
 ﻿import { useState, useMemo } from 'react'
+import { TrendingDown, AlertTriangle, CheckCircle, Lightbulb } from 'lucide-react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcNetSurplus,
@@ -399,11 +401,10 @@ export default function CarVsInvest() {
 
                         <div className="input-field">
                             <label>Car price</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={carPrice || ''} placeholder="0" min={50000} step={10000}
-                                    onChange={e => { setCarPrice(Number(e.target.value)); setActiveScenario(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={carPrice}
+                                onChange={v => { setCarPrice(v); setActiveScenario(null) }}
+                            />
                         </div>
 
                         <div className="input-field">
@@ -432,7 +433,7 @@ export default function CarVsInvest() {
                                 onChange={e => { setBalloonPct(Number(e.target.value)); setActiveScenario(null) }}/>
                             {balloonPct > 0 && (
                                 <p className="input-hint" style={{ color: 'var(--warning)' }}>
-                                    ⚠ {fmtZAR(balloon)} due as a lump sum at month {termMonths}. Monthly payment looks smaller but this is not free money.
+                                    <AlertTriangle size={13} strokeWidth={1.75} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.3rem' }}/>{fmtZAR(balloon)} due as a lump sum at month {termMonths}. Monthly payment looks smaller but this is not free money.
                                 </p>
                             )}
                         </div>
@@ -449,30 +450,27 @@ export default function CarVsInvest() {
 
                         <div className="input-field">
                             <label>Fuel / month</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={monthlyFuel || ''} placeholder="0" step={200}
-                                    onChange={e => { setMonthlyFuel(Number(e.target.value)); setActiveScenario(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyFuel}
+                                onChange={v => { setMonthlyFuel(v); setActiveScenario(null) }}
+                            />
                         </div>
 
                         <div className="input-field">
                             <label>Insurance / month</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={monthlyInsurance || ''} placeholder="0" step={100}
-                                    onChange={e => { setMonthlyInsurance(Number(e.target.value)); setActiveScenario(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyInsurance}
+                                onChange={v => { setMonthlyInsurance(v); setActiveScenario(null) }}
+                            />
                             <p className="input-hint">Comprehensive cover on a R420k car: R1 200-R2 500/month.</p>
                         </div>
 
                         <div className="input-field">
                             <label>Maintenance / month</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={monthlyMaint || ''} placeholder="0" step={100}
-                                    onChange={e => { setMonthlyMaint(Number(e.target.value)); setActiveScenario(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyMaint}
+                                onChange={v => { setMonthlyMaint(v); setActiveScenario(null) }}
+                            />
                             <p className="input-hint">Service plan, tyres, wear items. Budget R500-R1 500/month.</p>
                         </div>
                     </div>
@@ -594,7 +592,7 @@ export default function CarVsInvest() {
                     {/* Coaching callouts */}
                     <div className="cvi-coaching">
 
-                        <CoachCallout title="📉 The depreciation shock - what Year 1 actually does to your car" type="warn">
+                        <CoachCallout title={<><TrendingDown size={13} strokeWidth={1.75}/> The depreciation shock - what Year 1 actually does to your car</>} type="warn">
                             <p>
                                 Your {fmtZAR(carPrice)} car is worth approximately <strong>{fmtZAR(getCarValue(carPrice, 1))}</strong> after 12 months -
                                 a <strong>{fmtZAR(yr1Loss)} loss</strong> the moment you drive off the lot.
@@ -606,7 +604,7 @@ export default function CarVsInvest() {
                         </CoachCallout>
 
                         {balloonPct > 0 ? (
-                            <CoachCallout title={`⚠️ The balloon trap - ${fmtZAR(balloon)} due at month ${termMonths}`} type="danger">
+                            <CoachCallout title={<><AlertTriangle size={13} strokeWidth={1.75}/> The balloon trap - {fmtZAR(balloon)} due at month {termMonths}</>} type="danger">
                                 <p>
                                     The balloon payment makes your <strong>monthly payment look {fmtZAR(Math.round(monthlyPayment * 0.15))} lower</strong> than it would be without it.
                                     But it is not free - {fmtZAR(balloon)} is due as a lump sum at the end of the {termMonths}-month term.
@@ -615,7 +613,7 @@ export default function CarVsInvest() {
                                 </p>
                             </CoachCallout>
                         ) : (
-                            <CoachCallout title="✅ No balloon - clean deal structure" type="info">
+                            <CoachCallout title={<><CheckCircle size={13} strokeWidth={1.75}/> No balloon - clean deal structure</>} type="info">
                                 <p>
                                     Your deal has no balloon payment. Every rand of your monthly payment reduces what you owe.
                                     This is the cleanest structure - you build equity consistently and won't face a lump-sum surprise at the end of the term.
@@ -624,7 +622,7 @@ export default function CarVsInvest() {
                             </CoachCallout>
                         )}
 
-                        <CoachCallout title={`💡 The opportunity cost - ${fmtZAR(monthlyPayment)}/month for ${years} years`} type="nudge">
+                        <CoachCallout title={<><Lightbulb size={13} strokeWidth={1.75}/> The opportunity cost - {fmtZAR(monthlyPayment)}/month for {years} years</>} type="nudge">
                             <p>
                                 If you invested your <strong>{fmtZAR(monthlyPayment)}/month finance payment</strong> instead of paying it to the bank,
                                 it would grow to <strong>{fmtZAR(finalYear?.investPortfolio ?? 0)}</strong> over {years} years at {(investReturn * 100).toFixed(0)}% p.a.

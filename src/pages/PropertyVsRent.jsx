@@ -1,4 +1,6 @@
 ﻿import { useState, useMemo } from 'react'
+import { Lightbulb } from 'lucide-react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcBondRepayment,
@@ -346,11 +348,10 @@ export default function PropertyVsRent() {
 
                         <div className="input-field">
                             <label>Property price</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={propertyPrice || ''} placeholder="0" min={300000} step={50000}
-                                    onChange={e => { setPropertyPrice(Number(e.target.value)); setActiveScenario(null) }}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={propertyPrice}
+                                onChange={v => { setPropertyPrice(v); setActiveScenario(null) }}
+                            />
                             <p className="input-hint">JHB 2-bed northern suburbs: R1.2M-R2M</p>
                         </div>
 
@@ -394,11 +395,10 @@ export default function PropertyVsRent() {
 
                         <div className="input-field">
                             <label>Monthly rent</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input type="number" value={monthlyRent || ''} placeholder="0" min={1000} step={500}
-                                    onChange={e => setMonthlyRent(Number(e.target.value))}/>
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyRent}
+                                onChange={v => setMonthlyRent(v)}
+                            />
                             <p className="input-hint">Sandton 1-bed: R15 000-R25 000/month</p>
                         </div>
 
@@ -509,7 +509,7 @@ export default function PropertyVsRent() {
                     <div className="pvr-coaching">
 
                         <CoachCallout
-                            title="💡 The Year 1 reality - what your bond payment actually buys"
+                            title={<><Lightbulb size={13} strokeWidth={1.75}/> The Year 1 reality - what your bond payment actually buys</>}
                             type="warn"
                         >
                             <InterestBar interestPct={yearOneInterestPct}/>
@@ -522,8 +522,8 @@ export default function PropertyVsRent() {
 
                         <CoachCallout
                             title={monthlyDiff > 0
-                                ? `💡 The renter's edge - ${fmtZAR(monthlyDiff)}/month invested`
-                                : `💡 The buyer's edge - bond costs less than rent here`}
+                                ? <><Lightbulb size={13} strokeWidth={1.75}/> The renter's edge - {fmtZAR(monthlyDiff)}/month invested</>
+                                : <><Lightbulb size={13} strokeWidth={1.75}/> The buyer's edge - bond costs less than rent here</>}
                             type="info"
                         >
                             {monthlyDiff > 0 ? (
@@ -544,8 +544,8 @@ export default function PropertyVsRent() {
 
                         <CoachCallout
                             title={crossoverYear
-                                ? `💡 The crossover - the lead changes in Year ${crossoverYear}`
-                                : `💡 No crossover - ${buyWins ? 'buying' : 'renting'} leads from start to finish`}
+                                ? <><Lightbulb size={13} strokeWidth={1.75}/> The crossover - the lead changes in Year {crossoverYear}</>
+                                : <><Lightbulb size={13} strokeWidth={1.75}/> No crossover - {buyWins ? 'buying' : 'renting'} leads from start to finish</>}
                             type="nudge"
                         >
                             {crossoverYear ? (

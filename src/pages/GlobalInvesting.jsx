@@ -1,4 +1,5 @@
 ﻿import { useState, useMemo, useContext, useCallback } from 'react'
+import { FormattedNumberInput } from '../components/FormattedInput'
 import { Link } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -15,8 +16,7 @@ import { useTrackProgress }  from '../hooks/useTrackProgress'
 import { INVESTING_ACTIONS } from '../data/trackActions'
 
 /* Portfolio projection calculator
-   Simulates monthly compounding for both JSE and offshore allocations.
-   Returns an array of yearly snapshots showing portfolio value growth */
+   Simulates monthly compounding for both JSE and offshore allocations */
 function buildProjection({ monthlyAmount, jseSplit, jseReturn, offshoreReturn, randWeakness }) {
     const monthlyJSE      = monthlyAmount * (jseSplit / 100)
     const monthlyOffshore = monthlyAmount * ((100 - jseSplit) / 100)
@@ -432,16 +432,10 @@ export default function GlobalInvesting() {
 
                         <div className="input-field">
                             <label>Amount per month</label>
-                            <div className="input-prefix-wrap">
-                                <span className="input-prefix">R</span>
-                                <input
-                                    type="number"
-                                    value={monthlyAmount}
-                                    onChange={e => { setMonthlyAmount(Math.max(0, Number(e.target.value))); setActivePreset(null) }}
-                                    min="0"
-                                    step="500"
-                                />
-                            </div>
+                            <FormattedNumberInput
+                                value={monthlyAmount}
+                                onChange={v => { setMonthlyAmount(v); setActivePreset(null) }}
+                            />
                             <p className="input-hint">Your surplus is {fmtZAR(surplus)}/month. Aim for 60-80% directed to investments.</p>
                         </div>
 
