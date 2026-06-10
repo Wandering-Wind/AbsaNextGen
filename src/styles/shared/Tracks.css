@@ -494,6 +494,117 @@
     line-height: 1.65;
 }
 
+/* Timeline mircro-action counter  */
+
+.pp-node-actions {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--n-400);
+    letter-spacing: 0.04em;
+    text-align: center;
+    line-height: 1;
+    margin-top: 0.1rem;
+}
+
+.pp-node-actions--done {
+    color: var(--success);
+}
+
+/* Micro-actions card */
+
+.micro-actions {
+    background: var(--n-0);
+    border: 1px solid var(--n-200);
+    border-radius: var(--r-md);
+    padding: 1rem 1.1rem;
+    box-shadow: var(--shadow-xs);
+}
+
+.micro-actions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.micro-actions-title {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--n-500);
+}
+
+.micro-actions-count {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--n-400);
+    background: var(--n-100);
+    border: 1px solid var(--n-200);
+    border-radius: var(--r-pill);
+    padding: 0.15rem 0.6rem;
+    line-height: 1.6;
+}
+
+.micro-actions-count--done {
+    color: var(--success);
+    background: var(--success-bg);
+    border-color: var(--success-border);
+}
+
+.micro-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.micro-action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--r-xs);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.micro-action-item:hover {
+    background: var(--n-50);
+}
+
+.micro-action-item:focus-visible {
+    outline: 2px solid var(--absa-red);
+    outline-offset: 2px;
+}
+
+.micro-action-item--done {
+    opacity: 0.55;
+}
+
+.micro-action-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.micro-action-text {
+    font-size: var(--text-sm);
+    color: var(--n-700);
+    line-height: 1.5;
+    font-family: var(--font-ui);
+    transition: color 0.15s;
+}
+
+.micro-action-item--done .micro-action-text {
+    text-decoration: line-through;
+    color: var(--n-400);
+}
+
 /* Responsive */
 
 @media (max-width: 900px) {
@@ -501,7 +612,7 @@
     .pp-verdict { display: none; }
 }
 
-/* GLOBAL INVESTING - specific components */
+/* Global Investing specifics */
 
 /* Strategy presets */
 
@@ -575,7 +686,7 @@
     letter-spacing: 0.02em;
 }
 
-/* Blended return summary row */
+/* The returned summary row */
 
 .gi-return-summary {
     display: flex;
@@ -596,7 +707,7 @@
     color: var(--absa-red);
 }
 
-/* Tax efficiency cards (TFSA + SDA)  */
+/* Tax efficiency cards  */
 
 .gi-tax-cards {
     display: flex;
@@ -717,7 +828,7 @@
 .chart-tooltip-row span { color: var(--n-500); }
 .chart-tooltip-row strong { font-weight: 700; color: var(--n-900); }
 
-/* TRAVEL TRACK - specific components */
+/* Travel specifics */
 
 /* Option picker (region / style / duration) */
 
@@ -751,8 +862,6 @@
     background: var(--absa-red-light);
     color: var(--absa-red);
 }
-
-/* Derailment indicator */
 
 .tt-derail {
     border-radius: var(--r-sm);

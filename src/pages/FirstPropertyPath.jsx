@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from 'react'
+import { useState, useMemo, useContext, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useUserProfile } from '../context/UserProfileContext'
 import AuthContext from '../context/AuthContext'
@@ -9,8 +9,10 @@ import {
 import "../styles/shared/TracksStudioShared.css"
 import "../styles/shared/Tracks.css"
 import Icon from '../components/Icons'
-import TrackTimeline  from '../components/track/TrackTimeline'
-import TrackYearDetail from '../components/track/TrackYearDetail'
+import TrackTimeline   from '../components/track/TrackTimeline'
+import TrackYearDetail  from '../components/track/TrackYearDetail'
+import { useTrackProgress }  from '../hooks/useTrackProgress'
+import { PROPERTY_ACTIONS }  from '../data/trackActions'
 
 /* Building all 5 milestone objects with personalized numbers from the user's profile. (Make more personalized rather than info dump)
    Every number here is calculated from real profile data so trynna feel like a personal coach */
@@ -197,6 +199,16 @@ export default function FirstPropertyPath() {
 
     const activeMilestone = milestones[selectedYear - 1]
 
+    /* Micro-action progress */
+    const { getCompleted, toggleAction } = useTrackProgress('property')
+    const progressMap = useMemo(() => {
+        const map = {}
+        ;[1,2,3,4,5].forEach(yr => {
+            map[yr] = { done: getCompleted(yr).length, total: PROPERTY_ACTIONS[yr].length }
+        })
+        return map
+    }, [getCompleted])
+
     /* Empty state - no data entered yet */
     if (!hasData) {
         return (
@@ -310,10 +322,14 @@ export default function FirstPropertyPath() {
                         milestones={milestones}
                         selectedYear={selectedYear}
                         onSelect={setSelectedYear}
+                        progressMap={progressMap}
                     />
                     <TrackYearDetail
                         key={selectedYear}
                         milestone={activeMilestone}
+                        actions={PROPERTY_ACTIONS[selectedYear]}
+                        completed={getCompleted(selectedYear)}
+                        onToggle={toggleAction}
                     />
                 </div>
             </div>

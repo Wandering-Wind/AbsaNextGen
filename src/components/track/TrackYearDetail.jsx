@@ -1,5 +1,4 @@
 /* Shared year detail panel used by all three Strategy Track pages.
-   Accepts a milestone object and renders it consistently.
 
    Expected milestone shape:
    {
@@ -11,12 +10,19 @@
      avoid: string[],
      why,
      saContext,
-   } */
+   }
 
-import Icon from '../Icons'
+   Optional props for micro-actions (from useTrackProgress):
+     actions:   string[]  - the 3 action strings for this year
+     completed: string[]  - completed action indices as strings
+     onToggle:  (year, idx) => void
+*/
+
+import Icon       from '../Icons'
+import MicroActions from './MicroActions'
 import { fmtZAR } from '../financialCalcs'
 
-export default function TrackYearDetail({ milestone: m }) {
+export default function TrackYearDetail({ milestone: m, actions, completed, onToggle }) {
     if (!m) return null
     const pct = m.progressPct ?? 0
 
@@ -28,7 +34,7 @@ export default function TrackYearDetail({ milestone: m }) {
                 <p className="pp-detail-sublabel">{m.sublabel}</p>
             </div>
 
-            {/* Progress card */}
+            {/* Financial progress card (auto-calculated from profile data) */}
             <div className="pp-detail-progress-card">
                 <div className="pp-progress-top">
                     <div>
@@ -52,13 +58,13 @@ export default function TrackYearDetail({ milestone: m }) {
                 </div>
             </div>
 
-            {/* Insight */}
+            {/* Insight callout */}
             <div className="pp-insight">
                 <Icon name="nudge" size={14} colour="var(--warning)"/>
                 <p>{m.insight}</p>
             </div>
 
-            {/* Focus + Avoid grid */}
+            {/* Focus and avoid grid */}
             <div className="pp-content-grid">
                 <div className="pp-content-block">
                     <p className="pp-block-title">What to focus on</p>
@@ -83,6 +89,16 @@ export default function TrackYearDetail({ milestone: m }) {
                     <p className="pp-why-text">{m.why}</p>
                 </div>
             </div>
+
+            {/* Micro-actions - behavioral checkboxes the system cannot auto-detect */}
+            {actions && actions.length > 0 && (
+                <MicroActions
+                    year={m.year}
+                    actions={actions}
+                    completed={completed ?? []}
+                    onToggle={onToggle}
+                />
+            )}
 
             {/* SA context */}
             <div className="pp-sa-context">

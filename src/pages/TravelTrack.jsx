@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from 'react'
+import { useState, useMemo, useContext, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -9,8 +9,10 @@ import {
 import "../styles/shared/TracksStudioShared.css"
 import "../styles/shared/Tracks.css"
 import Icon from '../components/Icons'
-import TrackTimeline  from '../components/track/TrackTimeline'
-import TrackYearDetail from '../components/track/TrackYearDetail'
+import TrackTimeline       from '../components/track/TrackTimeline'
+import TrackYearDetail      from '../components/track/TrackYearDetail'
+import { useTrackProgress } from '../hooks/useTrackProgress'
+import { TRAVEL_ACTIONS }   from '../data/trackActions'
 
 /* Static data */
 
@@ -328,6 +330,16 @@ export default function TravelTrack() {
     const activeMilestone = milestones[selectedYear - 1]
     const y5 = projection[4]
 
+    /* Micro-action progress */
+    const { getCompleted, toggleAction } = useTrackProgress('travel')
+    const progressMap = useMemo(() => {
+        const map = {}
+        ;[1,2,3,4,5].forEach(yr => {
+            map[yr] = { done: getCompleted(yr).length, total: TRAVEL_ACTIONS[yr].length }
+        })
+        return map
+    }, [getCompleted])
+
     /* Verdict */
     const verdictStatus = surplus <= 0 ? 'deficit'
         : !hasEmergency ? 'at-risk'
@@ -493,10 +505,14 @@ export default function TravelTrack() {
                         milestones={milestones}
                         selectedYear={selectedYear}
                         onSelect={setSelectedYear}
+                        progressMap={progressMap}
                     />
                     <TrackYearDetail
                         key={`${selectedYear}-${regionId}-${styleId}-${durationId}`}
                         milestone={activeMilestone}
+                        actions={TRAVEL_ACTIONS[selectedYear]}
+                        completed={getCompleted(selectedYear)}
+                        onToggle={toggleAction}
                     />
                 </div>
             </div>

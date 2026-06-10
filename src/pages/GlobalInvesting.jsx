@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from 'react'
+import { useState, useMemo, useContext, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -9,8 +9,10 @@ import {
 import "../styles/shared/TracksStudioShared.css"
 import "../styles/shared/Tracks.css"
 import Icon from '../components/Icons'
-import TrackTimeline   from '../components/track/TrackTimeline'
-import TrackYearDetail from '../components/track/TrackYearDetail'
+import TrackTimeline        from '../components/track/TrackTimeline'
+import TrackYearDetail       from '../components/track/TrackYearDetail'
+import { useTrackProgress }  from '../hooks/useTrackProgress'
+import { INVESTING_ACTIONS } from '../data/trackActions'
 
 /* Portfolio projection calculator
    Simulates monthly compounding for both JSE and offshore allocations.
@@ -274,6 +276,16 @@ export default function GlobalInvesting() {
     const activeMilestone = milestones[selectedYear - 1]
     const y5 = projection[4]
 
+    /* Micro-action progress */
+    const { getCompleted, toggleAction } = useTrackProgress('investing')
+    const progressMap = useMemo(() => {
+        const map = {}
+        ;[1,2,3,4,5].forEach(yr => {
+            map[yr] = { done: getCompleted(yr).length, total: INVESTING_ACTIONS[yr].length }
+        })
+        return map
+    }, [getCompleted])
+
     /* SDA usage */
     const annualOffshore = monthlyAmount * (offSplit / 100) * 12
     const sdaPct = Math.round((annualOffshore / 2000000) * 100)
@@ -491,10 +503,14 @@ export default function GlobalInvesting() {
                         milestones={milestones}
                         selectedYear={selectedYear}
                         onSelect={setSelectedYear}
+                        progressMap={progressMap}
                     />
                     <TrackYearDetail
                         key={selectedYear}
                         milestone={activeMilestone}
+                        actions={INVESTING_ACTIONS[selectedYear]}
+                        completed={getCompleted(selectedYear)}
+                        onToggle={toggleAction}
                     />
                 </div>
             </div>
