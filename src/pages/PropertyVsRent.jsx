@@ -2,12 +2,13 @@ import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcBondRepayment,
-    calcNetSurplus, calcTakeHome, calcTotalExpenses,
+    calcNetSurplus, calcTakeHome, calcTotalExpenses, calcDTI,
 } from '../components/financialCalcs'
 import "../styles/shared/TracksStudioShared.css"
 import "../styles/pages/PropertyVsRent.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
+import StudioVerdict from "../components/StudioVerdict"
 import {
     LineChart, Line, XAxis, YAxis,
     CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
@@ -173,6 +174,79 @@ function InterestBar({ interestPct }) {
     )
 }
 
+/* Verdict logic - synthesises simulation result with user profile */
+function computePropertyVerdict({ hasProfile, canAffordBond, buyWins, difference, crossoverYear, monthlyDiff, monthlyBond, surplus, depositVsSavings, deposit, dti, years }) {
+    if (!hasProfile) {
+        return {
+            type:     'blocked',
+            headline: 'Add your financial data for a personalised recommendation',
+            points: [
+                'Enter your income and expenses in Money Snapshot',
+                'The simulation will then check whether you can afford this bond right now',
+                'Your DTI and monthly surplus are the two numbers that matter most here',
+            ],
+        }
+    }
+
+    if (!canAffordBond) {
+        return {
+            type:     'caution',
+            headline: 'Renting is the realistic path right now',
+            points: [
+                `Your surplus of ${fmtZAR(surplus)}/month cannot cover the ${fmtZAR(monthlyBond)}/month bond repayment`,
+                'Renting preserves your options while you build toward bond-readiness',
+                dti > 36
+                    ? `Your DTI of ${dti}% is above the 36% approval threshold - clearing debt comes first`
+                    : `Your savings currently cover ${depositVsSavings}% of the required ${fmtZAR(deposit)} deposit`,
+            ],
+            nextStep: 'Go to Property Path',
+            nextPath: '/tracks/property',
+        }
+    }
+
+    if (buyWins && (!crossoverYear || crossoverYear <= Math.ceil(years * 0.5))) {
+        return {
+            type:     'positive',
+            headline: `Buying has a clear advantage over ${years} years`,
+            points: [
+                crossoverYear
+                    ? `The buy path leads from Year ${crossoverYear} - in the first half of your simulation window`
+                    : 'Buying leads throughout the entire simulation period',
+                `You are ahead by ${fmtZAR(difference)} at Year ${years} under these assumptions`,
+                monthlyDiff > 0
+                    ? `Your bond costs ${fmtZAR(monthlyDiff)}/month more than rent - the equity you build compensates for this`
+                    : `Your bond is ${fmtZAR(Math.abs(monthlyDiff))}/month cheaper than rent here - a structural advantage`,
+            ],
+            nextStep: 'Start Property Path',
+            nextPath: '/tracks/property',
+        }
+    }
+
+    if (!buyWins) {
+        return {
+            type:     'neutral',
+            headline: `Renting and investing wins over ${years} years`,
+            points: [
+                monthlyDiff > 0
+                    ? `This only works if you actually invest the ${fmtZAR(monthlyDiff)}/month difference - spending it means buying wins by default`
+                    : 'Rent exceeds the bond here, so the buyer also has a monthly cost advantage',
+                `Your surplus of ${fmtZAR(surplus)}/month ${surplus >= monthlyDiff ? 'supports this investment discipline' : 'is tight for this strategy'}`,
+                `Try extending the simulation horizon - buying tends to win over longer periods as rent inflation compounds`,
+            ],
+        }
+    }
+
+    return {
+        type:     'neutral',
+        headline: 'The outcome is close - your time horizon decides it',
+        points: [
+            `Buying leads by ${fmtZAR(difference)} at Year ${years}, but the gap is narrow`,
+            'Extend the simulation to see where the advantage becomes significant',
+            'Both paths are financially viable at your income level - the choice is also personal',
+        ],
+    }
+}
+
 /* Main component */
 export default function PropertyVsRent() {
     const { profile } = useUserProfile()
@@ -214,8 +288,14 @@ export default function PropertyVsRent() {
     const crossoverYear = useMemo(() => findCrossoverYear(snapshots), [snapshots])
 
     /* Affordability from profile */
-    const canAffordBond     = surplus !== null && surplus >= monthlyBond
-    const depositVsSavings  = bankBalance > 0 ? Math.round((bankBalance / deposit) * 100) : 0
+    const canAffordBond    = surplus !== null && surplus >= monthlyBond
+    const depositVsSavings = bankBalance > 0 ? Math.round((bankBalance / deposit) * 100) : 0
+    const dti              = hasProfile ? calcDTI(profile) : 0
+
+    const verdict = computePropertyVerdict({
+        hasProfile, canAffordBond, buyWins, difference, crossoverYear,
+        monthlyDiff, monthlyBond, surplus, depositVsSavings, deposit, dti, years,
+    })
 
     function handleReset() {
         setPropertyPrice(1500000); setDepositPct(10)
@@ -524,6 +604,15 @@ export default function PropertyVsRent() {
                             </div>
                         )}
                     </div>
+
+                    {/* Studio verdict */}
+                    <StudioVerdict
+                        type={verdict.type}
+                        headline={verdict.headline}
+                        points={verdict.points}
+                        nextStep={verdict.nextStep}
+                        nextPath={verdict.nextPath}
+                    />
 
                     {/* Learn section */}
                     <div className="learn-section">

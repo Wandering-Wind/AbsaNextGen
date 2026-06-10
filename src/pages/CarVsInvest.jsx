@@ -7,6 +7,7 @@ import "../styles/shared/TracksStudioShared.css"
 import "../styles/pages/CarVsInvest.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
+import StudioVerdict from "../components/StudioVerdict"
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid,
     Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea,
@@ -242,6 +243,65 @@ function CoachCallout({ title, children, type = 'info' }) {
     )
 }
 
+/* Verdict logic */
+function computeCarVerdict({ hasProfile, surplus, trueMonthly, opportunityCost, finalCarValue, balloonPct, balloon, termMonths, years, investReturn }) {
+    if (!hasProfile) {
+        return {
+            type:     'blocked',
+            headline: 'Add your financial data to assess affordability',
+            points: [
+                'Enter your income in Money Snapshot to check if this car fits your budget',
+                'The 15% rule: total transport costs should stay under 15% of take-home pay',
+                'The opportunity cost calculation already works - see the chart above for the wealth trade-off',
+            ],
+        }
+    }
+
+    const transportPct = surplus > 0 ? Math.round((trueMonthly / surplus) * 100) : 999
+
+    if (transportPct > 30) {
+        return {
+            type:     'caution',
+            headline: 'This car is consuming too much of your income',
+            points: [
+                `True monthly cost of ${fmtZAR(trueMonthly)} is ${transportPct}% of your surplus - well above the 15% guideline`,
+                `You would be ${fmtZAR(opportunityCost)} wealthier at Year ${years} if the payments were invested at ${(investReturn * 100).toFixed(0)}% instead`,
+                balloonPct > 0
+                    ? `The ${fmtZAR(balloon)} balloon at month ${termMonths} adds a lump-sum obligation on top of everything else`
+                    : 'Consider a lower price point that keeps total transport under 15% of your surplus',
+            ],
+            nextStep: 'Review your budget',
+            nextPath: '/dashboard',
+        }
+    }
+
+    if (transportPct > 15) {
+        return {
+            type:     'neutral',
+            headline: 'Affordable, but the opportunity cost is real',
+            points: [
+                `True monthly cost of ${fmtZAR(trueMonthly)} is ${transportPct}% of your surplus - slightly above the 15% guideline`,
+                `Investing the payments instead would yield ${fmtZAR(opportunityCost)} more over ${years} years - that is the honest price of this choice`,
+                balloonPct > 0
+                    ? `The ${fmtZAR(balloon)} balloon at month ${termMonths} needs a savings plan now - it does not disappear`
+                    : 'This is manageable if mobility genuinely justifies the cost in your situation',
+            ],
+        }
+    }
+
+    return {
+        type:     'positive',
+        headline: 'This car fits your budget',
+        points: [
+            `True monthly cost of ${fmtZAR(trueMonthly)} is ${transportPct}% of your surplus - within the 15% guideline`,
+            `Opportunity cost over ${years} years is ${fmtZAR(opportunityCost)} - you should know this number before signing`,
+            balloonPct > 0
+                ? `The ${fmtZAR(balloon)} balloon at month ${termMonths} is the one outstanding risk - plan to pay it, not refinance it`
+                : 'No balloon, clean deal structure. This is how a car purchase should look.',
+        ],
+    }
+}
+
 /* Main component */
 export default function CarVsInvest() {
     const { profile } = useUserProfile()
@@ -289,6 +349,12 @@ export default function CarVsInvest() {
     const trueMonthly    = monthlyPayment + monthlyRunning
 
     const canAfford = surplus !== null && surplus >= trueMonthly
+
+    const verdict = computeCarVerdict({
+        hasProfile, surplus, trueMonthly, opportunityCost,
+        finalCarValue: finalYear?.carValue ?? 0,
+        balloonPct, balloon, termMonths, years, investReturn,
+    })
 
     function handleReset() {
         applyScenario(SCENARIOS[1])
@@ -608,6 +674,15 @@ export default function CarVsInvest() {
                             </div>
                         )}
                     </div>
+
+                    {/* Studio verdict */}
+                    <StudioVerdict
+                        type={verdict.type}
+                        headline={verdict.headline}
+                        points={verdict.points}
+                        nextStep={verdict.nextStep}
+                        nextPath={verdict.nextPath}
+                    />
 
                     {/* Learn section */}
                     <div className="learn-section">

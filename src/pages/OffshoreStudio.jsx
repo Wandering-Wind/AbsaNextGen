@@ -5,6 +5,7 @@ import "../styles/shared/TracksStudioShared.css"
 import "../styles/pages/OffshoreStudio.css"
 import Icon from "../components/Icons"
 import LearnCard from "../components/LearnCard"
+import StudioVerdict from "../components/StudioVerdict"
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid,
     Tooltip, ResponsiveContainer, Legend,
@@ -190,6 +191,51 @@ function SdaBar({ annualContrib }) {
     )
 }
 
+/* Verdict logic */
+function computeOffshoreVerdict({ surplus, monthlyZAR, annualContrib, offshoreAheadOfJse, effectiveBase, effectiveStrong, effectiveWeak, fxBonus, finalBase, finalJse, years, jseReturn, usdReturn }) {
+    const needsFia = annualContrib > SDA_LIMIT
+    const jseReturnPct = Math.round(jseReturn * 100)
+    const offVsJse = effectiveBase - jseReturnPct
+
+    if (offshoreAheadOfJse && offVsJse >= 2) {
+        return {
+            type:     'positive',
+            headline: 'Offshore has the edge - rand depreciation does the heavy lifting',
+            points: [
+                `Base case delivers ${effectiveBase}% effective ZAR return vs JSE at ${jseReturnPct}% - a ${offVsJse} percentage point advantage from currency alone`,
+                `${fmtZAR(Math.abs(fxBonus))} of your ${years}-year return comes purely from rand depreciation - this is structural, not speculative`,
+                needsFia
+                    ? `Your ${fmtZAR(annualContrib)}/year exceeds the R2M SDA - apply for FIA clearance via SARS eFiling before transferring`
+                    : `Your ${fmtZAR(annualContrib)}/year sits within the R2M SDA - no tax clearance needed`,
+            ],
+        }
+    }
+
+    if (!offshoreAheadOfJse || effectiveStrong < jseReturnPct) {
+        return {
+            type:     'caution',
+            headline: 'JSE competes closely - diversification is the real argument for offshore',
+            points: [
+                `If the rand holds or strengthens, your effective ZAR return drops to ${effectiveStrong}% - below the JSE at ${jseReturnPct}%`,
+                `The base case at ${effectiveBase}% is competitive, but your outcome is materially rand-path-dependent`,
+                'Offshore is not just about beating JSE - it is about holding assets outside the SA economy as a hedge',
+            ],
+        }
+    }
+
+    return {
+        type:     'neutral',
+        headline: 'Offshore and JSE are closely matched at these inputs',
+        points: [
+            `Base case puts offshore at ${effectiveBase}% vs JSE at ${jseReturnPct}% over ${years} years`,
+            'The real benefit of offshore exposure is not beating JSE - it is currency and geographic diversification',
+            needsFia
+                ? `You need FIA clearance from SARS before transferring above R2M - apply via eFiling`
+                : `Clean SDA position at ${fmtZAR(annualContrib)}/year - no clearance paperwork needed`,
+        ],
+    }
+}
+
 /* Main component */
 export default function OffshoreStudio() {
     const { profile } = useUserProfile()
@@ -245,6 +291,12 @@ export default function OffshoreStudio() {
 
     /* Offshore ahead of JSE? */
     const offshoreAheadOfJse = (finalBase?.zarValue ?? 0) > (finalJse?.zarValue ?? 0)
+
+    const verdict = computeOffshoreVerdict({
+        surplus, monthlyZAR, annualContrib, offshoreAheadOfJse,
+        effectiveBase, effectiveStrong, effectiveWeak,
+        fxBonus, finalBase, finalJse, years, jseReturn, usdReturn,
+    })
 
     function handleReset() {
         applyAlloc(ALLOCATION_PRESETS[1])
@@ -482,6 +534,15 @@ export default function OffshoreStudio() {
                             </p>
                         </CoachCallout>
                     </div>
+
+                    {/* Studio verdict */}
+                    <StudioVerdict
+                        type={verdict.type}
+                        headline={verdict.headline}
+                        points={verdict.points}
+                        nextStep={verdict.nextStep}
+                        nextPath={verdict.nextPath}
+                    />
 
                     {/* Learn section */}
                     <div className="learn-section">

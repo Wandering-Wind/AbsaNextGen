@@ -1,8 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   TRACKS & STUDIO — shared layout and components
-   ═══════════════════════════════════════════════════════════ */
+/* Shared layout and components by Tracks & Studios*/
 
-/* ─── Page / section layout ──────────────────────────────── */
+/* Page / section layout */
 
 .studio-page  { display: flex; flex-direction: column; gap: 1.25rem; }
 .property-path { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -23,7 +21,7 @@
   margin-bottom: 0.6rem;
 }
 
-/* ─── Studio body (inputs + results 2-col) ───────────────── */
+/* Studio body (inputs + results 2-columns) */
 
 .studio-body {
   display: grid;
@@ -39,7 +37,7 @@
   align-items: start;
 }
 
-/* ─── Sticky input panels ────────────────────────────────── */
+/* Sticky input panels */
 
 .studio-inputs,
 .track-inputs {
@@ -64,11 +62,11 @@
   border-bottom: 1px solid var(--n-200);
 }
 
-/* ─── Studio results / track milestones ──────────────────── */
+/* Studio results / track milestones */
 
 .studio-results { display: flex; flex-direction: column; gap: 1rem; }
 
-/* ─── Studio context banner ──────────────────────────────── */
+/* Studio context banner */
 
 .studio-context {
   background: var(--n-50);
@@ -80,7 +78,7 @@
 .studio-context p { font-size: var(--text-xs); color: var(--n-600); line-height: 1.6; }
 .studio-context strong { color: var(--absa-red); }
 
-/* ─── Calc summary (totals inside inputs) ────────────────── */
+/* Calc summary (totals inside inputs) */
 
 .calc-summary {
   background: var(--n-50);
@@ -114,7 +112,7 @@
   letter-spacing: -0.01em;
 }
 
-/* ─── Top row grid (chart + side cards) ──────────────────── */
+/* Top row grid (chart + side cards) */
 
 .studio-top-row {
   display: grid;
@@ -128,8 +126,6 @@
   flex-direction: column;
   gap: 0.75rem;
 }
-
-/* ─── Philosophy banner ──────────────────────────────────── */
 
 .philosophy-banner {
   display: grid;
@@ -157,7 +153,7 @@
   line-height: 1.65;
 }
 
-/* ─── Tradeoff boxes ─────────────────────────────────────── */
+/* Tradeoff */
 
 .tradeoff-box {
   padding: 0.75rem 1rem;
@@ -191,7 +187,7 @@
 .tradeoff-box--prioritise strong { color: var(--success); }
 .tradeoff-box--prioritise p { color: var(--n-600); }
 
-/* ─── Recommendations ────────────────────────────────────── */
+/* Recommendations */
 
 .recommendations { display: flex; flex-direction: column; gap: 0.5rem; }
 
@@ -233,7 +229,7 @@
   color: var(--danger);
 }
 
-/* ─── Monthly diff box ───────────────────────────────────── */
+/* Monthly diff box */
 
 .monthly-diff-box {
   padding: 0.75rem 1rem;
@@ -259,7 +255,7 @@
   color: var(--success);
 }
 
-/* ─── Verdict badge ──────────────────────────────────────── */
+/* Verdict badge */
 
 .verdict-badge {
   display: flex;
@@ -293,15 +289,13 @@
 
 .verdict-badge p { font-size: var(--text-xs); color: var(--n-500); margin: 0; }
 
-/* ─── Narrative text ─────────────────────────────────────── */
-
 .narrative-text {
   font-size: var(--text-sm);
   color: var(--n-600);
   line-height: 1.75;
 }
 
-/* ─── Breakdown table ────────────────────────────────────── */
+/* Breakdown table */
 
 .table-wrap { overflow-x: auto; }
 
@@ -332,14 +326,14 @@
 .breakdown-table tr:hover td { background: var(--n-50); }
 .breakdown-table .cell--win { color: var(--success); font-weight: 700; }
 
-/* ─── Chart legend ───────────────────────────────────────── */
+/* Chart legend */
 
 .chart-legend { display: flex; gap: 1.5rem; justify-content: center; }
 .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: var(--text-xs); color: var(--n-500); }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .legend-dot--dashed { border-radius: 2px; }
 
-/* ─── Track header & progress ────────────────────────────── */
+/* Track header & progress */
 
 .track-header {
   display: flex;
@@ -351,7 +345,7 @@
 .track-progress { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex-shrink: 0; }
 .track-progress p { font-size: var(--text-xs); color: var(--n-500); text-align: center; }
 
-/* ─── Track intro card ───────────────────────────────────── */
+/* Track intro card */
 
 .track-intro-card {
   background: var(--n-50);
@@ -373,7 +367,7 @@
   line-height: 1.6;
 }
 
-/* ─── Milestones ─────────────────────────────────────────── */
+/* Milestones */
 
 .milestones { display: flex; flex-direction: column; gap: 0.9rem; }
 
@@ -481,7 +475,79 @@
   gap: 0.4rem;
 }
 
-/* ─── Responsive ─────────────────────────────────────────── */
+/* Responsive */
+
+.studio-verdict {
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-top: 3px solid var(--absa-red);
+  border-radius: var(--r-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.studio-verdict-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--absa-red);
+  margin-bottom: 0.5rem;
+}
+
+.studio-verdict-headline {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--n-900);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: 0.9rem;
+}
+
+.studio-verdict-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.studio-verdict-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: var(--text-sm);
+  color: var(--n-600);
+  line-height: 1.6;
+}
+
+.studio-verdict-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+.studio-verdict-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--absa-red);
+  text-decoration: none;
+  background: var(--absa-red-light);
+  border: 1px solid var(--absa-red-border);
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-sm);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.studio-verdict-next:hover {
+  background: var(--absa-red-border);
+  color: var(--absa-red);
+}
 
 @media (max-width: 900px) {
   .track-body, .studio-body { grid-template-columns: 1fr; }
