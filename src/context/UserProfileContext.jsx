@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+﻿import { createContext, useContext, useState, useEffect } from "react";
 
 const UserProfileContext = createContext();
 
@@ -26,7 +26,7 @@ export function UserProfileProvider({ children }) {
     const [profile, setProfile] = useState(defaultProfile);
 
     /* Load profile from localStorage on mount.
-       Just incase someone refreshes the page by mistake, their data comes back. */
+       Just incase someone refreshes the page by mistake, their data comes back */
     useEffect(() => {
         loadProfileFromStorage();
     }, []);
@@ -47,7 +47,7 @@ export function UserProfileProvider({ children }) {
     }
 
     /* Writes the updated profile back into the user's record in localStorage.
-       Called every time updateProfile runs - so changes are always persisted. */
+       Called every time updateProfile runs - so changes are always persisted */
     function saveProfileToStorage(updatedProfile) {
         const email = localStorage.getItem(CURRENT_KEY);
         if (!email) return;
@@ -71,14 +71,14 @@ export function UserProfileProvider({ children }) {
     }
 
     /* resetProfile - clears all financial data back to zeros.
-       Used by the reset button in Money Snapshot. */
+       Used by the reset button in Money Snapshot */
     function resetProfile() {
         setProfile(defaultProfile);
         saveProfileToStorage(defaultProfile);
     }
 
     /* reloadProfile - called after login so the newly logged-in user's
-       data loads into state immediately, without needing a page refresh. */
+       data loads into state immediately, without needing a page refresh */
     function reloadProfile() {
         loadProfileFromStorage();
     }

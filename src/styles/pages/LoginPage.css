@@ -1,7 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   LOGIN PAGE
-   ═══════════════════════════════════════════════════════════ */
-
+﻿
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -40,7 +37,7 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ─── Brand header ───────────────────────────────────────── */
+/* Brand header */
 
 .login-brand {
   display: flex;
@@ -63,7 +60,7 @@
   letter-spacing: 0.02em;
 }
 
-/* ─── Heading ────────────────────────────────────────────── */
+/* Heading */
 
 .login-card h1 {
   font-family: var(--font-ui);
@@ -82,7 +79,7 @@
   display: block;
 }
 
-/* ─── Form ───────────────────────────────────────────────── */
+/* Form */
 
 .login-form {
   display: flex;
@@ -122,7 +119,37 @@
   box-shadow: 0 0 0 3px rgba(226,0,26,0.10);
 }
 
-/* ─── Error state ────────────────────────────────────────── */
+/* Password visibility toggle */
+
+.login-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-password-wrap input {
+  width: 100%;
+  padding-right: 2.75rem;
+}
+
+.login-password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--n-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.login-password-toggle:hover {
+  color: var(--n-700);
+}
+
+/* Error state */
 
 .error {
   font-size: var(--text-sm);
@@ -134,7 +161,7 @@
   font-weight: 500;
 }
 
-/* ─── Submit button ──────────────────────────────────────── */
+/* Submit button */
 
 .login-form button[type="submit"] {
   margin-top: 0.5rem;
@@ -157,7 +184,7 @@
 
 .login-form button[type="submit"]:active { transform: translateY(1px); }
 
-/* ─── Hint footer ────────────────────────────────────────── */
+/* Hint footer */
 
 .login-hint {
   margin-top: 1.5rem;

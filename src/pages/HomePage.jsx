@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+﻿import React, { useContext } from "react";
 import "../styles/pages/HomePage.css";
 import { Link } from "react-router-dom";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -24,7 +24,7 @@ export default function HomePage() {
             <div className="page-header">
                 <div>
                     {/* Personal greeting uses the name collected during onboarding.
-                        If somehow user is null, fall back to a generic greeting. */}
+                        If somehow user is null, fall back to a generic greeting */}
                     <h1 className="page-title">
                         {user?.name ? `Welcome back, ${user.name}.` : 'Welcome back.'}
                     </h1>

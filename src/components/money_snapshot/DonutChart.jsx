@@ -1,7 +1,7 @@
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+﻿import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 
 /* Custom tooltip shown when hovering a slice
-   'active' and 'payload' are props Recharts passes in automatically. */
+   'active' and 'payload' are props Recharts passes in automatically */
 function DonutTooltip({ active, payload, total }) {
     if (!active || !payload?.length) return null
     const item = payload[0]

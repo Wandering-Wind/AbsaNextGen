@@ -1,13 +1,15 @@
-import "../styles/pages/LoginPage.css";
+﻿import "../styles/pages/LoginPage.css";
 import { useState, useContext } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import AuthContext from "../context/AuthContext";
 import { useUserProfile } from "../context/UserProfileContext";
 
 export default function LoginPage() {
-    const [email,    setEmail]    = useState("")
-    const [password, setPassword] = useState("")
-    const [error,    setError]    = useState("")
+    const [email,       setEmail]       = useState("")
+    const [password,    setPassword]    = useState("")
+    const [error,       setError]       = useState("")
+    const [showPassword, setShowPassword] = useState(false)
 
     const { login }        = useContext(AuthContext)
     const { reloadProfile } = useUserProfile()
@@ -55,13 +57,23 @@ export default function LoginPage() {
                     </div>
                     <div>
                         <label>Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            autoComplete="current-password"
-                        />
+                        <div className="login-password-wrap">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                autoComplete="current-password"
+                            />
+                            <button
+                                type="button"
+                                className="login-password-toggle"
+                                onClick={() => setShowPassword(v => !v)}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? <EyeOff size={15} strokeWidth={1.75} /> : <Eye size={15} strokeWidth={1.75} />}
+                            </button>
+                        </div>
                     </div>
 
                     {error && <p className="error">{error}</p>}

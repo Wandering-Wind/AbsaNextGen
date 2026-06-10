@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext, useCallback } from 'react'
+﻿import { useState, useMemo, useContext, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -16,7 +16,7 @@ import { INVESTING_ACTIONS } from '../data/trackActions'
 
 /* Portfolio projection calculator
    Simulates monthly compounding for both JSE and offshore allocations.
-   Returns an array of yearly snapshots showing portfolio value growth. */
+   Returns an array of yearly snapshots showing portfolio value growth */
 function buildProjection({ monthlyAmount, jseSplit, jseReturn, offshoreReturn, randWeakness }) {
     const monthlyJSE      = monthlyAmount * (jseSplit / 100)
     const monthlyOffshore = monthlyAmount * ((100 - jseSplit) / 100)

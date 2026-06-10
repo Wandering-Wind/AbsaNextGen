@@ -8,7 +8,7 @@
     grid-template-columns: 420px 1fr;
 }
 
-/* ─── Left panel ─────────────────────────────────────────── */
+/* Left panel */
 
 .ob-left {
     background: var(--n-900);
@@ -88,7 +88,7 @@
     margin-top: 0.5rem;
 }
 
-/* ─── Right panel ────────────────────────────────────────── */
+/* Right panel */
 
 .ob-right {
     background: var(--n-0);
@@ -108,7 +108,7 @@
     gap: 1.75rem;
 }
 
-/* ─── Step indicator ─────────────────────────────────────── */
+/* Step indicator */
 
 .ob-steps {
     display: flex;
@@ -183,7 +183,7 @@
 .ob-step--active .ob-step-label { color: var(--absa-red); }
 .ob-step--done .ob-step-label   { color: var(--n-600); }
 
-/* ─── Progress bar ───────────────────────────────────────── */
+/* Progress bar */
 
 .ob-progress-track {
     height: 3px;
@@ -197,11 +197,11 @@
     background: var(--absa-red);
     border-radius: var(--r-pill);
     /* transition controls how smoothly it moves when the step changes.
-       0.4s ease feels natural - not too slow, not instant. */
+       0.4s ease feels natural - not too slow, not instant */
     transition: width 0.4s ease;
 }
 
-/* ─── Step content ───────────────────────────────────────── */
+/* Step content */
 
 .ob-step-count {
     font-size: var(--text-xs);
@@ -226,7 +226,7 @@
     line-height: 1.6;
 }
 
-/* ─── Form fields ────────────────────────────────────────── */
+/* Form fields */
 
 .ob-fields {
     display: flex;
@@ -380,7 +380,7 @@
     color: var(--n-500);
 }
 
-/* ─── Goal selection cards ───────────────────────────────── */
+/* Goal selection cards */
 
 .ob-goal-grid {
     display: flex;
@@ -447,7 +447,7 @@
     margin: 0;
 }
 
-/* ─── Password toggle ───────────────────────────────────── */
+/* Password toggle */
 
 /* Wraps the password input and positions the eye button inside it */
 .ob-password-wrap {
@@ -476,7 +476,7 @@
 
 .ob-eye-btn:hover { color: var(--n-700); }
 
-/* ─── Field header (label + mode tabs side by side) ──────── */
+/* Field header (label + mode tabs side by side) */
 
 .ob-field-header {
     display: flex;
@@ -485,7 +485,7 @@
     margin-bottom: 0.35rem;
 }
 
-/* ─── Mode tabs (Enter amount / Choose plan) ─────────────── */
+/* Mode tabs (Enter amount / Choose plan) */
 
 .ob-mode-tabs {
     display: flex;
@@ -550,7 +550,7 @@
     font-style: italic;
 }
 
-/* ─── Other income rows ─────────────────────────────────── */
+/* Other income rows */
 
 .ob-other-income-row {
     display: grid;
@@ -625,7 +625,7 @@
     background: var(--absa-red-light);
 }
 
-/* ─── Error message ──────────────────────────────────────── */
+/* Error message */
 
 .ob-error {
     font-size: var(--text-sm);
@@ -637,7 +637,7 @@
     font-weight: 500;
 }
 
-/* ─── Action buttons ─────────────────────────────────────── */
+/* Action buttons */
 
 .ob-actions {
     display: flex;
@@ -675,7 +675,7 @@
 
 .ob-btn-back:hover { background: var(--n-50); color: var(--n-900); }
 
-/* ─── Responsive - collapse to single column on smaller screens ── */
+/* Responsive - collapse to single column on smaller screens */
 
 @media (max-width: 860px) {
     .ob-shell { grid-template-columns: 1fr; }

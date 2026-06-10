@@ -1,8 +1,6 @@
-/* ═══════════════════════════════════════════════════════════
-   HOME PAGE
-   ═══════════════════════════════════════════════════════════ */
+﻿/* HOME PAGE */
 
-/* ─── Status bar ─────────────────────────────────────────── */
+/* Status bar */
 
 .home-status-bar {
     display: flex;
@@ -47,7 +45,7 @@
 
 .home-status-divider { display: none; }
 
-/* ─── Feature grid ───────────────────────────────────────── */
+/* Feature grid */
 
 .home-feature-grid {
     display: grid;
@@ -174,7 +172,7 @@
     gap: 0.25rem;
 }
 
-/* ─── SA parameters strip ────────────────────────────────── */
+/* SA parameters strip */
 
 .home-sa-strip {
     background: var(--n-0);
@@ -226,7 +224,7 @@
     color: var(--n-500);
 }
 
-/* ─── Responsive ─────────────────────────────────────────── */
+/* Responsive */
 
 @media (max-width: 900px) {
     .home-feature-grid { grid-template-columns: 1fr; }

@@ -257,7 +257,7 @@ export default function MoneySnapshot() {
                         </button>
                         {learnOpen && (
                             <div className="learn-grid">
-                                <LearnCard term="Net Surplus"             explanation="Money left after all expenses are paid from your take-home. Aim for 20%+. A negative number means you are spending more than you earn - reduce costs before investing." />
+                                <LearnCard term="Net Surplus"             explanation="Money left after all expenses are paid from your take-home. Aim for 20%+. A negative number means you are Spending more than you earn - reduce costs before investing." />
                                 <LearnCard term="PAYE"                    explanation="Pay As You Earn - SA's income tax system. Your employer deducts it monthly. RA contributions reduce your taxable income, lowering your PAYE bill." />
                                 <LearnCard term="Retirement Annuity (RA)" explanation="Contributions up to 27.5% of income are tax-deductible. Grows tax-free. Accessible from age 55. One of the most powerful tax tools for SA earners." />
                                 <LearnCard term="TFSA"                    explanation="Tax Free Savings Account. R46 000/year cap (R500 000 lifetime). Zero tax on growth, interest, or withdrawals. Ideal for medium-term goals." />

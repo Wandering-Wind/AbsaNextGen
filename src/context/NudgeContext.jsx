@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+﻿import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useUserProfile } from './UserProfileContext'
 import {
     calcNetSurplus,
@@ -184,7 +184,7 @@ export function NudgeProvider({ children }) {
         setAllNudges(computed)
 
         /* Remove dismissed IDs whose condition no longer applies. Iterate the colour.
-           But also this way, if the situation gets worse again later, the nudge resurfaces. */
+           But also this way, if the situation gets worse again later, the nudge resurfaces */
         const computedIds = new Set(computed.map(n => n.id))
         setDismissedIds(prev => {
             const cleaned = new Set([...prev].filter(id => computedIds.has(id)))

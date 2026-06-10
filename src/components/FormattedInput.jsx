@@ -1,4 +1,4 @@
-/* Reusable formatted currency input
+﻿/* Reusable formatted currency input
    Displays numbers with SA thousands spacing (45 000 not 45000)
    while storing the raw digit string for calculations.
 
@@ -11,7 +11,7 @@
      />
 
    The value prop should always be the raw digit string (no spaces).
-   The component formats it for display only. */
+   The component formats it for display only */
 
 export function formatNumber(val) {
     /* Strip everything except digits, then insert a space every 3 digits

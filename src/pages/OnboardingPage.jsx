@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+﻿import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import AuthContext from '../context/AuthContext'
@@ -437,7 +437,7 @@ function StepIncome({ formData, onChange, onAdd, onUpdate, onRemove, totalOtherI
 
 function StepExpenses({ formData, onChange }) {
     /* Controls whether the user picks a plan or types manually.
-       Default is 'manual' so nobody is forced through the dropdown. */
+       Default is 'manual' so nobody is forced through the dropdown */
     const [medMode, setMedMode] = useState('manual')
 
     /* When a plan is selected from the dropdown, fire onChange with

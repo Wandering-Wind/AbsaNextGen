@@ -1,8 +1,8 @@
-import { CheckSquare, Square } from 'lucide-react'
+﻿import { CheckSquare, Square } from 'lucide-react'
 
 /* Creating 3 checkable micro-actions for every single year that's going to be tracked
    This won't be steps the system can auto-detect from numbers from the profile user created
-   Completions are managed by the parent via the useTrackProgress hook. */
+   Completions are managed by the parent via the useTrackProgress hook */
 export default function MicroActions({ year, actions, completed, onToggle }) {
     if (!actions || actions.length === 0) return null
 

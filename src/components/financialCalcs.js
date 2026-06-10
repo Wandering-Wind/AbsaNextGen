@@ -1,4 +1,4 @@
-export const SA = {
+﻿export const SA = {
     /* PAYE_RATE kept for rough display hints (e.g. MoneySnapshot RA saving label).
        All actual tax calculations use calcPAYE() with the SARS brackets below */
     PAYE_RATE: 0.26,
