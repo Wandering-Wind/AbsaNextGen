@@ -15,6 +15,7 @@ import HealthGauge   from '../components/money_snapshot/HealthGauge'
 import DonutChart    from '../components/money_snapshot/DonutChart'
 import WaterfallBar  from '../components/money_snapshot/WaterfallBar'
 import ProgressBar   from '../components/money_snapshot/ProgressBar'
+import Tooltip       from '../components/Tooltip'
 
 export default function MoneySnapshot() {
     const { profile, updateProfile, resetProfile } = useUserProfile()
@@ -201,7 +202,7 @@ export default function MoneySnapshot() {
                         <div className="result-card">
                             <h3>SA-Specific Insights</h3>
                             <div className="sa-insight">
-                                <span className="sa-insight-label">  <Icon name="medical" size={17} glow/>  SARS Medical Credit</span>
+                                <span className="sa-insight-label">  <Icon name="medical" size={17} glow/>  SARS Medical Credit <Tooltip text="R364/month direct tax reduction for being a primary medical aid member. A credit, not a deduction - it reduces your actual tax bill rand for rand, every month." /></span>
                                 {profile.medicalAid > 0 ? (
                                     <span className="sa-insight-value">
                                         {fmtZAR(medCredit)}/month · {fmtZAR(medCredit * 12)}/year back
@@ -212,7 +213,7 @@ export default function MoneySnapshot() {
                             </div>
 
                             <div className={`sa-insight ${dti > 36 ? 'sa-insight--warn' : ''}`}>
-                                <span className="sa-insight-label"><Icon name="dti" size={19} glow/> Debt-to-Income</span>
+                                <span className="sa-insight-label"><Icon name="dti" size={19} glow/> Debt-to-Income <Tooltip text="Total monthly debt payments divided by gross income. Banks require below 36% before approving a home loan. Above 50% means applications are typically declined." /></span>
                                 <span className="sa-insight-value">{dti}%
                                     {dti === 0 && <> - <Icon name="ok"     size={17} glow /> no debt</>}
                                     {dti > 0 && dti <= 36 && <> - <Icon name="ok"     size={17} glow /> bond-ready</>}
@@ -222,7 +223,7 @@ export default function MoneySnapshot() {
                             </div>
 
                             <div className="sa-insight">
-                                <span className="sa-insight-label"> <Icon name="tfsa" size={17} glow/> TFSA ({tfsaPct}% of cap)</span>
+                                <span className="sa-insight-label"> <Icon name="tfsa" size={17} glow/> TFSA ({tfsaPct}% of cap) <Tooltip text="Tax Free Savings Account. R46 000/year cap, R500 000 lifetime. Zero tax on all growth, interest, and withdrawals. The most tax-efficient savings vehicle available to SA investors." /></span>
                                 <ProgressBar value={tfsaPct} colour="#22c55e" />
                                 <span className="sa-insight-sub">
                                     {fmtZAR(tfsaAnnual)}/year of R46 000 cap ·{' '}
@@ -232,7 +233,7 @@ export default function MoneySnapshot() {
 
                             <div className="sa-insight">
                                 <span className="sa-insight-label">
-                                    <Icon name="emergency" size={17} glow/> Emergency Fund - {emergMonths} months covered
+                                    <Icon name="emergency" size={17} glow/> Emergency Fund - {emergMonths} months covered <Tooltip text="Your bank balance measured in months of total expenses. 3 months minimum, 6 months ideal. Below 1 month is a financial risk - one unexpected bill can push you into expensive debt." />
                                 </span>
                                 <ProgressBar
                                     value={emergencyPct}
@@ -278,7 +279,7 @@ function InputField({ label, value, onChange, tooltip, min = 0, max }) {
         <div className="input-field">
             <label>
                 {label}
-                {tooltip && <span className="tooltip" title={tooltip}> ℹ</span>}
+                {tooltip && <Tooltip text={tooltip} />}
             </label>
             <div className="input-prefix-wrap">
                 <span className="input-prefix">R</span>
@@ -300,7 +301,7 @@ function SliderField({ label, value, onChange, min, max, step, tooltip }) {
         <div className="input-field">
             <label>
                 {label}
-                {tooltip && <span className="tooltip" title={tooltip}> ℹ</span>}
+                {tooltip && <Tooltip text={tooltip} />}
             </label>
             <input
                 type="range"

@@ -1,0 +1,65 @@
+/* Tooltip component */
+
+.tooltip-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tooltip-trigger {
+    background: transparent;
+    border: none;
+    padding: 0 2px;
+    cursor: default;
+    display: inline-flex;
+    align-items: center;
+    color: var(--n-400);
+    line-height: 1;
+    border-radius: var(--r-xs);
+    transition: color 0.15s;
+}
+
+.tooltip-trigger:hover,
+.tooltip-trigger:focus-visible {
+    color: var(--n-600);
+    outline: none;
+}
+
+.tooltip-trigger:focus-visible {
+    outline: 2px solid var(--absa-red);
+    outline-offset: 2px;
+}
+
+/* Popup using position:fixed to try and escapes overflow:hidden on any parent containers */
+.tooltip-popup {
+    position: fixed;
+    transform: translate(-50%, calc(-100% - 8px));
+    background: var(--n-900);
+    color: var(--n-0);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    line-height: 1.55;
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--r-sm);
+    width: 220px;
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    pointer-events: none;
+    animation: tooltip-in 0.12s ease-out both;
+}
+
+/* Arrow pointing down to the trigger */
+.tooltip-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--n-900);
+}
+
+@keyframes tooltip-in {
+    from { opacity: 0; transform: translate(-50%, calc(-100% - 4px)); }
+    to   { opacity: 1; transform: translate(-50%, calc(-100% - 8px)); }
+}

@@ -4,7 +4,8 @@ import { useUserProfile } from '../context/UserProfileContext'
 import {
     calcNetSurplus, calcDTI, calcEmergencyMonths, fmtZAR,
 } from '../components/financialCalcs'
-import Icon from '../components/Icons'
+import Icon    from '../components/Icons'
+import Tooltip  from '../components/Tooltip'
 import '../styles/pages/TracksHub.css'
 
 /* Compound future value of a regular monthly deposit */
@@ -186,16 +187,19 @@ export default function TracksHub() {
                                     label="Debt-to-income"
                                     value={`${dti}%`}
                                     status={dti === 0 ? 'ok' : dti <= 36 ? 'ok' : dti <= 50 ? 'warn' : 'danger'}
+                                    tooltip="Total monthly debt payments divided by gross income. Banks require below 36% before approving a home loan."
                                 />
                                 <PositionStat
                                     label="Emergency fund"
                                     value={`${emergMonths}m`}
                                     status={emergMonths >= 3 ? 'ok' : emergMonths >= 1 ? 'warn' : 'danger'}
+                                    tooltip="Months of total expenses covered by your current savings. 3 months minimum, 6 months ideal before investing aggressively."
                                 />
                                 <PositionStat
                                     label="Monthly surplus"
                                     value={fmtZAR(surplus)}
                                     status={surplus > 500 ? 'ok' : surplus >= -500 ? 'warn' : 'danger'}
+                                    tooltip="Take-home pay minus all monthly expenses. The capital available for savings and wealth-building each month."
                                 />
                             </div>
                             <p className="tracks-position-note">
@@ -338,12 +342,15 @@ function TrackCard({ track, hasData }) {
     )
 }
 
-function PositionStat({ label, value, status }) {
+function PositionStat({ label, value, status, tooltip }) {
     const colour = status === 'ok' ? 'var(--success)' : status === 'warn' ? 'var(--warning)' : 'var(--danger)'
     return (
         <div className="position-stat">
             <span className="position-stat-value" style={{ color: colour }}>{value}</span>
-            <span className="position-stat-label">{label}</span>
+            <span className="position-stat-label">
+                {label}
+                {tooltip && <Tooltip text={tooltip} />}
+            </span>
         </div>
     )
 }
