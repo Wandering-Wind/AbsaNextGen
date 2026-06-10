@@ -322,7 +322,7 @@
 /* Remove number input arrows - they look messy on currency fields */
 .ob-input[type="number"]::-webkit-outer-spin-button,
 .ob-input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.ob-input[type="number"] { -moz-appearance: textfield; }
+.ob-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
 .ob-hint {
     font-size: var(--text-xs);
