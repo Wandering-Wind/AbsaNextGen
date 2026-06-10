@@ -1,5 +1,5 @@
 ﻿import { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import AuthContext from '../context/AuthContext'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -7,6 +7,7 @@ import '../styles/pages/Onboarding.css'
 import Icon from '../components/Icons'
 import { FormattedCurrencyInput, FormattedPercentInput, formatNumber } from '../components/FormattedInput'
 import { calcTakeHome } from '../components/financialCalcs'
+import absaLogo from '../assets/images/absa_logo.png'
 
 /* MEDICAL AID: single-adult contributions */
 const MEDICAL_AIDS = [
@@ -200,6 +201,7 @@ export default function OnboardingPage() {
             <div className="ob-left">
                 <div className="ob-left-inner">
                     <div className="ob-brand">
+                        <img src={absaLogo} alt="ABSA" className="ob-brand-img" />
                         <span className="ob-brand-logo">ABSA</span>
                         <span className="ob-brand-name">NextGen</span>
                     </div>
@@ -287,6 +289,9 @@ export default function OnboardingPage() {
                                 <button className="ob-btn-next" onClick={handleComplete}>Let's go</button>
                             )}
                         </div>
+                        <p className="ob-signin-link">
+                            Already have an account? <Link to="/">Sign in</Link>
+                        </p>
                     </div>
 
                 </div>
