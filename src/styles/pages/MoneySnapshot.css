@@ -289,9 +289,31 @@
   line-height: 1.5;
 }
 
-.surplus-card--surplus  { border-top: 3px solid var(--success); }
-.surplus-card--breakeven{ border-top: 3px solid var(--warning); }
-.surplus-card--deficit  { border-top: 3px solid var(--danger);  }
+.surplus-card--surplus,
+.surplus-card--breakeven,
+.surplus-card--deficit {
+    position: relative;
+    overflow: hidden;
+}
+
+.surplus-card--surplus::before,
+.surplus-card--breakeven::before,
+.surplus-card--deficit::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0;
+    height: 2px;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.surplus-card--surplus:hover::before,
+.surplus-card--breakeven:hover::before,
+.surplus-card--deficit:hover::before { width: 100%; }
+
+.surplus-card--surplus::before   { background: var(--success); }
+.surplus-card--breakeven::before { background: var(--warning); }
+.surplus-card--deficit::before   { background: var(--danger);  }
 
 /* Score / health breakdown */
 
@@ -345,19 +367,39 @@
 .narrative-tile {
   padding: 0.75rem 0.9rem;
   border-radius: var(--r-sm);
-  border-top: 2px solid var(--n-300);
+  border: 1px solid var(--n-200);
   background: var(--n-50);
   font-size: var(--text-sm);
   color: var(--n-600);
   line-height: 1.65;
+  position: relative;
+  overflow: hidden;
 }
+
+.narrative-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0;
+  height: 2px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.narrative-tile:hover::before { width: 100%; }
 
 .narrative-tile p { margin: 0; }
 
-.narrative-tile--positive { border-top-color: var(--success); background: var(--success-bg); color: var(--n-700); }
-.narrative-tile--caution  { border-top-color: var(--warning); background: var(--warning-bg); color: var(--n-700); }
-.narrative-tile--negative { border-top-color: var(--danger);  background: var(--danger-bg);  color: var(--n-700); }
-.narrative-tile--neutral  { border-top-color: var(--n-300);   background: var(--n-50); }
+.narrative-tile--positive { background: var(--success-bg); border-color: var(--success-border); color: var(--n-700); }
+.narrative-tile--positive::before { background: var(--success); }
+
+.narrative-tile--caution  { background: var(--warning-bg); border-color: var(--warning-border); color: var(--n-700); }
+.narrative-tile--caution::before  { background: var(--warning); }
+
+.narrative-tile--negative { background: var(--danger-bg);  border-color: var(--danger-border);  color: var(--n-700); }
+.narrative-tile--negative::before { background: var(--danger); }
+
+.narrative-tile--neutral  { background: var(--n-50); border-color: var(--n-200); }
+.narrative-tile--neutral::before  { background: var(--n-400); }
 
 /* Bento grid for the results panel */
 

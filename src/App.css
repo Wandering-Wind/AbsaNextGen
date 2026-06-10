@@ -753,9 +753,13 @@
 .surplus-alert::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0; left: 0;
+  width: 0;
   height: 2px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.surplus-alert:hover::before { width: 100%; }
 
 .surplus-alert p { color: var(--n-600); font-weight: 400; margin-top: 0.2rem; }
 
@@ -768,7 +772,7 @@
 .surplus-alert--breakeven strong  { color: var(--warning); }
 
 .surplus-alert--deficit   { background: var(--danger-bg);  border-color: rgba(248,113,113,0.22); }
-.surplus-alert--deficit::before   { background: var(--danger); }
+.surplus-alert--deficit::before   { background: #991b1b; }
 .surplus-alert--deficit   strong  { color: var(--danger); }
 
 /* Score bars */

@@ -52,15 +52,32 @@
     gap: 0.6rem;
     padding: 0.75rem 1rem;
     border-radius: var(--r-md);
-    border: 1px solid;
+    border: 1px solid var(--n-200);
+    background: var(--n-0);
     min-width: 220px;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
 }
+
+.pp-verdict::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0;
+    height: 2px;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pp-verdict:hover { border-color: var(--n-300); }
+.pp-verdict:hover::before { width: 100%; }
 
 .pp-verdict strong {
     display: block;
     font-size: var(--text-sm);
     font-weight: 700;
+    color: var(--n-900);
     margin-bottom: 0.1rem;
 }
 
@@ -68,11 +85,20 @@
     font-size: var(--text-xs);
     display: block;
     line-height: 1.4;
+    color: var(--n-500);
 }
 
-.pp-verdict--ok   { background: var(--success-bg); border-color: var(--success-border); color: var(--success); }
-.pp-verdict--warn { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning); }
-.pp-verdict--risk { background: var(--danger-bg);  border-color: var(--danger-border);  color: var(--danger); }
+.pp-verdict--ok   { --verdict-line: var(--success); }
+.pp-verdict--warn { --verdict-line: var(--warning); }
+.pp-verdict--risk { --verdict-line: var(--danger);  }
+
+.pp-verdict--ok::before,
+.pp-verdict--warn::before,
+.pp-verdict--risk::before { background: var(--verdict-line); }
+
+.pp-verdict--ok   .pp-verdict-icon { color: var(--success); }
+.pp-verdict--warn .pp-verdict-icon { color: var(--warning); }
+.pp-verdict--risk .pp-verdict-icon { color: var(--danger);  }
 
 /* Sidebar key numbers card */
 
@@ -163,14 +189,19 @@
     border: 1px solid;
     position: relative;
     overflow: hidden;
+    transition: box-shadow 0.2s ease;
 }
 
 .pp-inline-alert::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0; left: 0;
+    width: 0;
     height: 2px;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.pp-inline-alert:hover::before { width: 100%; }
 
 .pp-inline-alert--warn {
     background: var(--warning-bg);

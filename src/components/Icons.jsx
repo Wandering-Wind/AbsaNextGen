@@ -1,8 +1,8 @@
 ﻿import {
     Wallet, Home, FlaskConical, BarChart3, CreditCard,
-    Target, ShieldCheck, TrendingUp, BookOpen, ChevronDown,
-    ChevronUp, CheckCircle, AlertTriangle, AlertCircle,
-    Lightbulb, Calendar, Heart, Siren, Landmark, 
+    Target, ShieldCheck, TrendingUp, TrendingDown, BookOpen,
+    ChevronDown, ChevronUp, BadgeCheck, Gauge, AlertCircle,
+    Lightbulb, Calendar, Heart, Siren, Landmark,
     PiggyBank, Scale, Map
 } from 'lucide-react'
 
@@ -30,9 +30,9 @@ const ICON_MAP = {
     target:         Target,
 
     // Status / alerts
-    ok:             CheckCircle,
-    warn:           AlertTriangle,
-    danger:         AlertCircle,
+    ok:             BadgeCheck,
+    warn:           Gauge,
+    danger:         TrendingDown,
     alarm:          Siren,
 
     //Verdict
