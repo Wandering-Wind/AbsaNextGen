@@ -1,4 +1,4 @@
-import {
+﻿import {
     Wallet, Home, FlaskConical, BarChart3, CreditCard,
     Target, ShieldCheck, TrendingUp, BookOpen, ChevronDown,
     ChevronUp, CheckCircle, AlertTriangle, AlertCircle,
@@ -18,7 +18,7 @@ const ICON_MAP = {
     tfsa:           TrendingUp,
     emergency:      ShieldCheck,
 
-    //Feature cards — HomePage
+    //Feature cards - HomePage
     snapshot:       BarChart3,
     tracks:         Map,
     studio:         FlaskConical,

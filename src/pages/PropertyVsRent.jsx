@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+﻿import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcBondRepayment,
@@ -351,7 +351,7 @@ export default function PropertyVsRent() {
                                 <input type="number" value={propertyPrice || ''} placeholder="0" min={300000} step={50000}
                                     onChange={e => { setPropertyPrice(Number(e.target.value)); setActiveScenario(null) }}/>
                             </div>
-                            <p className="input-hint">JHB 2-bed northern suburbs: R1.2M–R2M</p>
+                            <p className="input-hint">JHB 2-bed northern suburbs: R1.2M-R2M</p>
                         </div>
 
                         <div className="input-field">
@@ -365,7 +365,7 @@ export default function PropertyVsRent() {
                             <label>Bond rate: {(bondRate * 100).toFixed(2)}% p.a.</label>
                             <input type="range" min={0.08} max={0.15} step={0.0025} value={bondRate}
                                 onChange={e => { setBondRate(Number(e.target.value)); setActiveScenario(null) }}/>
-                            <p className="input-hint">Current prime: 10.25%. Most bonds price at prime + 0.5–1%.</p>
+                            <p className="input-hint">Current prime: 10.25%. Most bonds price at prime + 0.5-1%.</p>
                         </div>
 
                         <div className="input-field">
@@ -378,7 +378,7 @@ export default function PropertyVsRent() {
                             <label>Property growth: {(propertyGrowth * 100).toFixed(0)}% p.a.</label>
                             <input type="range" min={0.02} max={0.10} step={0.01} value={propertyGrowth}
                                 onChange={e => { setPropertyGrowth(Number(e.target.value)); setActiveScenario(null) }}/>
-                            <p className="input-hint">JHB average: 3–6% p.a. Well-located suburbs: up to 8%.</p>
+                            <p className="input-hint">JHB average: 3-6% p.a. Well-located suburbs: up to 8%.</p>
                         </div>
 
                         {/* Monthly repayment callout */}
@@ -399,21 +399,21 @@ export default function PropertyVsRent() {
                                 <input type="number" value={monthlyRent || ''} placeholder="0" min={1000} step={500}
                                     onChange={e => setMonthlyRent(Number(e.target.value))}/>
                             </div>
-                            <p className="input-hint">Sandton 1-bed: R15 000–R25 000/month</p>
+                            <p className="input-hint">Sandton 1-bed: R15 000-R25 000/month</p>
                         </div>
 
                         <div className="input-field">
                             <label>Annual rent increase: {(rentIncreaseRate * 100).toFixed(0)}%</label>
                             <input type="range" min={0.03} max={0.12} step={0.01} value={rentIncreaseRate}
                                 onChange={e => setRentIncreaseRate(Number(e.target.value))}/>
-                            <p className="input-hint">SA average is 6–8% p.a. Bond repayments are fixed.</p>
+                            <p className="input-hint">SA average is 6-8% p.a. Bond repayments are fixed.</p>
                         </div>
 
                         <div className="input-field">
                             <label>Investment return: {(investmentReturn * 100).toFixed(0)}% p.a.</label>
                             <input type="range" min={0.04} max={0.15} step={0.01} value={investmentReturn}
                                 onChange={e => { setInvestmentReturn(Number(e.target.value)); setActiveScenario(null) }}/>
-                            <p className="input-hint">JSE average: 8–11% · Money market: 4–6%</p>
+                            <p className="input-hint">JSE average: 8-11% · Money market: 4-6%</p>
                         </div>
                     </div>
 
@@ -515,7 +515,7 @@ export default function PropertyVsRent() {
                             <InterestBar interestPct={yearOneInterestPct}/>
                             <p>
                                 In Year 1, <strong>{yearOneInterestPct}% of your {fmtZAR(monthlyBond)} bond payment goes to the bank as interest</strong> - only {100 - yearOneInterestPct}% reduces what you owe.
-                                It takes 7–10 years before you meaningfully chip away at the principal.
+                                It takes 7-10 years before you meaningfully chip away at the principal.
                                 Over the full {bondTerm}-year term, you will pay <strong>{fmtZAR(totalInterestPaid)} in interest</strong> on top of the purchase price.
                             </p>
                         </CoachCallout>
@@ -625,7 +625,7 @@ export default function PropertyVsRent() {
                                 <LearnCard term="Bond amortisation" explanation="In a 20-year bond, most of your early payments go to interest - not equity. The bank charges interest on the full outstanding balance, which only shrinks slowly. By Year 10, the split starts to improve meaningfully."/>
                                 <LearnCard term="Opportunity cost" explanation="Your deposit is capital locked in property. That same money invested in the JSE at 11% p.a. grows significantly. The question is not just 'does property grow?' but 'does it grow faster than the alternative?'"/>
                                 <LearnCard term="Compounding" explanation="The renter's portfolio earns returns on returns. R1 000/month invested at 9% p.a. becomes R75 000 after 5 years - not R60 000. That extra R15 000 is compounding at work."/>
-                                <LearnCard term="Rent inflation" explanation="Rent increases 6–8% per year in SA. R15 000/month becomes R22 000 after 6 years. Your bond repayment is fixed - which is why buying gets relatively cheaper over time."/>
+                                <LearnCard term="Rent inflation" explanation="Rent increases 6-8% per year in SA. R15 000/month becomes R22 000 after 6 years. Your bond repayment is fixed - which is why buying gets relatively cheaper over time."/>
                                 <LearnCard term="The crossover point" explanation="The year where buying's net worth overtakes renting's (or vice versa). This is the most important number in the simulation - it tells you how long you need to hold the property for buying to pay off."/>
                                 <LearnCard term="Total interest paid" explanation="On a R1.35M bond at 10.75% over 20 years, you pay approximately R2.1M in total - R1.35M principal + R750K interest. That's the true cost of property ownership that no estate agent mentions."/>
                             </div>

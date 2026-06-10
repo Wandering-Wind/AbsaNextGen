@@ -1,4 +1,4 @@
-/* Onboarding wizard — split screen layout */
+﻿/* Onboarding wizard - split screen layout */
 
 /* Full-screen two-column shell.
    Left = branding (fixed), Right = scrollable form */
@@ -53,7 +53,7 @@
     letter-spacing: -0.03em;
 }
 
-/* The red word — applied via a span inside the headline if desired */
+/* The red word - applied via a span inside the headline if desired */
 .ob-left-headline span {
     color: var(--absa-red);
 }
@@ -126,7 +126,7 @@
     position: relative;
 }
 
-/* The line between dots — created with a pseudo-element on each item except the last */
+/* The line between dots - created with a pseudo-element on each item except the last */
 .ob-step-item:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -197,7 +197,7 @@
     background: var(--absa-red);
     border-radius: var(--r-pill);
     /* transition controls how smoothly it moves when the step changes.
-       0.4s ease feels natural — not too slow, not instant. */
+       0.4s ease feels natural - not too slow, not instant. */
     transition: width 0.4s ease;
 }
 
@@ -268,7 +268,7 @@
 
 .ob-input::placeholder { color: var(--n-400); }
 
-/* Remove number input arrows — they look messy on currency fields */
+/* Remove number input arrows - they look messy on currency fields */
 .ob-input[type="number"]::-webkit-outer-spin-button,
 .ob-input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .ob-input[type="number"] { -moz-appearance: textfield; }
@@ -279,7 +279,7 @@
     line-height: 1.5;
 }
 
-/* Currency input — R prefix + number together */
+/* Currency input - R prefix + number together */
 .ob-currency-wrap {
     display: flex;
     align-items: center;
@@ -675,12 +675,12 @@
 
 .ob-btn-back:hover { background: var(--n-50); color: var(--n-900); }
 
-/* ─── Responsive — collapse to single column on smaller screens ── */
+/* ─── Responsive - collapse to single column on smaller screens ── */
 
 @media (max-width: 860px) {
     .ob-shell { grid-template-columns: 1fr; }
 
-    /* Hide left panel on mobile — keep the form clean and fast */
+    /* Hide left panel on mobile - keep the form clean and fast */
     .ob-left { display: none; }
 
     .ob-right { padding: 2rem 1.25rem; align-items: flex-start; }

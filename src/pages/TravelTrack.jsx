@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext, useCallback } from 'react'
+﻿import { useState, useMemo, useContext, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useUserProfile } from '../context/UserProfileContext'
@@ -158,9 +158,9 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
                 'Budget 15% above your estimate for the unexpected - visa costs, travel insurance, health emergencies, or a spontaneous experience you didn\'t plan for.',
                 'Use a travel credit card for all forex purchases. ABSA Rewards Mastercard and FNB Global Account both offer competitive forex rates with no per-transaction fees.',
             ],
-            avoid:     ['Buying forex at OR Tambo airport (8–12% worse than online)', 'Skipping travel insurance', 'Booking last-minute at premium prices', 'Funding any shortfall with a credit card'],
+            avoid:     ['Buying forex at OR Tambo airport (8-12% worse than online)', 'Skipping travel insurance', 'Booking last-minute at premium prices', 'Funding any shortfall with a credit card'],
             why:       'The first trip is proof of concept. You saved, you went, you came back financially intact. That experience makes every subsequent trip easier to plan - and removes the guilt that comes from funding travel impulsively.',
-            saContext: `South African passport holders have visa-free or visa-on-arrival access to 103 countries. For the rest, budget R800–R2 500 per visa application. SARS allows you to carry R25 000 in foreign currency cash when travelling without a tax clearance certificate - above that, you need one.`,
+            saContext: `South African passport holders have visa-free or visa-on-arrival access to 103 countries. For the rest, budget R800-R2 500 per visa application. SARS allows you to carry R25 000 in foreign currency cash when travelling without a tax clearance certificate - above that, you need one.`,
             warning:   region.fxRisk && y2.total < fxCost * 0.6
                 ? `You are at ${Math.round((y2.total / Math.max(1, fxCost)) * 100)}% of your forex-adjusted target and currency depreciation is moving it. Consider increasing contributions by ${fmtZAR(Math.round((fxCost - y2.total) / 12))}/month.`
                 : null,
@@ -195,7 +195,7 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
                 'Review your travel credit card. FNB Global Account earns eBucks redeemable at full face value on FlySafair - the highest-value points redemption in SA. Compare against your current card\'s actual forex fee.',
             ],
             avoid:     ['Paying interest on travel credit card spend - it wipes every benefit', 'Letting points expire (Avios expire after 36 months of inactivity)', 'Annual travel card fees that exceed your points value', 'Booking through third-party sites that don\'t earn points'],
-            why:       'Year 3 is where travel becomes a system instead of a project. The difference between someone who travels expensively and someone who travels smartly is almost entirely the infrastructure they built in years 2–3.',
+            why:       'Year 3 is where travel becomes a system instead of a project. The difference between someone who travels expensively and someone who travels smartly is almost entirely the infrastructure they built in years 2-3.',
             saContext: `eBucks is the most misunderstood loyalty programme in SA. At top tier, FNB customers can redeem eBucks at face value (1 eBuck = R1) on FlySafair flights - unlike most cash-back programmes where redemption rates are heavily discounted. For frequent travellers, this can effectively halve domestic flight costs.`,
             warning:   null,
             tradeoffs: [
@@ -214,7 +214,7 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
         {
             year:     4,
             label:    'Extended Travel',
-            sublabel: '1–3 months funded',
+            sublabel: '1-3 months funded',
             status:   y4Status,
             mainTarget:   extendedCost,
             mainCurrent:  y3.total,
@@ -224,9 +224,9 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             progressLabel: `Extended trip estimate: ${fmtZAR(extendedCost)}`,
             insight: `A 3-month trip to ${region.label} at ${style.label.toLowerCase()} spend costs approximately ${fmtZAR(extendedCost)}. Your Year 4 balance is ${fmtZAR(y4.total)} - ${y4.total >= extendedCost ? 'enough to fund it in full.' : `${fmtZAR(extendedCost - y4.total)} short.`}`,
             focus: [
-                'Extended travel requires income planning, not just savings. Remote work or a negotiated sabbatical are the two realistic routes - both require 6–12 months of lead time.',
-                'Calculate your true cost: travel spend + ongoing SA fixed costs (rent, phone, medical aid, insurance). Most people underestimate their South African overhead by 30–40% when planning extended travel.',
-                'Australia, Germany, and the UK all offer working holiday visas accessible to South Africans under 30–35. These let you work legally while travelling, which fundamentally changes the financial model.',
+                'Extended travel requires income planning, not just savings. Remote work or a negotiated sabbatical are the two realistic routes - both require 6-12 months of lead time.',
+                'Calculate your true cost: travel spend + ongoing SA fixed costs (rent, phone, medical aid, insurance). Most people underestimate their South African overhead by 30-40% when planning extended travel.',
+                'Australia, Germany, and the UK all offer working holiday visas accessible to South Africans under 30-35. These let you work legally while travelling, which fundamentally changes the financial model.',
             ],
             avoid:     ['Leaving SA without any income replacement', 'Cancelling your RA during a sabbatical - you lose compound growth permanently', 'Ignoring ongoing SA costs while abroad', 'Returning home in debt'],
             why:       'Extended travel is fundamentally different from a 2-week trip. You are funding a period of life without income. The planning horizon and financial discipline required are much closer to early retirement planning than to a holiday.',
@@ -259,7 +259,7 @@ function buildMilestones({ profile, monthlyAmount, tripCost, fxCost, regionId, s
             insight: `Over 5 years, you saved ${fmtZAR(y5.contributed)} and your fund grew to ${fmtZAR(y5.total)}. Travel is now a recurring budget line - not a multi-year savings project.`,
             focus: [
                 'At this point, travel should be an annual budget line. Review whether your monthly allocation still matches your goals - a fund that grows faster than you spend it is capital that could be compounding in your investment portfolio.',
-                'Consider whether location independence is a realistic life goal. If so, your financial foundation (emergency fund, RA, investment portfolio) needs to be solid enough to support 3–6 months abroad per year without stress.',
+                'Consider whether location independence is a realistic life goal. If so, your financial foundation (emergency fund, RA, investment portfolio) needs to be solid enough to support 3-6 months abroad per year without stress.',
                 'Destination arbitrage: the rand buys significantly more in SE Asia, Eastern Europe, and most of Africa than in Western Europe or North America. Building knowledge of high-value, lower-cost destinations is a legitimate long-term financial strategy.',
             ],
             avoid:     ['Neglecting your investment portfolio in favour of travel', 'Spending the entire fund without rebuilding', 'Failing to update beneficiaries and estate plans before long-haul travel', 'Lifestyle inflation through travel spend'],

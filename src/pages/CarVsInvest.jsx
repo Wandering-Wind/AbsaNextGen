@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+﻿import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import {
     fmtZAR, SA, calcNetSurplus,
@@ -416,7 +416,7 @@ export default function CarVsInvest() {
                             <label>Finance rate: {(financeRate * 100).toFixed(2)}% p.a.</label>
                             <input type="range" min={0.09} max={0.18} step={0.0025} value={financeRate}
                                 onChange={e => { setFinanceRate(Number(e.target.value)); setActiveScenario(null) }}/>
-                            <p className="input-hint">Typical SA vehicle finance: prime + 1–3% ({((SA.PRIME_RATE + 0.01) * 100).toFixed(2)}%–{((SA.PRIME_RATE + 0.03) * 100).toFixed(2)}%)</p>
+                            <p className="input-hint">Typical SA vehicle finance: prime + 1-3% ({((SA.PRIME_RATE + 0.01) * 100).toFixed(2)}%-{((SA.PRIME_RATE + 0.03) * 100).toFixed(2)}%)</p>
                         </div>
 
                         <div className="input-field">
@@ -463,7 +463,7 @@ export default function CarVsInvest() {
                                 <input type="number" value={monthlyInsurance || ''} placeholder="0" step={100}
                                     onChange={e => { setMonthlyInsurance(Number(e.target.value)); setActiveScenario(null) }}/>
                             </div>
-                            <p className="input-hint">Comprehensive cover on a R420k car: R1 200–R2 500/month.</p>
+                            <p className="input-hint">Comprehensive cover on a R420k car: R1 200-R2 500/month.</p>
                         </div>
 
                         <div className="input-field">
@@ -473,7 +473,7 @@ export default function CarVsInvest() {
                                 <input type="number" value={monthlyMaint || ''} placeholder="0" step={100}
                                     onChange={e => { setMonthlyMaint(Number(e.target.value)); setActiveScenario(null) }}/>
                             </div>
-                            <p className="input-hint">Service plan, tyres, wear items. Budget R500–R1 500/month.</p>
+                            <p className="input-hint">Service plan, tyres, wear items. Budget R500-R1 500/month.</p>
                         </div>
                     </div>
 
@@ -484,7 +484,7 @@ export default function CarVsInvest() {
                             <label>If invested instead: {(investReturn * 100).toFixed(0)}% p.a.</label>
                             <input type="range" min={0.06} max={0.15} step={0.01} value={investReturn}
                                 onChange={e => { setInvestReturn(Number(e.target.value)); setActiveScenario(null) }}/>
-                            <p className="input-hint">JSE ETF: 9–12% · Money market: 7–8%</p>
+                            <p className="input-hint">JSE ETF: 9-12% · Money market: 7-8%</p>
                         </div>
                         <div className="input-field">
                             <label>Simulation: {years} years</label>
@@ -692,10 +692,10 @@ export default function CarVsInvest() {
                         </button>
                         {learnOpen && (
                             <div className="learn-grid">
-                                <LearnCard term="Vehicle depreciation" explanation="New cars lose 15–25% of their value in Year 1 alone. Unlike property, cars are a depreciating asset - they become worth less over time, not more. A car is a cost, not an investment."/>
+                                <LearnCard term="Vehicle depreciation" explanation="New cars lose 15-25% of their value in Year 1 alone. Unlike property, cars are a depreciating asset - they become worth less over time, not more. A car is a cost, not an investment."/>
                                 <LearnCard term="Negative equity" explanation="When your outstanding loan balance exceeds the car's market value, you are 'underwater' or in negative equity. If you sell the car in this period, you still owe the difference to the bank."/>
                                 <LearnCard term="Balloon payment" explanation="A balloon (or residual value) payment reduces your monthly payment but leaves a large lump sum due at end of term. Dealers use it to make expensive cars seem affordable. The balloon has to be paid, refinanced, or built into a new deal - there is no free lunch."/>
-                                <LearnCard term="Total cost of ownership" explanation="Finance payment is only part of the cost. Insurance, fuel, tyres, servicing, and maintenance can add 30–50% to your effective monthly outlay. Always budget the true monthly number, not just the finance payment."/>
+                                <LearnCard term="Total cost of ownership" explanation="Finance payment is only part of the cost. Insurance, fuel, tyres, servicing, and maintenance can add 30-50% to your effective monthly outlay. Always budget the true monthly number, not just the finance payment."/>
                                 <LearnCard term="Opportunity cost" explanation="Every rand you spend on car finance is a rand not invested. At 11% p.a. compounded, R5 000/month grows to R393 000 in 5 years. That's what the car truly costs - the wealth you didn't build."/>
                                 <LearnCard term="The 15% rule" explanation="A widely used guideline: total vehicle costs (finance, insurance, fuel, maintenance) should not exceed 15% of your take-home pay. Exceeding this means your car is driving your financial decisions instead of the other way around."/>
                             </div>

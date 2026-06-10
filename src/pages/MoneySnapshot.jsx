@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import "../styles/pages/MoneySnapshot.css";
 import "../styles/shared/TracksStudioShared.css";
@@ -25,7 +25,7 @@ export default function MoneySnapshot() {
     const otherTotal    = otherIncome.reduce((sum, i) => sum + (Number(i.amount) || 0), 0)
     const raAmount      = (profile.grossIncome + otherTotal) * (Math.min(profile.raPercent, 27.5) / 100)
     const taxable       = profile.grossIncome + otherTotal - raAmount
-    const payeAmount    = taxable * SA.PAYE_RATE   // rough display only — actual PAYE uses brackets in calcTakeHome
+    const payeAmount    = taxable * SA.PAYE_RATE   // rough display only - actual PAYE uses brackets in calcTakeHome
     const takeHome      = calcTakeHome(profile.grossIncome, profile.raPercent, otherIncome)
     const totalExpenses = calcTotalExpenses(profile)
     const netSurplus    = calcNetSurplus(profile)
@@ -123,21 +123,21 @@ export default function MoneySnapshot() {
 
                     <section className="input-section">
                         <h2 className="input-section-title"><Icon name="fixed-costs" size={17} glow /> Fixed Costs</h2>
-                        <InputField label="Rent / bond payment"   value={profile.rent}       onChange={val => handleChange('rent', val)}       tooltip="Sandton 1-bed averages R15 000–R25 000/month" />
+                        <InputField label="Rent / bond payment"   value={profile.rent}       onChange={val => handleChange('rent', val)}       tooltip="Sandton 1-bed averages R15 000-R25 000/month" />
                         <InputField label="Utilities"              value={profile.utilities}   onChange={val => handleChange('utilities', val)}   tooltip="Water, electricity, internet" />
                         <InputField label="Medical aid premium"    value={profile.medicalAid}  onChange={val => handleChange('medicalAid', val)}  tooltip="Unlocks your SARS R364/month tax credit" />
                     </section>
 
                     <section className="input-section">
                         <h2 className="input-section-title"> <Icon name="debt" size={17} glow /> Debt Payments</h2>
-                        <InputField label="Car payment"   value={profile.carPayment}  onChange={val => handleChange('carPayment', val)}  tooltip="Vehicle finance typically 10–12% p.a. in SA" />
+                        <InputField label="Car payment"   value={profile.carPayment}  onChange={val => handleChange('carPayment', val)}  tooltip="Vehicle finance typically 10-12% p.a. in SA" />
                         <InputField label="Other loans"   value={profile.loanPayment} onChange={val => handleChange('loanPayment', val)} tooltip="Student loans, personal loans, etc." />
                     </section>
 
                     <section className="input-section">
                         <h2 className="input-section-title"> <Icon name="savings" size={17} glow /> Savings & Lifestyle</h2>
                         <InputField label="Monthly TFSA contribution" value={profile.tfsaContribution} onChange={val => handleChange('tfsaContribution', val)} tooltip="Annual cap is R46 000. No tax on growth." />
-                        <InputField label="Bank balance (emergency)"  value={profile.bankBalance}       onChange={val => handleChange('bankBalance', val)}       tooltip="Goal: 3–6 months of total expenses." />
+                        <InputField label="Bank balance (emergency)"  value={profile.bankBalance}       onChange={val => handleChange('bankBalance', val)}       tooltip="Goal: 3-6 months of total expenses." />
                         <InputField label="Entertainment & dining"    value={profile.entertainment}     onChange={val => handleChange('entertainment', val)}     tooltip="Where lifestyle creep hides." />
                     </section>
                 </aside>
@@ -263,7 +263,7 @@ export default function MoneySnapshot() {
                                 <LearnCard term="TFSA"                    explanation="Tax Free Savings Account. R46 000/year cap (R500 000 lifetime). Zero tax on growth, interest, or withdrawals. Ideal for medium-term goals." />
                                 <LearnCard term="SARS Medical Credit"     explanation="R364/month off your tax bill for being a primary medical aid member (2026/27). A direct rand-for-rand credit - more powerful than a deduction." />
                                 <LearnCard term="Debt-to-Income (DTI)"    explanation="Total monthly debt payments ÷ gross income. Banks require below 36% for bond approval. Above 50% means you are over-leveraged." />
-                                <LearnCard term="Emergency Fund"          explanation="3–6 months of expenses in a liquid account. Your financial airbag. Without it, one unexpected bill forces you into expensive debt." />
+                                <LearnCard term="Emergency Fund"          explanation="3-6 months of expenses in a liquid account. Your financial airbag. Without it, one unexpected bill forces you into expensive debt." />
                             </div>
                         )}
                     </div>

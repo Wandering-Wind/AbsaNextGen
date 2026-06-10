@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+﻿import { useState, useMemo } from 'react'
 import { useUserProfile } from '../context/UserProfileContext'
 import { fmtZAR, SA, calcNetSurplus } from '../components/financialCalcs'
 import "../styles/shared/TracksStudioShared.css"
@@ -376,7 +376,7 @@ export default function OffshoreStudio() {
                             <label>USD portfolio return: {(usdReturn * 100).toFixed(1)}% p.a.</label>
                             <input type="range" min={0.05} max={0.14} step={0.005} value={usdReturn}
                                 onChange={e => { setUsdReturn(Number(e.target.value)); setActiveAlloc(null) }}/>
-                            <p className="input-hint">S&P 500 historical: ~10–12% USD. Blended with bonds reduces this.</p>
+                            <p className="input-hint">S&P 500 historical: ~10-12% USD. Blended with bonds reduces this.</p>
                         </div>
 
                         <div className="input-field">
@@ -517,7 +517,7 @@ export default function OffshoreStudio() {
                                     <>
                                         Your {fmtZAR(annualContrib)}/year offshore exceeds the <strong>R2M Single Discretionary Allowance</strong>.
                                         You need a <strong>Foreign Investment Allowance (FIA)</strong> from SARS, which permits up to R10M per year.
-                                        Apply via eFiling - it typically takes 3–5 business days. Do not transfer above R2M without this clearance.
+                                        Apply via eFiling - it typically takes 3-5 business days. Do not transfer above R2M without this clearance.
                                     </>
                                 )}
                             </p>
@@ -526,7 +526,7 @@ export default function OffshoreStudio() {
                         <CoachCallout title="🧾 The tax reality - what SARS wants when you invest offshore" type="warn">
                             <p>
                                 As a South African tax resident, your <strong>worldwide income is taxable in SA</strong>.
-                                Dividends from foreign companies (e.g. US ETFs) attract a <strong>15% withholding tax</strong> at source under the SA–US tax treaty.
+                                Dividends from foreign companies (e.g. US ETFs) attract a <strong>15% withholding tax</strong> at source under the SA-US tax treaty.
                                 When you eventually sell your offshore investments, <strong>Capital Gains Tax (CGT) applies</strong>:
                                 the first R40 000 in gains per year is excluded, then 40% of remaining gains are included in your taxable income.
                                 At a 36% marginal rate, your effective CGT rate is approximately 14.4%.
@@ -553,7 +553,7 @@ export default function OffshoreStudio() {
                         {learnOpen && (
                             <div className="learn-grid">
                                 <LearnCard term="Single Discretionary Allowance (SDA)" explanation="R2M per year that every SA taxpayer can send offshore without SARS approval. No paperwork, no tax clearance. This is the amount most retail investors use for offshore ETFs and platform accounts."/>
-                                <LearnCard term="Foreign Investment Allowance (FIA)" explanation="Allows up to R10M offshore per year after obtaining a SARS tax clearance certificate via eFiling. Required if your annual offshore transfers exceed R2M. Typically takes 3–5 business days to process."/>
+                                <LearnCard term="Foreign Investment Allowance (FIA)" explanation="Allows up to R10M offshore per year after obtaining a SARS tax clearance certificate via eFiling. Required if your annual offshore transfers exceed R2M. Typically takes 3-5 business days to process."/>
                                 <LearnCard term="Currency risk vs opportunity" explanation="If the rand strengthens against the dollar, your offshore investment is worth fewer rands than expected - currency drag. If the rand weakens (its historical pattern), your offshore investment is worth more rands - currency bonus. The chart shows both outcomes."/>
                                 <LearnCard term="Effective ZAR return" explanation="The real return you earn in rand terms from an offshore investment. Formula: (1 + USD return) × (1 + rand depreciation) − 1. At 9.5% USD and 5% rand depreciation, your effective ZAR return is approximately 15%."/>
                                 <LearnCard term="Dividends withholding tax" explanation="US companies withhold 30% tax on dividends by default. SA investors benefit from the SA-US tax treaty, which reduces this to 15%. Reinvesting dividends inside a USD ETF (accumulating fund) avoids this entirely - the ETF handles it internally."/>
