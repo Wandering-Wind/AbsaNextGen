@@ -37,14 +37,14 @@
 /* Type-specific left accent border */
 .nudge-item--alert   { border-left: 3px solid #DC2626; }
 .nudge-item--win     { border-left: 3px solid #15803D; }
-.nudge-item--insight { border-left: 3px solid #2563EB; }
-.nudge-item--reminder{ border-left: 3px solid #B45309; }
+.nudge-item--insight { border-left: 3px solid #4B7BB5; }
+.nudge-item--reminder{ border-left: 3px solid #C4920F; }
 
 /* Subtle colour-tinted glow on the left edge */
 .nudge-item--alert::before   { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(220,38,38,0.04) 0%, transparent 55%); pointer-events: none; border-radius: inherit; }
 .nudge-item--win::before     { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(21,128,61,0.04) 0%, transparent 55%);  pointer-events: none; border-radius: inherit; }
-.nudge-item--insight::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(37,99,235,0.04) 0%, transparent 55%);  pointer-events: none; border-radius: inherit; }
-.nudge-item--reminder::before{ content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(180,83,9,0.04) 0%, transparent 55%);   pointer-events: none; border-radius: inherit; }
+.nudge-item--insight::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(75,123,181,0.05) 0%, transparent 55%);  pointer-events: none; border-radius: inherit; }
+.nudge-item--reminder::before{ content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(196,146,15,0.05) 0%, transparent 55%);   pointer-events: none; border-radius: inherit; }
 
 /* Exit state - plays the slide-out animation */
 .nudge-item--exiting {

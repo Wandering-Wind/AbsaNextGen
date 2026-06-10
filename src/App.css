@@ -357,6 +357,10 @@
   --n-900: #111827;
   color-scheme: light;
   background: var(--n-50);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.07);
 }
 
 /* Sub-nav */
@@ -415,16 +419,27 @@
   justify-content: space-between;
   gap: 1rem;
   background: var(--n-0);
-  border-left: 3px solid var(--absa-red);
+  position: relative;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--absa-red);
+  opacity: 0.85;
 }
 
 .page-title {
   font-family: var(--font-ui);
-  font-size: var(--text-xl);
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--n-900);
   margin-bottom: 0.2rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .page-subtitle {

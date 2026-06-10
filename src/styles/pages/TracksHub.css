@@ -106,8 +106,8 @@
 }
 
 .track-hub-card--property:hover  { border-color: #FCCDD1; box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.track-hub-card--investing:hover { border-color: #BFDBFE; box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.track-hub-card--travel:hover    { border-color: #FDE68A; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.track-hub-card--investing:hover { border-color: #EEB8BE; box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.track-hub-card--travel:hover    { border-color: #F5C4B8; box-shadow: var(--shadow-md); transform: translateY(-2px); }
 
 /* Top color band - the main editorial differentiator between tracks */
 .track-hub-band {

@@ -13,9 +13,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #1D4ED8;
-  background: rgba(29,78,216,0.07);
-  border: 1px solid rgba(29,78,216,0.18);
+  color: var(--absa-red);
+  background: var(--absa-red-light);
+  border: 1px solid var(--absa-red-border);
   padding: 0.2rem 0.7rem;
   border-radius: var(--r-pill);
   margin-bottom: 0.6rem;

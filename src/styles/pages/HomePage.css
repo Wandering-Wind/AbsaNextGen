@@ -112,9 +112,9 @@
 }
 
 .home-feature-tag--teal {
-    background: rgba(29,78,216,0.07);
-    color: #1D4ED8;
-    border-color: rgba(29,78,216,0.18);
+    background: var(--n-100);
+    color: var(--n-600);
+    border-color: var(--n-300);
 }
 
 .home-feature-card h2 {
