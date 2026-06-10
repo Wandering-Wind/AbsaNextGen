@@ -12,8 +12,9 @@ export default function SubNav({type}){
     ];
 
     const studioLinks = [
-        {name: "Rent vs Buy", path: "/studio/rent-vs-buy"},
-        {name: "Car vs Invest", path: "/studio/car-vs-invest"},
+        {name: "Overview",           path: "/studio"},
+        {name: "Rent vs Buy",        path: "/studio/rent-vs-buy"},
+        {name: "Car vs Invest",      path: "/studio/car-vs-invest"},
         {name: "Offshore Portfolio", path: "/studio/offshore"},
     ];
 

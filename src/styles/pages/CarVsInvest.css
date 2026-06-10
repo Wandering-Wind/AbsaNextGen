@@ -1,6 +1,4 @@
-﻿/* CAR VS INVEST STUDIO */
-
-/* Presets */
+﻿/* Car VS Invest Studio*/
 
 .cvi-presets {
     display: flex;
@@ -29,8 +27,17 @@
 
 .cvi-preset-btn--active {
     border-color: var(--absa-red);
-    background: var(--absa-red-light);
-    color: var(--absa-red);
+    background-image: linear-gradient(
+        105deg,
+        var(--absa-red) 0%,
+        var(--absa-red) 38%,
+        rgba(255, 255, 255, 0.28) 50%,
+        var(--absa-red) 62%,
+        var(--absa-red) 100%
+    );
+    background-size: 300% 100%;
+    color: #fff;
+    animation: cta-shimmer 2.8s ease infinite;
 }
 
 /* Finance payment callout */
@@ -115,10 +122,26 @@
 .cvi-verdict-title {
     font-size: var(--text-2xl);
     font-weight: 800;
-    color: var(--n-900);
+    color: var(--absa-red);
     letter-spacing: -0.02em;
     line-height: 1.15;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
 }
+
+.cvi-verdict-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--absa-red);
+    transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cvi-verdict:hover .cvi-verdict-title::after { width: 100%; }
 
 .cvi-verdict-sub {
     font-size: var(--text-xs);
@@ -150,7 +173,7 @@
 .cvi-verdict-cross-year {
     font-size: var(--text-xl);
     font-weight: 800;
-    color: var(--n-900);
+    color: var(--absa-red);
     letter-spacing: -0.02em;
 }
 
@@ -178,7 +201,7 @@
     gap: 0.2rem;
 }
 
-.cvi-stat-card--invest { border-color: #c4b5fd; background: #ede9fe; }
+.cvi-stat-card--invest { border-color: var(--absa-red-border); background: var(--absa-red-light); }
 .cvi-stat-card--danger { border-color: var(--danger-border); background: var(--danger-bg); }
 
 .cvi-stat-label {
@@ -186,8 +209,23 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--n-400);
+    color: var(--absa-red);
+    position: relative;
+    display: inline-block;
 }
+
+.cvi-stat-label::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--absa-red);
+    transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cvi-stat-card:hover .cvi-stat-label::after { width: 100%; }
 
 .cvi-stat-value {
     font-size: var(--text-xl);
@@ -308,7 +346,7 @@
 
 .cvi-legend-dashed {
     background: repeating-linear-gradient(
-        90deg, #6366f1 0, #6366f1 4px, transparent 4px, transparent 7px
+        90deg, #374151 0, #374151 4px, transparent 4px, transparent 7px
     ) !important;
 }
 
@@ -341,9 +379,24 @@
 .cvi-coach-title {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--n-900);
+    color: var(--absa-red);
     line-height: 1.4;
+    position: relative;
+    display: inline-block;
 }
+
+.cvi-coach-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--absa-red);
+    transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cvi-coach:hover .cvi-coach-title::after { width: 100%; }
 
 .cvi-coach-body p {
     font-size: var(--text-sm);

@@ -27,10 +27,17 @@ const GOAL_LABELS = {
 };
 
 const NAV_ITEMS = [
-    { to: "/home",               label: "Home",            Icon: Home,         exact: true  },
-    { to: "/dashboard",          label: "Money Snapshot",  Icon: BarChart2,    exact: true  },
-    { to: "/tracks",             label: "Strategy Tracks", Icon: Map,          prefix: "/tracks"  },
-    { to: "/studio/rent-vs-buy", label: "Money Studio",    Icon: FlaskConical, prefix: "/studio" },
+    { to: "/home",      label: "Home",            Icon: Home,         exact: true  },
+    { to: "/dashboard", label: "Money Snapshot",  Icon: BarChart2,    exact: true  },
+    { to: "/tracks",    label: "Strategy Tracks", Icon: Map,          prefix: "/tracks"  },
+    { to: "/studio",    label: "Money Studio",    Icon: FlaskConical, prefix: "/studio" },
+];
+
+const STUDIO_SUB_ITEMS = [
+    { to: "/studio",              label: "Overview",        exact: true },
+    { to: "/studio/rent-vs-buy",  label: "Rent vs Buy"                 },
+    { to: "/studio/car-vs-invest",label: "Car vs Invest"               },
+    { to: "/studio/offshore",     label: "Offshore"                    },
 ];
 
 export default function SideNav({ isOpen, onClose }) {
@@ -109,15 +116,30 @@ export default function SideNav({ isOpen, onClose }) {
             <p className="side-nav-section-label">Navigation</p>
             <nav className="side-nav-links">
                 {NAV_ITEMS.map(item => (
-                    <Link
-                        key={item.to}
-                        to={item.to}
-                        className={isActive(item) ? "active" : ""}
-                        onClick={handleNavClick}
-                    >
-                        <item.Icon size={15} strokeWidth={1.75} />
-                        <span>{item.label}</span>
-                    </Link>
+                    <React.Fragment key={item.to}>
+                        <Link
+                            to={item.to}
+                            className={isActive(item) ? "active" : ""}
+                            onClick={handleNavClick}
+                        >
+                            <item.Icon size={15} strokeWidth={1.75} />
+                            <span>{item.label}</span>
+                        </Link>
+                        {item.prefix === "/studio" && location.pathname.startsWith("/studio") && (
+                            <div className="side-nav-sub">
+                                {STUDIO_SUB_ITEMS.map(sub => (
+                                    <Link
+                                        key={sub.to}
+                                        to={sub.to}
+                                        className={`side-nav-sub-link${isActive(sub) ? " active" : ""}`}
+                                        onClick={handleNavClick}
+                                    >
+                                        {sub.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
+                    </React.Fragment>
                 ))}
             </nav>
 

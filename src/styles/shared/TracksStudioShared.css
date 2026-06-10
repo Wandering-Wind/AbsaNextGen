@@ -1,4 +1,10 @@
-﻿/* Shared layout and components by Tracks & Studios*/
+﻿/* Shared layout and components by Tracks and Studios */
+
+@keyframes cta-shimmer {
+    0%   { background-position: 250% center; }
+    45%  { background-position: -200% center; }
+    100% { background-position: -200% center; }
+}
 
 /* Page / section layout */
 
@@ -57,10 +63,27 @@
 .track-inputs h2 {
   font-size: var(--text-sm);
   font-weight: 700;
-  color: var(--n-900);
+  color: var(--absa-red);
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--n-200);
+  position: relative;
+  display: inline-block;
 }
+
+.studio-inputs h2::after,
+.track-inputs h2::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--absa-red);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.studio-inputs:hover h2::after,
+.track-inputs:hover h2::after { width: 100%; }
 
 /* Studio results / track milestones */
 
@@ -143,9 +166,24 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--n-500);
+  color: var(--absa-red);
   margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
 }
+
+.philosophy-col h3::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--absa-red);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.philosophy-banner:hover .philosophy-col h3::after { width: 100%; }
 
 .philosophy-col p {
   font-size: var(--text-sm);
@@ -493,7 +531,22 @@
   letter-spacing: 0.1em;
   color: var(--absa-red);
   margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
 }
+
+.studio-verdict-eyebrow::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--absa-red);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.studio-verdict:hover .studio-verdict-eyebrow::after { width: 100%; }
 
 .studio-verdict-headline {
   font-size: var(--text-lg);
@@ -535,18 +588,51 @@
   gap: 0.3rem;
   font-size: var(--text-sm);
   font-weight: 600;
-  color: var(--absa-red);
+  color: #fff;
   text-decoration: none;
-  background: var(--absa-red-light);
-  border: 1px solid var(--absa-red-border);
+  border: 1px solid var(--absa-red);
   padding: 0.5rem 1rem;
   border-radius: var(--r-sm);
-  transition: background 0.15s, border-color 0.15s;
+  background-image: linear-gradient(
+    105deg,
+    var(--absa-red) 0%,
+    var(--absa-red) 38%,
+    rgba(255, 255, 255, 0.28) 50%,
+    var(--absa-red) 62%,
+    var(--absa-red) 100%
+  );
+  background-size: 300% 100%;
+  animation: cta-shimmer 2.8s ease infinite;
 }
 
-.studio-verdict-next:hover {
-  background: var(--absa-red-border);
-  color: var(--absa-red);
+.studio-verdict-next:hover { opacity: 0.88; color: #fff; }
+
+/* Empty state when primary input is zero */
+
+.studio-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 4rem 2rem;
+  background: var(--n-0);
+  border: 1px dashed var(--n-300);
+  border-radius: var(--r-md);
+  text-align: center;
+}
+
+.studio-empty-title {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--n-700);
+}
+
+.studio-empty-sub {
+  font-size: var(--text-sm);
+  color: var(--n-400);
+  max-width: 320px;
+  line-height: 1.6;
 }
 
 @media (max-width: 900px) {

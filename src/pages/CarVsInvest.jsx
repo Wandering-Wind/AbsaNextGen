@@ -179,7 +179,7 @@ function ComparisonChart({ snapshots, equityYear }) {
                     />
                 )}
                 <Line type="monotone" dataKey="Car equity" stroke="var(--absa-red)" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }}/>
-                <Line type="monotone" dataKey="Invest"     stroke="#6366f1"          strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} strokeDasharray="6 3"/>
+                <Line type="monotone" dataKey="Invest"     stroke="#374151"          strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} strokeDasharray="6 3"/>
             </LineChart>
         </ResponsiveContainer>
     )
@@ -200,10 +200,10 @@ function StatCard({ label, value, sub, accent }) {
 function TrueCostBar({ financePayment, monthlyFuel, monthlyInsurance, monthlyMaintenance }) {
     const total = financePayment + monthlyFuel + monthlyInsurance + monthlyMaintenance
     const segments = [
-        { label: 'Finance', value: financePayment, colour: 'var(--absa-red)' },
-        { label: 'Fuel',    value: monthlyFuel,    colour: '#f59e0b' },
-        { label: 'Insurance', value: monthlyInsurance, colour: '#6366f1' },
-        { label: 'Maintenance', value: monthlyMaintenance, colour: '#64748b' },
+        { label: 'Finance',     value: financePayment,       colour: 'var(--absa-red)' },
+        { label: 'Fuel',        value: monthlyFuel,          colour: '#b45309' },
+        { label: 'Insurance',   value: monthlyInsurance,     colour: '#78350f' },
+        { label: 'Maintenance', value: monthlyMaintenance,   colour: '#374151' },
     ]
     return (
         <div className="cvi-cost-bar-wrap">
@@ -359,7 +359,9 @@ export default function CarVsInvest() {
     })
 
     function handleReset() {
-        applyScenario(SCENARIOS[1])
+        setCarPrice(0); setDepositPct(0); setBalloonPct(0)
+        setMonthlyFuel(0); setMonthlyInsurance(0); setMonthlyMaint(0)
+        setActiveScenario(null)
         setInvestReturn(0.11); setYears(5)
     }
 
@@ -506,6 +508,13 @@ export default function CarVsInvest() {
                 {/* RIGHT: Results */}
                 <div className="split-right">
 
+                    {carPrice === 0 ? (
+                        <div className="studio-empty-state">
+                            <p className="studio-empty-title">Enter a car price to see your results</p>
+                            <p className="studio-empty-sub">Set the car price on the left to run the simulation.</p>
+                        </div>
+                    ) : (<>
+
                     {/* Verdict */}
                     <div className="cvi-verdict">
                         <div className="cvi-verdict-left">
@@ -542,7 +551,7 @@ export default function CarVsInvest() {
                             accent="invest"
                         />
                         <StatCard
-                            label="Car value at Yr {years}"
+                            label={`Car value at Yr ${years}`}
                             value={fmtZAR(finalYear?.carValue ?? 0)}
                             sub={`from ${fmtZAR(carPrice)} · depreciation`}
                         />
@@ -581,7 +590,7 @@ export default function CarVsInvest() {
                         <h3>Car equity vs investment portfolio over {years} years</h3>
                         <div className="cvi-chart-legend">
                             <span><span className="cvi-legend-line" style={{ background: 'var(--absa-red)' }}/>Car equity (value − balance)</span>
-                            <span><span className="cvi-legend-line cvi-legend-dashed" style={{ background: '#6366f1' }}/>Invest portfolio</span>
+                            <span><span className="cvi-legend-line cvi-legend-dashed" style={{ background: '#374151' }}/>Invest portfolio</span>
                             {snapshots.some(s => s.carNetWorth < 0) && (
                                 <span><span className="cvi-legend-zone"/>Negative equity zone</span>
                             )}
@@ -700,6 +709,7 @@ export default function CarVsInvest() {
                         )}
                     </div>
 
+                    </>)}
                 </div>
             </div>
         </>

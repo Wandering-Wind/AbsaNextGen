@@ -27,8 +27,17 @@
 
 .pvr-preset-btn--active {
     border-color: var(--absa-red);
-    background: var(--absa-red-light);
-    color: var(--absa-red);
+    background-image: linear-gradient(
+        105deg,
+        var(--absa-red) 0%,
+        var(--absa-red) 38%,
+        rgba(255, 255, 255, 0.28) 50%,
+        var(--absa-red) 62%,
+        var(--absa-red) 100%
+    );
+    background-size: 300% 100%;
+    color: #fff;
+    animation: cta-shimmer 2.8s ease infinite;
 }
 
 /* Monthly repayment callout */
@@ -110,8 +119,8 @@
 }
 
 .pvr-verdict--rent {
-    background: #ede9fe;
-    border-color: #c4b5fd;
+    background: var(--success-bg);
+    border-color: var(--success-border);
 }
 
 .pvr-verdict-left {
@@ -131,10 +140,26 @@
 .pvr-verdict-title {
     font-size: var(--text-2xl);
     font-weight: 800;
-    color: var(--n-900);
+    color: var(--absa-red);
     letter-spacing: -0.02em;
     line-height: 1.1;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
 }
+
+.pvr-verdict-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--absa-red);
+    transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pvr-verdict:hover .pvr-verdict-title::after { width: 100%; }
 
 .pvr-verdict-margin {
     font-size: var(--text-sm);
@@ -168,7 +193,7 @@
 .pvr-verdict-cross-year {
     font-size: var(--text-xl);
     font-weight: 800;
-    color: var(--n-900);
+    color: var(--absa-red);
     letter-spacing: -0.02em;
 }
 
@@ -201,8 +226,23 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--n-400);
+    color: var(--absa-red);
+    position: relative;
+    display: inline-block;
 }
+
+.pvr-stat-label::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--absa-red);
+    transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pvr-stat-card:hover .pvr-stat-label::after { width: 100%; }
 
 .pvr-stat-value {
     font-size: var(--text-xl);
@@ -245,8 +285,8 @@
 /* Coaching callouts */
 
 .pvr-coaching {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
 }
 
@@ -257,14 +297,31 @@
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .pvr-coach-title {
     font-size: var(--text-sm);
     font-weight: 700;
-    color: var(--n-900);
+    color: var(--absa-red);
     line-height: 1.4;
+    position: relative;
+    display: inline-block;
 }
+
+.pvr-coach-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--absa-red);
+    transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pvr-coach:hover .pvr-coach-title::after { width: 100%; }
 
 .pvr-coach-body p {
     font-size: var(--text-sm);
@@ -284,8 +341,8 @@
 }
 
 .pvr-coach--warn {
-    background: var(--warning-bg);
-    border-color: var(--warning-border);
+    background: #fafafa;
+    border-color: var(--n-300);
 }
 
 .pvr-coach--info {
@@ -328,20 +385,21 @@
 }
 
 .pvr-interest-segment--interest {
-    background: #ef4444;
+    background: #991b1b;
     border-radius: var(--r-xs) 0 0 var(--r-xs);
 }
 
 .pvr-interest-segment--equity {
-    background: var(--success);
+    background: #166534;
     border-radius: 0 var(--r-xs) var(--r-xs) 0;
 }
 
 /* Responsive */
 
 @media (max-width: 900px) {
-    .pvr-stats { grid-template-columns: 1fr 1fr; }
-    .pvr-verdict { flex-direction: column; }
+    .pvr-stats    { grid-template-columns: 1fr 1fr; }
+    .pvr-coaching { grid-template-columns: 1fr; }
+    .pvr-verdict  { flex-direction: column; }
     .pvr-verdict-right { border-left: none; border-top: 1px solid var(--n-200); padding-left: 0; padding-top: 0.75rem; text-align: left; }
 }
 

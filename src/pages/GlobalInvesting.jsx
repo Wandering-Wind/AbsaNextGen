@@ -21,8 +21,7 @@ function buildProjection({ monthlyAmount, jseSplit, jseReturn, offshoreReturn, r
     const monthlyJSE      = monthlyAmount * (jseSplit / 100)
     const monthlyOffshore = monthlyAmount * ((100 - jseSplit) / 100)
 
-    /* Offshore return in ZAR terms includes rand depreciation.
-       e.g. 10% USD return + 5% rand weakness = ~15% effective ZAR return */
+    /* Offshore return in ZAR terms includes rand depreciation */
     const effectiveOffshore = (offshoreReturn / 100) + (randWeakness / 100)
     const jseMonthlyRate    = (jseReturn / 100) / 12
     const offMonthlyRate    = effectiveOffshore / 12

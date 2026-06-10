@@ -9,7 +9,8 @@ import GlobalInvesting   from './pages/GlobalInvesting';
 import TravelTrack       from './pages/TravelTrack';
 import TracksHub         from './pages/TracksHub';
 import CarVsInvest       from './pages/CarVsInvest';
-import OffshoreStudio    from './pages/OffshoreStudio';
+import OffshoreStudio    from './pages/OffshoreStudio'
+import StudioHub         from './pages/StudioHub';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider }        from './context/AuthContext';
@@ -33,6 +34,7 @@ function App() {
                             <Route path='/dashboard'               element={<MoneySnapshot/>}/>
                             <Route path='/tracks'                  element={<TracksHub/>}/>
                             <Route path='/tracks/property'         element={<FirstPropertyPath/>}/>
+                            <Route path='/studio'                  element={<StudioHub/>}/>
                             <Route path='/studio/rent-vs-buy'      element={<PropertyVsRent/>}/>
                             <Route path='/tracks/global-investing' element={<GlobalInvesting/>}/>
                             <Route path='/tracks/travel'           element={<TravelTrack/>}/>

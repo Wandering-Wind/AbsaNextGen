@@ -14,15 +14,14 @@ import {
 } from 'recharts'
 
 /* Constants */
-const STARTING_FX_RATE = 18.50   // approximate USD/ZAR at time of writing
+const STARTING_FX_RATE = 18.50   // approximate USD/ZAR
 const SDA_LIMIT        = 2000000  // R2M Single Discretionary Allowance
 const FIA_LIMIT        = 10000000 // R10M Foreign Investment Allowance
 
-/* FX scenarios (annual rand change vs USD) */
 const FX_SCENARIOS = [
-    { id: 'weak',   label: 'Rand weakens',     rate: 0.07,  colour: '#ef4444', dash: false },
-    { id: 'base',   label: 'Base case (5%)',   rate: 0.05,  colour: '#6366f1', dash: false },
-    { id: 'strong', label: 'Rand strengthens', rate: -0.02, colour: '#22c55e', dash: '5 3' },
+    { id: 'weak',   label: 'Rand weakens',     rate: 0.07,  colour: '#991b1b', dash: false },
+    { id: 'base',   label: 'Base case (5%)',   rate: 0.05,  colour: '#374151', dash: false },
+    { id: 'strong', label: 'Rand strengthens', rate: -0.02, colour: '#166534', dash: '5 3' },
 ]
 
 /* Asset allocation presets */
@@ -106,9 +105,9 @@ function ScenarioChart({ chartData, years }) {
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'var(--n-400)' }} axisLine={false} tickLine={false}/>
                 <YAxis tickFormatter={formatY} tick={{ fontSize: 11, fill: 'var(--n-400)' }} width={68} axisLine={false} tickLine={false}/>
                 <Tooltip content={<CustomTooltip/>}/>
-                <Line type="monotone" dataKey="Rand weakens (7%)"     stroke="#ef4444" strokeWidth={2} dot={false} activeDot={{ r: 4 }}/>
-                <Line type="monotone" dataKey="Base case (5%)"        stroke="#6366f1" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }}/>
-                <Line type="monotone" dataKey="Rand strengthens (-2%)" stroke="#22c55e" strokeWidth={2} dot={false} activeDot={{ r: 4 }} strokeDasharray="5 3"/>
+                <Line type="monotone" dataKey="Rand weakens (7%)"      stroke="#991b1b" strokeWidth={2}   dot={false} activeDot={{ r: 4 }}/>
+                <Line type="monotone" dataKey="Base case (5%)"         stroke="#374151" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }}/>
+                <Line type="monotone" dataKey="Rand strengthens (-2%)" stroke="#166534" strokeWidth={2}   dot={false} activeDot={{ r: 4 }} strokeDasharray="5 3"/>
                 <Line type="monotone" dataKey="Local JSE (11%)"        stroke="var(--absa-red)" strokeWidth={1.5} dot={false} activeDot={{ r: 4 }} strokeDasharray="3 2"/>
             </LineChart>
         </ResponsiveContainer>
@@ -126,12 +125,12 @@ function StatCard({ label, value, sub, accent }) {
     )
 }
 
-/* Allocation bar (3 segments) */
+/* Allocation bar (3 pieces) */
 function AllocationBar({ usEq, bonds, em }) {
     const segments = [
-        { label: 'US Equities', pct: usEq,  colour: '#6366f1' },
-        { label: 'Global Bonds', pct: bonds, colour: '#06b6d4' },
-        { label: 'Emerging Markets', pct: em, colour: '#f59e0b' },
+        { label: 'US Equities',      pct: usEq,   colour: '#991b1b' },
+        { label: 'Global Bonds',     pct: bonds,  colour: '#166534' },
+        { label: 'Emerging Markets', pct: em,     colour: '#92400e' },
     ]
     return (
         <div className="ops-alloc-wrap">
@@ -302,7 +301,7 @@ export default function OffshoreStudio() {
 
     function handleReset() {
         applyAlloc(ALLOCATION_PRESETS[1])
-        setMonthlyZAR(5000); setJseReturn(0.11); setYears(7)
+        setMonthlyZAR(0); setJseReturn(0.11); setYears(7)
     }
 
     /* USD display format */
@@ -397,15 +396,15 @@ export default function OffshoreStudio() {
                         <div className="ops-return-table">
                             <p className="ops-return-table-title">Effective ZAR return by scenario</p>
                             <div className="ops-return-row">
-                                <span style={{ color: '#ef4444' }}>Rand weakens 7%</span>
+                                <span style={{ color: '#991b1b' }}>Rand weakens 7%</span>
                                 <strong>{effectiveWeak}% p.a.</strong>
                             </div>
                             <div className="ops-return-row ops-return-row--base">
-                                <span style={{ color: '#6366f1' }}>Base case 5%</span>
+                                <span style={{ color: 'var(--n-700)' }}>Base case 5%</span>
                                 <strong>{effectiveBase}% p.a.</strong>
                             </div>
                             <div className="ops-return-row">
-                                <span style={{ color: '#22c55e' }}>Rand strengthens 2%</span>
+                                <span style={{ color: '#166534' }}>Rand strengthens 2%</span>
                                 <strong>{effectiveStrong}% p.a.</strong>
                             </div>
                             <div className="ops-return-row ops-return-row--jse">
@@ -419,6 +418,13 @@ export default function OffshoreStudio() {
                 {/* RIGHT: Results */}
                 <div className="split-right">
 
+                    {monthlyZAR === 0 ? (
+                        <div className="studio-empty-state">
+                            <p className="studio-empty-title">Enter a monthly contribution to see your results</p>
+                            <p className="studio-empty-sub">Set how much you want to invest per month on the left to run the simulation.</p>
+                        </div>
+                    ) : (<>
+
                     {/* Verdict */}
                     <div className="ops-verdict">
                         <div className="ops-verdict-main">
@@ -428,12 +434,12 @@ export default function OffshoreStudio() {
                         </div>
                         <div className="ops-verdict-range">
                             <div className="ops-verdict-range-item">
-                                <span style={{ color: '#ef4444' }}>▲ Rand weakens</span>
+                                <span style={{ color: '#991b1b' }}>▲ Rand weakens</span>
                                 <strong>{fmtZAR(finalWeak?.zarValue ?? 0)}</strong>
                             </div>
                             <div className="ops-verdict-range-divider"/>
                             <div className="ops-verdict-range-item">
-                                <span style={{ color: '#22c55e' }}>▼ Rand strengthens</span>
+                                <span style={{ color: '#166534' }}>▼ Rand strengthens</span>
                                 <strong>{fmtZAR(finalStrong?.zarValue ?? 0)}</strong>
                             </div>
                         </div>
@@ -478,9 +484,9 @@ export default function OffshoreStudio() {
                         </p>
                         <ScenarioChart chartData={chartData} years={years}/>
                         <div className="ops-chart-legend">
-                            <span><span className="ops-legend-dot" style={{ background: '#ef4444' }}/>Rand weakens 7%</span>
-                            <span><span className="ops-legend-dot" style={{ background: '#6366f1' }}/>Base case 5%</span>
-                            <span><span className="ops-legend-dot" style={{ background: '#22c55e' }}/>Rand strengthens −2%</span>
+                            <span><span className="ops-legend-dot" style={{ background: '#991b1b' }}/>Rand weakens 7%</span>
+                            <span><span className="ops-legend-dot" style={{ background: '#374151' }}/>Base case 5%</span>
+                            <span><span className="ops-legend-dot" style={{ background: '#166534' }}/>Rand strengthens −2%</span>
                             <span><span className="ops-legend-dot ops-legend-dot--red"/>Local JSE 11%</span>
                         </div>
                     </div>
@@ -562,6 +568,7 @@ export default function OffshoreStudio() {
                             </div>
                         )}
                     </div>
+                    </>)}
                 </div>
             </div>
         </>

@@ -134,7 +134,7 @@ function NetWorthChart({ snapshots, crossoverYear }) {
                     />
                 )}
                 <Line type="monotone" dataKey="Buy path"      stroke="var(--absa-red)" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }}/>
-                <Line type="monotone" dataKey="Rent + invest" stroke="#6366f1"          strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} strokeDasharray="6 3"/>
+                <Line type="monotone" dataKey="Rent + invest" stroke="#374151"          strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} strokeDasharray="6 3"/>
             </LineChart>
         </ResponsiveContainer>
     )
@@ -300,9 +300,9 @@ export default function PropertyVsRent() {
     })
 
     function handleReset() {
-        setPropertyPrice(1500000); setDepositPct(10)
+        setPropertyPrice(0); setDepositPct(0)
         setBondRate(SA.PRIME_RATE + SA.BOND_SPREAD); setBondTerm(20)
-        setMonthlyRent(20000); setRentIncreaseRate(0.06)
+        setMonthlyRent(0); setRentIncreaseRate(0.06)
         setInvestmentReturn(0.08); setPropertyGrowth(SA.PROPERTY_GROWTH)
         setYears(7); setActiveScenario('base')
     }
@@ -445,6 +445,13 @@ export default function PropertyVsRent() {
                 {/* RIGHT: Results */}
                 <div className="split-right">
 
+                    {propertyPrice === 0 ? (
+                        <div className="studio-empty-state">
+                            <p className="studio-empty-title">Enter a property price to see your results</p>
+                            <p className="studio-empty-sub">Set the property price on the left to run the simulation.</p>
+                        </div>
+                    ) : (<>
+
                     {/* Verdict */}
                     <div className={`pvr-verdict ${buyWins ? 'pvr-verdict--buy' : 'pvr-verdict--rent'}`}>
                         <div className="pvr-verdict-left">
@@ -500,7 +507,7 @@ export default function PropertyVsRent() {
                         <h3>Net worth over {years} years</h3>
                         <div className="pvr-chart-legend">
                             <span><span className="pvr-legend-dot" style={{ background: 'var(--absa-red)' }}/>Buy path</span>
-                            <span><span className="pvr-legend-dot pvr-legend-dot--dashed" style={{ background: '#6366f1' }}/>Rent + invest</span>
+                            <span><span className="pvr-legend-dot pvr-legend-dot--dashed" style={{ background: '#374151' }}/>Rent + invest</span>
                         </div>
                         <NetWorthChart snapshots={snapshots} crossoverYear={crossoverYear}/>
                     </div>
@@ -556,7 +563,7 @@ export default function PropertyVsRent() {
                                 </p>
                             ) : (
                                 <p>
-                                    With these inputs, <strong>{buyWins ? 'buying leads throughout the entire {years}-year period' : 'renting leads throughout the entire {years}-year period'}</strong>.
+                                    With these inputs, <strong>{buyWins ? `buying leads throughout the entire ${years}-year period` : `renting leads throughout the entire ${years}-year period`}</strong>.
                                     Try changing the property growth rate, investment return, or timeframe to see where the crossover appears.
                                     Most scenarios do cross over - the question is when.
                                 </p>
@@ -632,6 +639,7 @@ export default function PropertyVsRent() {
                         )}
                     </div>
 
+                    </>)}
                 </div>
             </div>
         </>
