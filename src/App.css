@@ -115,6 +115,128 @@
   box-shadow: var(--shadow-xs);
 }
 
+/* Initials avatar */
+.profile-btn--initials {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.profile-btn--open {
+  box-shadow: 0 0 0 2px var(--n-0), 0 0 0 4px currentColor;
+}
+
+
+.profile-menu {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 232px;
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+  padding: 0.75rem;
+  z-index: 200;
+  transform-origin: top right;
+  animation: profile-dropdown-in 0.15s ease;
+}
+
+@keyframes profile-dropdown-in {
+  from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* Identity row is the large avatar + name/email */
+.profile-dropdown-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.profile-dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.profile-dropdown-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.profile-dropdown-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--n-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-dropdown-email {
+  font-size: 0.6875rem;
+  color: var(--n-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-dropdown-goal-label {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--n-500);
+  background: transparent;
+  border: 1px solid var(--absa-red-border);
+  border-radius: 20px;
+  padding: 0.1875rem 0.5rem;
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  background: var(--n-200);
+  margin: 0 -0.75rem 0.5rem;
+}
+
+
+.profile-dropdown-signout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4375rem 0.375rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--absa-red);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.profile-dropdown-signout:hover {
+  background: var(--absa-red-light);
+}
+
 /* Sub-nav (Tracks / Studio tabs) */
 
 .subnav-wrapper {
