@@ -14,9 +14,11 @@ npm run dev
 The workflow in `.github/workflows/deploy-pages.yml` builds and deploys every push to `main`.
 
 1. Push this configuration to GitHub.
-2. Open the repository's **Settings > Pages**.
-3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-4. Open **Actions** and wait for **Deploy to GitHub Pages** to complete.
+2. Open **Actions** and wait for **Deploy to GitHub Pages** to complete.
+
+The workflow enables GitHub Pages automatically. If repository policy prevents
+automatic enablement, open **Settings > Pages** and set **Source** to
+**GitHub Actions**, then re-run the workflow.
 
 The published URL will be:
 
