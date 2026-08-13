@@ -25,8 +25,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # npm install is intentional here: the lockfile contains optional native
+      # packages selected per operating system, and was generated on Windows.
+      # GitHub's Linux runner must be allowed to resolve its matching binaries.
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Build site
         run: npm run build
       - name: Configure GitHub Pages

@@ -5,7 +5,7 @@ A React and Vite case-study prototype, configured for deployment to GitHub Pages
 ## Run locally
 
 ```bash
-npm ci
+npm install
 npm run dev
 ```
 
