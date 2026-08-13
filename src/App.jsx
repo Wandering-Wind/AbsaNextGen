@@ -12,7 +12,7 @@ import CarVsInvest       from './pages/CarVsInvest';
 import OffshoreStudio    from './pages/OffshoreStudio'
 import StudioHub         from './pages/StudioHub';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider }        from './context/AuthContext';
 import RequireAuth             from './components/RequireAuth';
 import PageWrapper             from './components/layout/PageWrapper';
@@ -24,7 +24,8 @@ function App() {
         <AuthProvider>
             <UserProfileProvider>
                 <NudgeProvider>
-                <BrowserRouter>
+                {/* Hash routing keeps routes refreshable on GitHub Pages. */}
+                <HashRouter>
                     <Routes>
                         <Route path='/'           element={<LoginPage/>}/>
                         <Route path='/onboarding' element={<OnboardingPage/>}/>
@@ -42,7 +43,7 @@ function App() {
                             <Route path='/studio/offshore'         element={<OffshoreStudio/>}/>
                         </Route>
                     </Routes>
-                </BrowserRouter>
+                </HashRouter>
                 </NudgeProvider>
             </UserProfileProvider>
         </AuthProvider>

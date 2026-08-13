@@ -1,16 +1,31 @@
-# React + Vite
+# Absa NextGen case study
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React and Vite case-study prototype, configured for deployment to GitHub Pages.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm ci
+npm run dev
+```
 
-## React Compiler
+## Deploy to GitHub Pages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The workflow in `.github/workflows/deploy-pages.yml` builds and deploys every push to `main`.
 
-## Expanding the ESLint configuration
+1. Push this configuration to GitHub.
+2. Open the repository's **Settings > Pages**.
+3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+4. Open **Actions** and wait for **Deploy to GitHub Pages** to complete.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The published URL will be:
+
+```text
+https://wandering-wind.github.io/AbsaNextGen/
+```
+
+After committing, deploy from the command line with:
+
+```bash
+git push origin main
+```
